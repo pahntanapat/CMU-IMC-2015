@@ -3,6 +3,12 @@
    Note: Fluid media requires that you remove the media's height and width attributes from the HTML
    http://www.alistapart.com/articles/fluid-images/ 
 */
+body {
+	background-color: #FFF;
+}
+div {
+	background-color: #FFF;
+}
 img, object, embed, video {
 	max-width: 100%;
 }
