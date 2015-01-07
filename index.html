@@ -24,11 +24,20 @@ Do the following if you're using your customized build of modernizr (http://www.
 <!--[if lt IE 9]>
 <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="jquery.sticky.js"></script>
+<script>
+  $(document).ready(function(){
+    $("#cssmenu").sticky({topSpacing:0});
+	$("#cssjumplist").sticky({topSpacing:48});
+  });
+</script>
 <script src="respond.min.js"></script>
 </head>
 <body>
 <div class="gridContainer clearfix">
 <div id="header1"><img src="" alt="" name="logo" width="700" height="200" id="logo"></div>
+<div id="menu-sticky-wrapper" class="sticky-wrapper" style="height: 48px;">
 <div class="menu">
 <style>@import url(http://fonts.googleapis.com/css?family=Raleway);
 #cssmenu,
@@ -152,7 +161,9 @@ Do the following if you're using your customized build of modernizr (http://www.
    <li><a href="#">Activities</a></li>
    <li><a href="#">Contact</a></li>
 </ul>
-</div></div>
+</div>
+</div>
+</div>
 
 <div class="content"> 
   <table width="100%" border="0">
@@ -292,20 +303,24 @@ Do the following if you're using your customized build of modernizr (http://www.
   border-bottom: 10px solid transparent;
   border-top: 10px solid transparent;
 }
-</style><div id="cssjumplist">
+</style>
+<div id="jumplist-sticky-wrapper" class="sticky-wrapper" style="height: 200px;">
+<div id="cssjumplist" class="sticky">
 <ul>
    <li><a href="#"><span>Home</span></a></li>
    <li><a href="#"><span>Products</span></a></li>
    <li><a href="#"><span>About</span></a></li>
    <li class="last"><a href="#"><span>Contact</span></a></li>
 </ul>
+</div>
 </div></div></td>
   </tr>
 </table>
 
   
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 </div>
 
 <div class="footer">Content for  class "footer" Goes Here</div>
