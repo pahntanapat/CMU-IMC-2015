@@ -1,0 +1,70 @@
+@charset "utf-8";
+body>*{
+	width:768px;
+	margin:auto;
+}
+.headerLeft{	width:540px}
+.headerRight{width:227px}
+nav{
+	margin-top:0px;
+	padding-top:4px;
+	font-weight:bold;
+	clear:both;
+	text-align:center;
+}
+nav>div{
+	display:inline-block;
+	width:60px;
+	margin:0px;
+	text-align:center;
+	font-size:medium;
+}
+nav>div img{
+	margin-left:auto;
+	margin-right:auto;
+}
+nav>.fb{
+	width:360px;
+	display:inline-block;
+	margin-right:10px;
+	text-align:left;
+}
+nav>div>*{display:block}
+
+.main, .main * {background-color:#FFF}
+
+/*.heading>img{vertical-align:middle}*/
+
+div.content{
+	text-align:left;
+	padding:2px 1px 2px 30px;
+	width:561px;
+	float:left;
+	height:auto;
+}
+.sidemenu{
+	width:170px;
+	float:right;
+	padding:2px 2px 2px 4px;
+	height:auto;
+}
+
+div.sponser{text-align:center}
+div.sponser>p{
+	font-weight:bolder;
+	font-size:large;
+}
+div.sponser>ul{
+	list-style:none;
+	padding-left:0px;
+}
+
+ul.reg{
+	list-style:circle;
+	padding:1px 20px;
+	border:#F00 thick double;
+}
+ul.reg>li{
+	font-size:medium;
+	font-weight:bolder;
+}

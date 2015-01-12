@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>Chiang Mai University International Medical Challenge</title>
+<!-- TemplateEndEditable -->
+<script src="../jquery-1.11.2.min.js"></script>
+<script src="../jquery-migrate-1.2.1.min.js"></script>
+<script src="../reg/js/skajax.js"></script>
+<link rel="stylesheet" href="../imc_main.css">
+<!-- TemplateBeginEditable name="head" -->
+<!-- TemplateEndEditable -->
+</head>
+
+<body>
+<div id="mainMenu"><ul>
+  <li><a href="../index.html" title="Homepage">home</a></li>
+  <li><a href="../reg/login.php" title="log in">log in</a></li>
+  <li><a href="../regist.html" title="registration">registration</a></li></ul></div>
+<div id="content"><!-- TemplateBeginEditable name="Content" -->Content<!-- TemplateEndEditable --></div>
+<div id="footer"><a href="../reg/admin.php" title="staff only">staff only</a></div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+<div><img src="securimage/securimage_show.php?sid=<?=md5(uniqid());?>" alt="CAPTCHA Image" name="captchaIMG" id="captchaIMG" /><img src="securimage/images/refresh.png" alt="Reload Image" name="reload_captcha" id="reload_captcha" align="bottom" border="0" /></div>
+<div><label for="captcha">Answer = </label><input name="captcha" type="text" id="captcha" size="10" maxlength="8"  data-validation="number" placeholder="Answer"  required></div>
