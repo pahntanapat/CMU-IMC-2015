@@ -1,0 +1,49 @@
+@charset "utf-8";
+.dialog{
+	z-index:1;
+	display:none;
+	position:fixed;
+	width:100%;
+	height:100%;
+	left:0em;
+	top:0em;
+	color:#FFF;
+	background:rgba(0,0,0,0.8);
+}
+.dialog>button{
+	color:#FFF;
+	background:rgba(0,0,0,0.8);
+	font-weight:bold;
+	display:block;
+	right:30%;
+	top:10%;
+	position:absolute;
+}
+.dialog>div{
+	display:block;
+	top:10%;
+	bottom:10%;
+	overflow:scroll;
+	position:absolute;
+	background:#FFF;
+	border:medium #000 double;
+	padding:0.5em;
+	color:#000;
+	margin:0% 5%;
+}
+
+.tabs{
+	border:#000 thin solid;
+}
+.tabs>ul>li{
+	list-style:none;
+	display:inline-block;
+	border:#999 thin ridge;
+	margin:0.125em 0.25em 0em;
+	padding:0.125em;
+}
+.tabs>div{	display:none}
+.tabs>div.active{
+	display:block;
+	padding:0.5em;
+}
