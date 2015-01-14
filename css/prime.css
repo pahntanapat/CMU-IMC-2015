@@ -1,9 +1,3 @@
-#magellan {
-  min-width: 0;
-  max-width: $row-width - $column-gutter;
-  @media only screen and (max-width: $row-width) {
-    width: auto;
-    left: $column-gutter/2;
-    right: $column-gutter/2;
-  }
-}
+.sidebar.fixed,
+[data-magellan-expedition] {
+  left: auto !important; }
