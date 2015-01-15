@@ -1,8 +1,9 @@
 <?php
 require_once 'class.Session.php';
 class SesAdm extends Session{
-	const SESSION_NAME=__CLASS__,
-	
+	protected $SESSION_NAME=__CLASS__;
+	const
+	// Admin Permission
 		PMS_ADMIN=1, // Can Add Delete Edit Admin
 		PMS_WEB=2, // Can Edit web properties
 		PMS_PARTC=4, // Can Add Delete Edit Check Participant
@@ -11,7 +12,7 @@ class SesAdm extends Session{
 		PMS_GM=32 // Can view participant info
 		;
 		
-	public $nickname, $student_id, $pms;
+	public $id,$nickname, $student_id, $pms;
 	
 	public function checkSession(){
 		return $this->sid==session_id() && $this->nickname!=NULL && $this->student_id!==NULL && is_int($this->pms);

@@ -10,7 +10,8 @@
 	public static function check($returnObj=true,$autoWrite=true);
 }*/
 abstract class Session{
-	const SESSION_NAME='session', ID_EXP=1200;
+	protected $SESSION_NAME=__CLASS__;
+	const ID_EXP=1200;
 	public $autoWrite=true;
 	protected $sid=false, $time=0;
 	
@@ -22,7 +23,7 @@ abstract class Session{
 	
 	public function load($re=false){
 		foreach($this as $k=>$v)
-			$this->$k=isset($_SESSION[self::SESSION_NAME][$k])?$_SESSION[self::SESSION_NAME][$k]:$v;
+			$this->$k=isset($_SESSION[$this->SESSION_NAME][$k])?$_SESSION[$this->SESSION_NAME][$k]:$v;
 		return $re?get_object_vars($this):$this;
 	}
 	

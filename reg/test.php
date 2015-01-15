@@ -24,9 +24,29 @@ $(function(e){
 <body>
 <pre>
 <?php
-	$s=new SesAdm();
-	var_dump($_SESSION,$s->checkSession());
-	
+class test{
+	public function cs(){
+		echo '__CLASS__ = '.__CLASS__."\n";
+		echo 'get_class() = '.get_class()."\n";
+	}
+	public function t(){
+		echo get_called_class().'->t()'.PHP_EOL;
+		return $this->cs();
+	}
+	public function a(){
+		echo get_called_class().PHP_EOL;
+		return $this->t();
+	}
+}
+class t extends test{
+	public function t(){
+		
+	}
+}
+$ts=new test();
+$t=new t();
+$ts->a();
+$t->a();
 ?>
 </pre>
 <div class="dialog"><button>Close</button><div><button>Close</button></div></div>

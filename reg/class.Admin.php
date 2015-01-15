@@ -2,20 +2,13 @@
 require_once 'class.SKeasySQL.php';
 require_once 'config.inc.php';
 class Admin extends SKeasySQL{
-	const TABLE='admin',
-		
-		ROW_ID='id', ROW_STD_ID='student_id',
+	const 
+		ROW_STD_ID='student_id',
 		ROW_PW='password', ROW_NICK='nickname',
 		ROW_PERMISSION='permission';
 		
-	public $id, $student_id, $password, $nickname, $permission;
-	protected $db;
-	public function __construct($db){
-		$this->setPDO($db);
-	}
-	public function setPDO($db){
-		$this->db=$db;
-	}
+	public $student_id, $password, $nickname, $permission;
+	protected $TABLE='admin';
 	/**
 	  *Check if the given student_id & password of this person is admin
 	  *@Return True if this persion is admin, False if not.
@@ -27,7 +20,7 @@ class Admin extends SKeasySQL{
 			// If DB is set.
 			if($this->db){
 				// Check if there are no admin who can edit admin and web prop
-				$stm=($this->db->prepare('SELECT COUNT(*) FROM '.self::TABLE.
+				$stm=($this->db->prepare('SELECT COUNT(*) FROM '.$this->TABLE.
 					' WHERE '.self::ROW_PERMISSION.'& ? != 0 AND '.self::ROW_PERMISSION.'& ? !=0'));
 				$stm->bindValue(1,SesAdm::PMS_ADMIN,PDO::PARAM_INT);
 				$stm->bindValue(2,SesAdm::PMS_WEB,PDO::PARAM_INT);
@@ -41,7 +34,7 @@ class Admin extends SKeasySQL{
 		}
 		
 		$stm=($this->db->prepare('SELECT'.self::row(self::ROW_ID,self::ROW_NICK,self::ROW_PERMISSION)
-			.'FROM '.self::TABLE.' WHERE '.self::ROW_STD_ID.' = :stid AND '.self::ROW_PW.' = :pw'));
+			.'FROM '.$this->TABLE.' WHERE '.self::ROW_STD_ID.' = :stid AND '.self::ROW_PW.' = :pw'));
 		$stm->bindValue(':stid',$this->student_id);
 		$stm->bindValue(':pw',$this->password);
 		$stm->execute();
@@ -57,9 +50,12 @@ class Admin extends SKeasySQL{
 	
 	public function add(){
 		if(is_array($this->permission)) $this->permission=array_sum($this->permission);
-		$stm=$this->db->prepare('INSERT INTO '.self::TABLE
-			.'('.self::row(self::ROW_STD_ID, self::ROW_PW, self::ROW_NICK, self::ROW_PERMISSION)
-			.') VALUES (:s,:pw,:n,:p)');
+		$stm=$this->db->prepare($this->insert(array(
+			self::ROW_STD_ID=>':s',
+			self::ROW_PW=>':pw',
+			self::ROW_NICK=>':n',
+			self::ROW_PERMISSION=>':p'
+			)));
 		$stm->bindValue(':s',$this->student_id);
 		$stm->bindValue(':pw',$this->password);
 		$stm->bindValue(':n',$this->nickname);
@@ -70,9 +66,14 @@ class Admin extends SKeasySQL{
 	}
 	public function update(){
 		if(is_array($this->permission)) $this->permission=array_sum($this->permission);
-		$stm=$this->db->prepare('UPDATE '.self::TABLE
-			.' SET '.self::ROW_STD_ID.'=:s, '.self::ROW_PW.'=:pw, '.self::ROW_NICK.'=:n, '.self::ROW_PERMISSION.'=:p'
-			.' WHERE '.self::ROW_ID.'=:i');
+		$stm=$this->db->prepare('UPDATE '.$this->TABLE	.' SET '.
+			self::equal(array(
+				self::ROW_STD_ID=>':s',
+				self::ROW_PW=>':pw',
+				self::ROW_NICK=>':n',
+				self::ROW_PERMISSION=>':p'
+			)).' WHERE '.self::ROW_ID.'=:i');
+		
 		$stm->bindValue(':i',$this->id,PDO::PARAM_INT);
 		$stm->bindValue(':s',$this->student_id);
 		$stm->bindValue(':pw',$this->password);
@@ -81,7 +82,7 @@ class Admin extends SKeasySQL{
 		return $stm->execute();
 	}
 	public function updateInfo(){
-		$stm=$this->db->prepare('UPDATE '.self::TABLE
+		$stm=$this->db->prepare('UPDATE '.$this->TABLE
 			.' SET'.self::ROW_STD_ID.'=:s, '.self::ROW_NICK.'=:n WHERE '.self::ROW_ID.'=:i');
 		$stm->bindValue(':i',$this->id,PDO::PARAM_INT);
 		$stm->bindValue(':s',$this->student_id);
@@ -91,7 +92,7 @@ class Admin extends SKeasySQL{
 	}
 	
 	public function changePW($oldPassword){
-		$stm=$this->db->prepare('UPDATE '.self::TABLE.' SET'.self::ROW_PW.'=:n '.' WHERE '.self::ROW_ID.'=:i AND '.self::ROW_PW.'=:o');
+		$stm=$this->db->prepare('UPDATE '.$this->TABLE.' SET'.self::ROW_PW.'=:n '.' WHERE '.self::ROW_ID.'=:i AND '.self::ROW_PW.'=:o');
 		$stm->bindValue(':i',$this->id,PDO::PARAM_INT);
 		$stm->bindValue(':o',$oldPassword);
 		$stm->bindValue(':n',$this->password);
@@ -100,7 +101,7 @@ class Admin extends SKeasySQL{
 	}
 	
 	public function load(){
-		$stm=$this->db->prepare('SELECT '.self::row().' FROM '.self::TABLE.' WHERE '.self::ROW_ID.'=:i limit 1');
+		$stm=$this->db->prepare('SELECT '.self::row().' FROM '.$this->TABLE.' WHERE '.self::ROW_ID.'=:i limit 1');
 		$stm->bindValue(':i',$this->id,PDO::PARAM_INT);
 		$stm->execute();
 		if($stm->rowCount()>0){
@@ -111,25 +112,23 @@ class Admin extends SKeasySQL{
 	}
 	/*
 	public function del(){
-		$stm=$this->db->prepare('DELETE FROM '.self::TABLE.' WHERE '.self::ROW_ID.'=:i');
+		$stm=$this->db->prepare('DELETE FROM '.$this->TABLE.' WHERE '.self::ROW_ID.'=:i');
 		$stm->bindValue(':i',$this->id,PDO::PARAM_INT);
 		$stm->execute();
 		return $stm->rowCount();
 	}
 	*/
 	public function del($list){
-		$stm=$this->db->prepare('DELETE FROM '.self::TABLE
-			.' WHERE '.self::ROW_ID.' IN ('
-			.implode(',',array_fill(0,count($_POST['del']),'?'))
-			.')');
-		$stm->execute($_POST['del']);
+		$stm=$this->db->prepare('DELETE FROM '.$this->TABLE
+			.' WHERE '.self::ROW_ID.self::IN($list));
+		$stm->execute($list);
 		return $stm->rowCount();
 	}
 	
 	public function getList(){
-		$stm=$this->db->prepare('SELECT '.self::row(self::ROW_ID,self::ROW_STD_ID,self::ROW_NICK).' FROM '.self::TABLE);
+		$stm=$this->db->prepare('SELECT '.self::row(self::ROW_ID,self::ROW_STD_ID,self::ROW_NICK).' FROM '.$this->TABLE);
 		$stm->execute();
-		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array(NULL));
+		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
 	}
 }
 ?>
