@@ -4,7 +4,7 @@ require_once 'config.inc.php';
 class SesPrt extends Session{
 	protected $SESSION_NAME=__CLASS__;
 	public $id, $institution, $country, $teamState, $payState, $ticketState;
-	private $memState=array();
+	private $memState=array(); // Status of Infomation of Members
 	
 	public function changeID($force=false){
 		global $config;
@@ -41,6 +41,10 @@ class SesPrt extends Session{
 	
 	public function getObserverInfoState(){
 		return $this->getParticipantState(0);
+	}
+	
+	public function checkSession(){
+		return $this->sid==session_id();
 	}
 	
 	public static function check($returnObj=true,$autoWrite=true){

@@ -3,44 +3,18 @@ require_once 'config.inc.php';
 require_once 'class.SKeasySQL.php';
 require_once 'class.Observer.php';
 class Participant extends Observer{
-	const ROW_PART_NO='part_no';
+	const ROW_PART_NO='part_no', ROW_EM_CNT='emerg_contact';
 	
-	public $part_no;
+	public $part_no,$emerg_contact;
 	protected $TABLE='participant_info';
 	
-	public function add(){
-		global $config;
-		if(!isset($this->part_no) || $this->part_no>$config->REG_PARTICIPANT_NUM || $this->part_no<0) return false;
-		$stm=$this->db->prepare($this->insert(array(
-			self::ROW_TEAM_ID=>':tid',
-			self::ROW_TITLE=>':t',
-			self::ROW_FIRSTNAME=>':f',
-			self::ROW_MIDDLENAME=>':m',
-			self::ROW_LASTNAME=>':l',
-			self::ROW_GENDER=>':g',
-			self::ROW_SHIRT_SIZE=>':ss',
-			self::ROW_EMAIL=>':e',
-			self::ROW_SOC_NETWORK=>':soc',
-			self::ROW_MED_REQ=>':mreq',
-			self::ROW_OTHER_REQ=>':oreq',
-			self::ROW_PART_NO=>':no'
-		)));
-		$stm->bindValue(':tid',$this->team_id,PDO::PARAM_INT);
-		$stm->bindValue(':t',$this->title);
-		$stm->bindValue(':f',$this->firstname);
-		$stm->bindValue(':m',$this->middlename);
-		$stm->bindValue(':l',$this->lastname);
-		$stm->bindValue(':g',$this->gender,PDO::PARAM_BOOL);
-		$stm->bindValue(':ss',$this->shirt_size);
-		$stm->bindValue(':e',$this->email);
-		$stm->bindValue('soc:',$this->soc_network);
-		$stm->bindValue('mreq:',$this->med_req);
-		$stm->bindValue(':oreq',$this->other_req);
-		$stm->bindValue(':no',$this->part_no);
-		
-		$stm->execute();
-		$this->id=$this->db->lastInsertId();
-		return $this->id;
+	protected function rowArray($postReg=false){
+		return array_merge(array(self::ROW_PART_NO=>':part_no'),parent::rowArray($postReg));
+	}
+	
+	protected function bindValue(PDOStatement $stm,$postReg=false){
+		parent::bindValue($stm,$postReg);
+		$stm->bindValue(':part_no',$this->part_no,PDO::PARAM_INT);
 	}
 	
 	public function update($isAdmin=false){
@@ -62,8 +36,7 @@ class Participant extends Observer{
 		);
 		if(!$isAdmin) $rows[self::ROW_INFO_STATE]=':state';
 		$stm=$this->db->prepare('UPDATE '.$this->TABLE.' SET '
-			.self::equal(
-				)
+			.self::equal($rows	)
 			.' WHERE '.self::ROW_ID.'=:id'
 		);
 		$stm->bindValue(':tid',$this->team_id,PDO::PARAM_INT);

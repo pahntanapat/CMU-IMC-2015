@@ -5,34 +5,50 @@ class Team extends SKeasySQL{
 	const
 		ROW_EMAIL='email',
 		ROW_PW='password',
+		
 		ROW_INSTITUTION='institution',
+		ROW_UNIVERSITY='university',
+		ROW_ADDRESS='address',
 		ROW_COUNTRY='country',
+		ROW_PHONE='phone',
+		
+		ROW_ARRIVE_BY='arrive_by',
+		ROW_ARRIVE_TIME='arrive_time',
+		ROW_DEPART_BY='depart_by',
+		ROW_DEPART_TIME='depart_time',
+		
+		ROW_ROUTE='route',
+		
 		ROW_TEAM_STATE='team_state',
 		ROW_PAY_STATE='pay_state',
-		ROW_TICKET_STATE='ticket_state'
+		ROW_POST_REG_STATE='post_reg_state'
 		;
 	
-	public $email, $pw, $institution, $country, $team_state, $pay_state, $ticket_state;
-	protected $TABLE='team_info';
-	protected $member_info_state; // for authenication only
-	
-	public function add(){
-//		$this->db=new PDO();
-		$stm=$this->db->prepare($this->insert(array(
+	public $email, $pw,
+		$institution, $university, $address, $country, $phone,
+		$arrive_by, $arrive_time, $depart_by, $depart_time,
+		$route,
+		$team_state, $pay_state, $ticket_state;
+	protected $memberInfoState,$memberPostRegState; // for authenication only
+	protected $TABLE='team_info',
+		$rows=array(
 			self::ROW_EMAIL=>':e',
+			self::ROW_PW=>':pw',
+			
+			self::ROW_INSTITUTION=>':in',
+			self::ROW_UNIVERSITY=>':u',
 			self::ROW_COUNTRY=>':c',
-			self::ROW_INSTITUTION=>':i',
-			self::ROW_PW=>':p'
-			)));
-		$stm->bindValue(':e',$this->email);
-		$stm->bindValue(':p',$this->pw);
-		$stm->bindValue(':i',$this->institution);
-		$stm->bindValue(':c',$this->country);
-		$stm->execute();
-		$this->id=$this->db->lastInsertId();
-		return $this->id;
-	}
+			self::ROW_ADDRESS=>':ad',
+			self::ROW_PHONE=>':p',
 	
+			self::ROW_ARRIVE_BY=>':arrive_by',
+			self::ROW_ARRIVE_TIME=>':arrive_time',
+			self::ROW_DEPART_BY=>':depart_by',
+			self::ROW_DEPART_TIME=>':depart_time',
+	
+			self::ROW_ROUTE=>':route'
+		);
+		
 	/**
 	* Prepare SQL command for function that select data for session
 	*/
@@ -42,12 +58,15 @@ class Team extends SKeasySQL{
 		$tmp=array(new Observer(NULL),new Participant(NULL));
 		$rows=array(
 			$this->TABLE.'.'.self::ROW_INSTITUTION=>self::ROW_INSTITUTION,
+			$this->TABLE.'.'.self::ROW_UNIVERSITY=>self::ROW_UNIVERSITY,
 			$this->TABLE.'.'.self::ROW_COUNTRY=>self::ROW_COUNTRY,
 			$this->TABLE.'.'.self::ROW_TEAM_STATE=>self::ROW_TEAM_STATE,
 			$this->TABLE.'.'.self::ROW_PAY_STATE=>self::ROW_PAY_STATE,
-			$this->TABLE.'.'.self::ROW_TICKET_STATE=>self::ROW_TICKET_STATE,
-			$tmp[0]->TABLE.'.'.Observer::ROW_INFO_STATE=>'obsv_state',
-			$tmp[1]->TABLE.'.'.Participant::ROW_INFO_STATE=>'part_state'
+			$this->TABLE.'.'.self::ROW_POST_REG_STATE=>self::ROW_POST_REG_STATE,
+			$tmp[0]->TABLE.'.'.Observer::ROW_INFO_STATE=>'obsv_info',
+			$tmp[0]->TABLE.'.'.Observer::ROW_POST_REG_STATE=>'obsv_prs',
+			$tmp[1]->TABLE.'.'.Participant::ROW_INFO_STATE=>'part_state',
+			$tmp[1]->TABLE.'.'.Participant::ROW_POST_REG_STATE=>'part_prs',
 		);
 		if($withID) $rows[$this->TABLE.'.'.self::ROW_ID]=self::ROW_ID;
 		return self::row($rows);
@@ -61,9 +80,11 @@ class Team extends SKeasySQL{
 			if($i==1){
 				foreach($this as $k=>$v)
 					if(isset($this->$k)) $this->$k=$v;
-				$this->member_info_state[0]=$row->obsv_state;
+				$this->memberInfoState[0]=$row->obsv_info;
+				$this->memberPostRegState[0]=$row->obsv_prs;
 			}
-			$this->member_info_state[$i]=$row->part_state;
+			$this->memberInfoState[$i]=$row->part_info;
+			$this->memberPostRegState[$i]=$row->part_prs;
 		}
 		return true;
 	}
@@ -71,11 +92,21 @@ class Team extends SKeasySQL{
 	public function getParticipantInfoState(){
 		global $config;
 		if($i<0 || $i>$config->REG_PARTICIPANT_NUM) return false;
-		return $this->member_info_state[$i];
+		return $this->memberInfoState[$i];
 	}
 	// Get Observer's Info State after auth()
 	public function getObserverInfoState(){
-		return $this->member_info_state[0];
+		return $this->memberInfoState[0];
+	}
+	// Get Participant's or Observer's (if $i=0) Post-Registration-phase Info State after auth()
+	public function getParticipantPostRegInfoState(){
+		global $config;
+		if($i<0 || $i>$config->REG_PARTICIPANT_NUM) return false;
+		return $this->memberPostRegState[$i];
+	}
+	// Get Observer's Post-Registration-phase Info State after auth()
+	public function getObserverPostRegInfoState(){
+		return $this->memberPostRegState[0];
 	}
 	
 	public function auth($checkPW=false){
@@ -118,35 +149,61 @@ class Team extends SKeasySQL{
 	}
 	
 	public function update(){ // For Admin
-		$stm=$this->db->prepare('UPDATE '.$this->TABLE	.' SET '.
-			self::equal(array(
-				self::ROW_EMAIL=>':e',
-				self::ROW_PW=>':pw',
-				self::ROW_INSTITUTION=>':in',
-				self::ROW_COUNTRY=>':c'
-			)).' WHERE '.self::ROW_ID.'=:i');
+		$row=$this->rowArray(true,true,array(self::ROW_EMAIL, self::ROW_PW));
+		$stm=$this->db->prepare('UPDATE '.$this->TABLE
+			.' SET '.	self::equal($row)
+			.' WHERE '.self::ROW_ID.'=:i');
+		
 		$stm->bindValue(':i',$this->id,PDO::PARAM_INT);
-		$stm->bindValue(':e',$this->email);
-		$stm->bindValue(':pw',$this->pw);
-		$stm->bindValue(':in',$this->institution);
-		$stm->bindValue(':c',$this->country);
+		$this->bindValue($stm,$row);
+		
 		return $stm->execute();
 	}
 	
+	public function add(){
+//		$this->db=new PDO();
+		$row=$this->rowArray(false,false,array(
+			self::ROW_EMAIL,self::ROW_PW,
+			self::ROW_INSTITUTION,self::ROW_UNIVERSITY,self::ROW_COUNTRY
+		));
+		
+		$stm=$this->db->prepare($this->insert($row));
+		$this->bindValue($stm,$row);
+		
+		$stm->execute();
+		$this->id=$this->db->lastInsertId();
+		return $this->id;
+	}
+
 	public function updateInfo(){ // For Participant
 		require_once 'class.State.php';
-		$stm=$this->db->prepare('UPDATE '.$this->TABLE	.' SET '.
-			self::equal(array(
-				self::ROW_EMAIL=>':e',
-				self::ROW_TEAM_STATE=>':s',
-				self::ROW_INSTITUTION=>':in',
-				self::ROW_COUNTRY=>':c'
-			)).' WHERE '.self::ROW_ID.'=:i');
+		
+		$row=array_merge($this->rowArray(true,false,array(self::ROW_EMAIL)),array(self::ROW_TEAM_STATE=>':s'));
+		$stm=$this->db->prepare('UPDATE '.$this->TABLE
+			.' SET '.	self::equal($row)
+			.' WHERE '.self::ROW_ID.'=:i');
+		
 		$stm->bindValue(':i',$this->id,PDO::PARAM_INT);
-		$stm->bindValue(':e',$this->email);
-		$stm->bindValue(':in',$this->institution);
+		$this->bindValue($stm,$row);
 		$stm->bindValue(':s',State::ST_EDITABLE,PDO::PARAM_INT);
-		$stm->bindValue(':c',$this->country);
+		
+		$stm->execute();
+		$this->team_state=State::ST_EDITABLE;
+		return $stm->rowCount();
+	}
+	
+	public function updatePostReg(){ //for participant
+		require_once 'class.State.php';
+		
+		$row=array_merge($this->rowArray(false,true),array(self::ROW_POST_REG_STATE=>':s'));
+		$stm=$this->db->prepare('UPDATE '.$this->TABLE
+			.' SET '.	self::equal($row)
+			.' WHERE '.self::ROW_ID.'=:i');
+		
+		$stm->bindValue(':i',$this->id,PDO::PARAM_INT);
+		$this->bindValue($stm,$row);
+		$stm->bindValue(':s',State::ST_EDITABLE,PDO::PARAM_INT);
+		
 		$stm->execute();
 		$this->team_state=State::ST_EDITABLE;
 		return $stm->rowCount();
@@ -156,7 +213,7 @@ class Team extends SKeasySQL{
 		switch($st){
 			case self::ROW_PAY_STATE;
 			case self::ROW_TEAM_STATE:
-			case self::ROW_TICKET_STATE:
+			case self::ROW_POST_REG_STATE:
 				break;
 			default: return;
 		}
@@ -176,6 +233,45 @@ class Team extends SKeasySQL{
 			foreach($row as $k=>$v) $this->$k=$v;
 		}
 		return $stm->rowCount();
+	}
+	
+	protected function rowArray($withUniv=false,$withPostReg=false,$row=array()){
+		if($withUniv)
+			$row=array_merge($row,array(
+				self::ROW_INSTITUTION,
+				self::ROW_UNIVERSITY,
+				self::ROW_COUNTRY,
+				self::ROW_ADDRESS,
+				self::ROW_PHONE
+			));
+		if($withPostReg)
+			$row=array_merge($row,array(
+				self::ROW_ARRIVE_BY,
+				self::ROW_ARRIVE_TIME,
+				self::ROW_DEPART_BY,
+				self::ROW_DEPART_TIME,
+		
+				self::ROW_ROUTE
+			));
+		$rows=array();
+		foreach($row as $k)
+			if(array_key_exists($k,$this->rows)) $rows[$k]=$this->rows[$k];
+		return $rows;
+	}
+	protected function bindValue(PDOStatement $stm,$row){
+		foreach($row as $k=>$v){
+			$p=constant('self::'.$k);
+			switch($k){
+				case self::ROW_PW:
+					$stm->bindValue($v,$this->pw);
+					break;
+				case self::ROW_ROUTE:
+					$stm->bindValue($v,$this->$p,PDO::PARAM_INT);
+					break;
+				default:
+					$stm->bindValue($v,$this->$p);
+			}
+		}
 	}
 }
 ?>
