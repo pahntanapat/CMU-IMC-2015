@@ -24,31 +24,19 @@ $(function(e){
 <body>
 <pre>
 <?php
-class test{
-	public function cs(){
-		echo '__CLASS__ = '.__CLASS__."\n";
-		echo 'get_class() = '.get_class()."\n";
-	}
-	public function t(){
-		echo get_called_class().'->t()'.PHP_EOL;
-		return $this->cs();
-	}
-	public function a(){
-		echo get_called_class().PHP_EOL;
-		return $this->t();
-	}
-}
-class t extends test{
-	public function t(){
-		
-	}
-}
-$ts=new test();
-$t=new t();
-$ts->a();
-$t->a();
+$password='';
+var_dump($password);
+
+var_dump(preg_match_all('/^[[:alnum:]_:;]{6,32}$/',$password,$match));
+var_dump($match);
+
+var_dump(Config::checkPW($password,$match));
+var_dump($match);
 ?>
 </pre>
+<?php
+echo Config::country();
+?>
 <div class="dialog"><button>Close</button><div><button>Close</button></div></div>
 </body>
 </html>

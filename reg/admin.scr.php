@@ -14,7 +14,7 @@ if($sess){ //Have already logged in
 }
 
 if(!Config::checkCAPTCHA()){
-	$elem->msg="The CAPTCHA (answer) is wrong. Please try again.";
+	$elem->msg="The CAPTCHA Answer is wrong. Please try again.";
 }elseif(Config::isBlank($_POST,'student_id','password')){
 	$elem->msg="You must fill out Student ID and Password. Do not leave it blank.";
 }else{
@@ -39,7 +39,7 @@ if(!Config::checkCAPTCHA()){
 
 //Controller section
 if(Config::isAjax()){
-	require_once 'class.SKAJax.php';
+	require_once 'class.SKAjax.php';
 	$ajax=new SKAjax();
 	$ajax->addAction(SKAjax::RELOAD_CAPTCHA);
 	$ajax->addHtmlTextVal(SKAjax::SET_HTML,'#msg',$elem->msg);

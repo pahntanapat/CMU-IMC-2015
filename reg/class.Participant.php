@@ -6,7 +6,7 @@ class Participant extends Observer{
 	const ROW_PART_NO='part_no', ROW_EM_CNT='emerg_contact';
 	
 	public $part_no,$emerg_contact;
-	protected $TABLE='participant_info';
+	public $TABLE='participant_info';
 	
 	protected function rowArray($postReg=false){
 		global $config;

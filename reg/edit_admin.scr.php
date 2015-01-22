@@ -26,7 +26,7 @@ if(isset($_POST['del'])){ // Delete Admin
 	if(Config::isBlank($_POST,'student_id','nickname','password')){
 		$elem->msg='Please fill out all forms.';
 	}elseif(!Config::checkPW($_POST['password'],$e)){
-		$elem->msg='Password must contains a - z, A - Z, 0-9, _ (underscore), : (colon), and ; (semicolon) in 6 to 32 letters.';
+		$elem->msg=$e;
 	}else{
 		try{
 			$adm=Config::assocToObjProp($_POST,$adm);

@@ -1,3 +1,13 @@
+<?php
+require_once 'config.inc.php';
+require_once 'class.SesPrt.php';
+
+if(SesPrt::check(false)) Config::redirect('./','You have already logged in');
+
+require_once 'class.Element.php';
+$elem=new Element();
+if(Config::isPost()) require_once 'register.scr.php';
+?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_Main.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -10,6 +20,7 @@
 <script src="js/skajax.js"></script>
 <link rel="stylesheet" href="../imc_main.css">
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/register.js"></script>
 <!-- InstanceEndEditable -->
 </head>
 
@@ -18,7 +29,31 @@
   <li><a href="../index.html" title="Homepage">home</a></li>
   <li><a href="login.php" title="log in">log in</a></li>
   <li><a href="../regist.html" title="registration">registration</a></li></ul></div>
-<div id="content"><!-- InstanceBeginEditable name="Content" -->Content<!-- InstanceEndEditable --></div>
+<div id="content"><!-- InstanceBeginEditable name="Content" -->
+  <?php if(!$elem->result):?>
+  <form action="register.php" method="post" name="reg" id="reg">
+  <div>
+    <label>E-mail<input name="email" type="email" required id="email" value="<?=$elem->val('email')?>" maxlength="127"></label></div>
+  <div>
+    <label>Password<input name="pw" type="password" id="pw" maxlength="32" required></label></div>
+    <div>
+    <label>Comfirm password
+      <input name="cpw" type="password" id="cpw" maxlength="32" required></label></div>
+  <div>
+    <label>Medical school<input name="institution" type="text" required id="institution" value="<?=$elem->val('institution')?>" maxlength="100"></label></div>
+  <div>
+    <label>University<input name="university" type="text" required id="university" value="<?=$elem->val('university')?>" maxlength="100"></label></div>
+  <div>
+    <label>Country<?=Config::country()?></label></div>
+  <div>
+  <? require 'captcha.php'; ?>
+  <div>
+    <input type="submit" name="submit" id="submit" value="register">
+    <input type="reset" name="cancel" id="cancel" value="cancel"></div>
+  </div>
+  </form><? endif;?>
+  <div id="msg"><?=$elem->msg?></div>
+<!-- InstanceEndEditable --></div>
 <div id="footer"><a href="admin.php" title="staff only">staff only</a></div>
 </body>
 <!-- InstanceEnd --></html>

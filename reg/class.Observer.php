@@ -38,7 +38,7 @@ class Observer extends SKeasySQL{
 		$info_state,$post_reg_state,
 		
 		$university, $institution, $country; // for getList
-	protected $TABLE='observer_info';
+	public $TABLE='observer_info';
 	
 	protected function rowArray($postReg=false){
 		if($postReg)

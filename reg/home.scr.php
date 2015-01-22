@@ -14,7 +14,7 @@ elseif(isset($_POST['oldPassword'])){ //Change password
 	}else	if($_POST['password']==$_POST['cfPW']){
 		$elem->msgCP='Confirm password must same new password!';
 	}elseif(!Config::checkPW($_POST['cfPW'],$adm)){
-		$elem->msgCP='Password must contains a - z, A - Z, 0-9, _ (underscore), : (colon), and ; (semicolon) in 6 to 32 letters.';
+		$elem->msgCP=$adm;
 	}else{
 		try{
 			$adm=new Admin($config->PDO());

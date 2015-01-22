@@ -12,24 +12,32 @@ class SesPrt extends Session{
 	public function changeID($force=false){
 		global $config;
 		require_once 'class.Team.php';
-		$t=new Team($config->PDO());
-		if(!$t->auth()) Config::redirect('logout.php','Update authenicated session error, please log in again');
-		
-		$this->id=$t->id;
-		$this->institution=$t->institution;
-		$this->university=$t->university;
-		$this->country=$t->country;
-		$this->teamState=$t->team_state;
-		$this->payState=$t->pay_state;
-		$this->postRegState=$t->post_reg_state;
-		
-		for($i=0;$i<=$config->REG_PARTICIPANT_NUM;$i++){
-			$this->setParticipantInfoState($i,$t->getParticipantInfoState($i));
-			$this->setParticipantPostRegInfoState($i,$t->getParticipantPostRegInfoState($i));
+		if($this->id!=NULL){
+			$t=new Team($config->PDO());
+			$this->id=$t->id;
+			
+			if(!$t->auth()) Config::redirect('logout.php','Update authenicated session error, please log in again');
+			
+			$this->institution=$t->institution;
+			$this->university=$t->university;
+			$this->country=$t->country;
+			$this->teamState=$t->team_state;
+			$this->payState=$t->pay_state;
+			$this->postRegState=$t->post_reg_state;
+			
+			for($i=0;$i<=$config->REG_PARTICIPANT_NUM;$i++){
+				$this->setParticipantInfoState($i,$t->getParticipantInfoState($i));
+				$this->setParticipantPostRegInfoState($i,$t->getParticipantPostRegInfoState($i));
+			}
 		}
 		return parent::changeID($force);
 	}
-	
+	public function setInfoState($s){
+		$this->memberInfoState=$s;
+	}
+	public function setPostRegInfoState($s){
+		$this->memberPostRegState=$s;
+	}
 	public function setParticipantInfoState($i,$state){
 		global $config;
 		if($i>$config->REG_PARTICIPANT_NUM || $i<0) return false;
@@ -89,7 +97,8 @@ class SesPrt extends Session{
 	}
 	
 	public static function check($returnObj=true,$autoWrite=true){
-		return self::checkSession(new self($returnObj&&$autoWrite));
+		$sess=new self($autoWrite&&$returnObj);
+		return $sess->checkSession()?($returnObj?$sess:true):false;
 	}
 }
 ?>

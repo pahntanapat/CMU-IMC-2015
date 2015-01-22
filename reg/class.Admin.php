@@ -8,7 +8,7 @@ class Admin extends SKeasySQL{
 		ROW_PERMISSION='permission';
 		
 	public $student_id, $password, $nickname, $permission;
-	protected $TABLE='admin';
+	public $TABLE='admin';
 	/**
 	  *Check if the given student_id & password of this person is admin
 	  *@Return True if this persion is admin, False if not.
