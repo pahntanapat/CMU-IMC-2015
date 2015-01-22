@@ -28,8 +28,8 @@ class Team extends SKeasySQL{
 		$institution, $university, $address, $country, $phone,
 		$arrive_by, $arrive_time, $depart_by, $depart_time,
 		$route,
-		$team_state, $pay_state, $ticket_state;
-	protected $memberInfoState,$memberPostRegState; // for authenication only
+		$team_state, $pay_state, $post_reg_state;
+	protected $memberInfoState, $memberPostRegState; // for authenication only
 	protected $TABLE='team_info',
 		$rows=array(
 			self::ROW_EMAIL=>':e',
@@ -99,7 +99,7 @@ class Team extends SKeasySQL{
 		return $this->memberInfoState[0];
 	}
 	// Get Participant's or Observer's (if $i=0) Post-Registration-phase Info State after auth()
-	public function getParticipantPostRegInfoState(){
+	public function getParticipantPostRegInfoState($i){
 		global $config;
 		if($i<0 || $i>$config->REG_PARTICIPANT_NUM) return false;
 		return $this->memberPostRegState[$i];
