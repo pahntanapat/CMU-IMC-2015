@@ -37,9 +37,10 @@ if(isset($_GET['act'])) require_once 'config.scr.php';
 <div id="content"><div id="profileBar"><?=$sess->student_id?><br><?=$sess->nickname?>
   <br>  <a href="home.php#editProfile" title="edit profile">Edit profile</a> <a href="home.php#changePassword">Chage password</a> <a href="logout.php?admin" title="Log out">Log out</a>
 </div><div id="adminMenu"><ul><li><a href="home.php" title="Admin dashboard">Main page</a></li>
-  <li>Team's &amp; participants' information</li>
-  <li>Observers' information</li>
+  <li>Edit team's, participants', and Observers' information</li>
+  <li>Information confirmation</li>
   <li>Payment confirmation</li>
+  <li>Post-registration confirmation</li>
   <li>for General Modulator</li>
   <li><a href="config.php" title="System configuration">System configuration</a></li>
   <li><a href="edit_admin.php" title="Edit administrator">Edit administrator</a></li>
@@ -51,43 +52,53 @@ if(isset($_GET['act'])) require_once 'config.scr.php';
       <div id="tabs">
       <ul>
         <li><a href="#sch">Schedule</a></li>
+        <li><a href="#regCf">Register</a></li>
         <li><a href="#db">Database</a></li>
       </ul>
       <div id="sch">
       <div>
         <label for="REG_START_REG">เปิดรับสมัคร: </label>
-        <input type="text" name="REG_START_REG" id="REG_START_REG" value="<?=$config->REG_START_REG?>">
+        <input type="text" name="REG_START_REG" id="REG_START_REG" value="<?=$config->REG_START_REG?>" required>
       </div>
       <div>
         <label for="REG_END_REG">ปิดรับสมัคร: </label>
-        <input type="text" name="REG_END_REG" id="REG_END_REG"  value="<?=$config->REG_END_REG?>">
+        <input type="text" name="REG_END_REG" id="REG_END_REG"  value="<?=$config->REG_END_REG?>" required>
       </div>
       <div>
         <label for="REG_START_PAY">เริ่มจ่ายเงิน: </label>
-        <input type="text" name="REG_START_PAY" id="REG_START_PAY" value="<?=$config->REG_START_PAY?>">
+        <input type="text" name="REG_START_PAY" id="REG_START_PAY" value="<?=$config->REG_START_PAY?>" required>
       </div>
       <div>
-        <label for="END_PAY">หมดเขตจ่ายเงิน: </label>
-        <input type="text" name="END_PAY" id="END_PAY"  value="<?=$config->REG_END_PAY?>">
+        <label for="REG_END_PAY">หมดเขตจ่ายเงิน: </label>
+        <input type="text" name="REG_END_PAY" id="REG_END_PAY"  value="<?=$config->REG_END_PAY?>" required>
+      </div><div>
+        <label for="REG_END_PAY">หมดเขตแก้ไขข้อมูลเพิ่มเติม: </label>
+        <input type="text" name="REG_END_INFO" id="REG_END_INFO" value="<?=$config->REG_END_INFO?>" required></div>
+      </div><div id="regCf">
+      <div>
+        <label for="REG_PARTICIPANT_NUM">จำนวนผู้แข่งขันต่อทีม: </label>
+        <input type="number" step="1" min="0" max="255" name="REG_PARTICIPANT_NUM" id="REG_PARTICIPANT_NUM" value="<?=$config->REG_PARTICIPANT_NUM?>" required>
       </div>
       <div>
-        <label for="REG_END_PAY">ประกาศทีม: </label>
-        <input type="text" name="REG_END_PAY" id="REG_END_PAY" value="<?=$config->REG_END_PAY?>">
-      </div>
-      </div><div id="db">
+      <label for="REG_MAX_TEAM">จำนวนทีมสูงสุด: </label>
+        <input type="number" step="1" min="0" name="REG_MAX_TEAM" id="REG_MAX_TEAM" value="<?=$config->REG_MAX_TEAM?>" required></div><div>
+        <label for="REG_PAY_PER_PART_US">ค่าสมัครต่อคน (USD): $</label>
+        <input type="number" step="0.01" min="0" name="REG_PAY_PER_PART_US" id="REG_PAY_PER_PART_US" value="<?=$config->REG_PAY_PER_PART_US?>" required></div><div>
+        <label for="REG_PAY_PER_PART_TH">ค่าสมัครต่อคน (THB): ฿</label>
+        <input type="number" min="0" step="0.01" name="REG_PAY_PER_PART_TH" id="REG_PAY_PER_PART_TH" value="<?=$config->REG_PAY_PER_PART_TH?>" required></div></div><div id="db">
       <div>
         <label for="DB_HOST">DB Host: </label>
-        <input type="text" name="DB_HOST" id="DB_HOST" value="<?=$config->DB_HOST?>">
+        <input type="text" name="DB_HOST" id="DB_HOST" value="<?=$config->DB_HOST?>" required>
       </div>
       <div>
         <label for="DB_NAME">Database: </label>
-        <input type="text" name="DB_NAME" id="DB_NAME"  value="<?=$config->DB_NAME?>">
+        <input type="text" name="DB_NAME" id="DB_NAME"  value="<?=$config->DB_NAME?>" required>
       </div>
       <div>
         <label for="DB_USERNAME">Username: </label>
-        <input type="text" name="DB_USERNAME" id="DB_USERNAME"  value="<?=$config->DB_USER?>"></div>
+        <input type="text" name="DB_USERNAME" id="DB_USERNAME"  value="<?=$config->DB_USER?>" required></div>
       <div><label for="DB_PW">Password: </label>
-        <input type="text" name="DB_PW" id="DB_PW" value="<?=$config->DB_PW?>"></div>
+        <input type="text" name="DB_PW" id="DB_PW" value="<?=$config->DB_PW?>" required></div>
       </div></div>
       <div class="btnset"><button type="submit">บันทึก</button><button type="submit">ยกเลิก</button>
         <a href="config.php?act=reset" title="reset" class="reset">Reset

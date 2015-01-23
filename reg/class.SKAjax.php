@@ -96,8 +96,9 @@ class SKAjax{
 	
 	public static function getOption($arr,$key=0){
 		if(is_array($arr)){
-			if(isset($arr[$key])) return $arr[$key];
-			else return $arr[0];
+			if(array_key_exists($key,$arr)) return $arr[$key];
+			elseif(array_key_exists(0,$arr)) return $arr[0];
+			else return current($arr);
 		}elseif(is_object($arr)){
 			if(isset($arr->{$key})) return $arr->{$key};
 			else return $arr->__toString();

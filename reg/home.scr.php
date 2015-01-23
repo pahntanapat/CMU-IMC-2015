@@ -11,10 +11,10 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 elseif(isset($_POST['oldPassword'])){ //Change password
 	if(Config::isBlank($_POST,'password','cfPW','oldPassword')){
 		$elem->msgCP='Password must not leave blank.';
-	}else	if($_POST['password']==$_POST['cfPW']){
+	}else	if($_POST['password']!=$_POST['cfPW']){
 		$elem->msgCP='Confirm password must same new password!';
 	}elseif(!Config::checkPW($_POST['cfPW'],$adm)){
-		$elem->msgCP='Password must contains a - z, A - Z, 0-9, _ (underscore), : (colon), and ; (semicolon) in 6 to 32 letters.';
+		$elem->msgCP=$adm;
 	}else{
 		try{
 			$adm=new Admin($config->PDO());
@@ -54,7 +54,7 @@ elseif(isset($_POST['oldPassword'])){ //Change password
 if(Config::isAjax()){
 	require_once 'class.SKAjax.php';
 	$json=new SKAjax();
-	$json->addHtmlTextVal(SKAjax::SET_HTML,(isset($elem->msgCP)?'msgCP':'msgEP'),(isset($elem->msgCP)?$elem->msgCP:$elem->msgEP));
+	$json->addHtmlTextVal(SKAjax::SET_HTML,'#'.(isset($elem->msgCP)?'msgCP':'msgEP'),(isset($elem->msgCP)?$elem->msgCP:$elem->msgEP));
 	$json->addHtmlTextVal(SKAjax::SET_VAL,':password','');
 	Config::JSON($json,true);
 }

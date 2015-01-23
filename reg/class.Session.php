@@ -30,7 +30,7 @@ abstract class Session{
 	public function write(){
 		$this->sid=session_id();
 		$this->time=time();
-		$_SESSION[self::SESSION_NAME]=get_object_vars($this);
+		$_SESSION[$this->SESSION_NAME]=get_object_vars($this);
 		return $this;
 	}
 	
