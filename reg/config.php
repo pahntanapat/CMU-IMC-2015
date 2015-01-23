@@ -37,9 +37,10 @@ if(isset($_GET['act'])) require_once 'config.scr.php';
 <div id="content"><div id="profileBar"><?=$sess->student_id?><br><?=$sess->nickname?>
   <br>  <a href="home.php#editProfile" title="edit profile">Edit profile</a> <a href="home.php#changePassword">Chage password</a> <a href="logout.php?admin" title="Log out">Log out</a>
 </div><div id="adminMenu"><ul><li><a href="home.php" title="Admin dashboard">Main page</a></li>
-  <li>Team's &amp; participants' information</li>
-  <li>Observers' information</li>
+  <li>Edit team's, participants', and Observers' information</li>
+  <li>Information confirmation</li>
   <li>Payment confirmation</li>
+  <li>Post-registration confirmation</li>
   <li>for General Modulator</li>
   <li><a href="config.php" title="System configuration">System configuration</a></li>
   <li><a href="edit_admin.php" title="Edit administrator">Edit administrator</a></li>

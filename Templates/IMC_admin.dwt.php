@@ -30,9 +30,10 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 <div id="content"><!-- InstanceBeginEditable name="Content" --><div id="profileBar"><?=$sess->student_id?><br><?=$sess->nickname?>
   <br>  <a href="../reg/home.php#editProfile" title="edit profile">Edit profile</a> <a href="../reg/home.php#changePassword">Chage password</a> <a href="../reg/logout.php?admin" title="Log out">Log out</a>
 </div><div id="adminMenu"><ul><li><a href="../reg/home.php" title="Admin dashboard">Main page</a></li>
-  <li>Team's &amp; participants' information</li>
-  <li>Observers' information</li>
+  <li>Edit team's, participants', and Observers' information</li>
+  <li>Information confirmation</li>
   <li>Payment confirmation</li>
+  <li>Post-registration confirmation</li>
   <li>for General Modulator</li>
   <li><a href="../reg/config.php" title="System configuration">System configuration</a></li>
   <li><a href="../reg/edit_admin.php" title="Edit administrator">Edit administrator</a></li>

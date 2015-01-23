@@ -74,18 +74,19 @@ class Team extends SKeasySQL{
 	}
 	// convert PDOStatement to $this
 	private function prepareSession(PDOStatement $stm){
+		require_once 'class.State.php';
 		if($stm->rowCount()<=0) return false;
 		$i=0;
 		while($row=$stm->fetch(PDO::FETCH_OBJ)){
 			$i++;
 			if($i==1){
-				foreach($this as $k=>$v)
-					if(isset($this->$k)) $this->$k=$v;
-				$this->memberInfoState[0]=$row->obsv_info;
-				$this->memberPostRegState[0]=$row->obsv_prs;
+				foreach($row as $k=>$v)
+					if(property_exists($this,$k)) $this->$k=$v;
+				$this->memberInfoState[0]=($row->obsv_info===NULL?State::ST_EDITABLE:$row->obsv_info);
+				$this->memberPostRegState[0]=($row->obsv_prs===NULL?State::ST_LOCKED:$row->obsv_prs);
 			}
-			$this->memberInfoState[$i]=$row->part_info;
-			$this->memberPostRegState[$i]=$row->part_prs;
+			$this->memberInfoState[$i]=($row->part_info===NULL?State::ST_EDITABLE:$row->part_info);
+			$this->memberPostRegState[$i]=($row->part_prs===NULL?State::ST_LOCKED:$row->part_prs);
 		}
 		return true;
 	}

@@ -32,18 +32,7 @@ class Config extends MyConfig{
 		return $dbh;
 	}
 	
-	
-	//Miscellenous function
-	/**
-	  *public static function assocToObjProp($assoc,$obj)
-	  *@return Object whose properties is set to be array items.
-	  *
-	  */
-	public static function assocToObjProp($assoc,$obj){
-		foreach($obj as $k=>$v)
-			$obj->$k=isset($assoc[$k])?$assoc[$k]:$v;
-		return $obj;
-	}
+	// Form processing
 	/**
 	  *public static function isBlank(mixed Array, mixed index1, mixed index2, ...)
 	  *@return true if there is not any arguments.
@@ -61,13 +50,44 @@ class Config extends MyConfig{
 				return false;
 		}
 	}
+	public static function checkCAPTCHA(){
+		if(!isset($_POST['captcha'])) return false;
+		require_once('securimage/securimage.php');
+		$cp=new Securimage();
+		return ($cp->check($_POST['captcha']));
+	}
+	public static function checkPW($password,&$match){
+		if(preg_match_all('/^[[:alnum:]_:;]{6,32}$/',$password,$match)==0){
+			$match='Password must contains a - z, A - Z, 0-9, _ (underscore), : (colon), and ; (semicolon) in 6 to 32 letters.';
+			return false;
+		}else return true;
+	}
+	public static function checkEmail($email, &$msg){
+		if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+			$msg='The pattern of your email is wrong.';
+			return false;
+		}else return true;
+	}
 	
+	/**
+	  *public static function assocToObjProp($assoc,$obj)
+	  *@return Object whose properties is set to be array items.
+	  *
+	  */
+	public static function assocToObjProp($assoc,$obj){
+		foreach($obj as $k=>$v)
+			$obj->$k=isset($assoc[$k])?$assoc[$k]:$v;
+		return $obj;
+	}
+	
+	// Protocol method & export data
 	public static function isAjax(){ //Check the request if it is from AJAX.
 		return isset($_GET['ajax']);
 	}
 	public static function isPost(){ //Check the request if its method is post.
 		return isset($_POST)?count($_POST)>0:false;
 	}
+	
 	public static function redirect($url='/',$exitMsg=false){ //Redirect to $url with/without exit message & AJAX request
 		if(self::isAjax()){
 			require_once 'class.SKAjax.php';
@@ -80,12 +100,6 @@ class Config extends MyConfig{
 			if($exitMsg!==false) exit($exitMsg);
 		}
 	}
-	public static function checkCAPTCHA(){
-		if(!isset($_POST['captcha'])) return false;
-		require_once('securimage/securimage.php');
-		$cp=new Securimage();
-		return ($cp->check($_POST['captcha']));
-	}
 	
 	public static function JSON($json=false,$exit=false){
 		header("Content-type: text/json;charset=utf-8");
@@ -97,24 +111,29 @@ class Config extends MyConfig{
 		header("Content-type: text/html;charset=utf-8");
 	}
 	
-	public static function checkPW($password,&$match){
-		if(preg_match_all('/^[[:alnum:]_:;]{6,32}$/',$password,$match)==0){
-			$match='Password must contains a - z, A - Z, 0-9, _ (underscore), : (colon), and ; (semicolon) in 6 to 32 letters.';
-			return false;
-		}else return true;
-	}
-	
-	public static function checkEmail($email, &$msg){
-		if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-			$msg='The pattern of your email is wrong.';
-			return false;
-		}else return true;
-	}
-	
 	public static function e(Exception $e){
 		return "<pre>$e</pre>";
 	}
 	
+	
+	//Miscellenous function
+	public static function ordinal($num,$supScript=true){
+		$sup='th';
+		if(!($num>=11 && $num<=13)){
+			switch($num%10){
+				case 1:
+					$sup='st';
+					break;
+				case 2:
+					$sup='nd';
+					break;
+				case 3:
+					$sup='rd';
+					break;
+			}
+		}
+		return $num.($supScript?"<sup>".$sup."</sup>":$sup);
+	}
 	public static function country(){
 		if(func_num_args()>0) $c=func_get_arg(0);
 		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['country'];

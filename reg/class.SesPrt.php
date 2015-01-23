@@ -5,30 +5,34 @@ class SesPrt extends Session{
 	protected $SESSION_NAME=__CLASS__;
 	public $id,
 		$institution, $university, $country,
-		$teamState, $payState, $postRegState;
+		$teamState, $payState, $postRegState,
+		$cfInfoState, $cfPostRegState;
 		
-	private $memberInfoState=array(), $memberPostRegState=array(); // Status of Infomation of Members
+	protected $memberInfoState=array(), $memberPostRegState=array(), $progress=0; // Status of Infomation of Members
 
 	public function changeID($force=false){
 		global $config;
-		require_once 'class.Team.php';
-		if($this->id!=NULL){
-			$t=new Team($config->PDO());
-			$this->id=$t->id;
-			
-			if(!$t->auth()) Config::redirect('logout.php','Update authenicated session error, please log in again');
-			
-			$this->institution=$t->institution;
-			$this->university=$t->university;
-			$this->country=$t->country;
-			$this->teamState=$t->team_state;
-			$this->payState=$t->pay_state;
-			$this->postRegState=$t->post_reg_state;
-			
-			for($i=0;$i<=$config->REG_PARTICIPANT_NUM;$i++){
-				$this->setParticipantInfoState($i,$t->getParticipantInfoState($i));
-				$this->setParticipantPostRegInfoState($i,$t->getParticipantPostRegInfoState($i));
+		if($this->checkSession() && ($force||($this->time+self::ID_EXP<time()))){
+			require_once 'class.Team.php';
+			if($this->id!=NULL){
+				$t=new Team($config->PDO());
+				$this->id=$t->id;
+				
+				if(!$t->auth()) Config::redirect('logout.php','Update authenicated session error, please log in again');
+				
+				$this->institution=$t->institution;
+				$this->university=$t->university;
+				$this->country=$t->country;
+				$this->teamState=$t->team_state;
+				$this->payState=$t->pay_state;
+				$this->postRegState=$t->post_reg_state;
+				
+				for($i=0;$i<=$config->REG_PARTICIPANT_NUM;$i++){
+					$this->setParticipantInfoState($i,$t->getParticipantInfoState($i));
+					$this->setParticipantPostRegInfoState($i,$t->getParticipantPostRegInfoState($i));
+				}
 			}
+			$this->setProgression();
 		}
 		return parent::changeID($force);
 	}
@@ -48,7 +52,7 @@ class SesPrt extends Session{
 	public function getParticipantInfoState($i){
 		global $config;
 		if($i>$config->REG_PARTICIPANT_NUM || $i<0) return false;
-		return $this->memberInfoState[$i];
+		return isset($this->memberInfoState[$i])?$this->memberInfoState[$i]:$this->memberInfoState[1];
 	}
 	
 	public function setObserverInfoState($state){
@@ -69,7 +73,7 @@ class SesPrt extends Session{
 	public function getParticipantPostRegInfoState($i){
 		global $config;
 		if($i>$config->REG_PARTICIPANT_NUM || $i<0) return false;
-		return $this->memberPostRegState[$i];
+		return isset($this->memberPostRegState[$i])?$this->memberPostRegState[$i]:$this->memberPostRegState[1];
 	}
 	
 	public function setObserverPostRegInfoState($state){
@@ -80,16 +84,27 @@ class SesPrt extends Session{
 		return $this->getParticipantPostRegInfoState(0);
 	}
 	
-	public function getProgression(){
+	public function setProgression(){
 		global $config;
 		require_once 'class.State.php';
+		$this->cfInfoState=State::ST_EDITABLE|State::ST_B_PASS|State::ST_CONFIRM;
+		$this->cfPostRegState=State::ST_EDITABLE|State::ST_B_PASS|State::ST_CONFIRM;
+		
 		$score=$this->payState + $this->postRegState + $this->teamState;
 		$full=State::ST_PASS+State::ST_OK+State::ST_PASS;
-		for($i=0;$i<=$config->REG_PARTICIPANT_NUM;$i++){
+		
+		for($i=0;$i<=$config->REG_PARTICIPANT_NUM && $i<count($this->memberInfoState) && $i<count($this->memberPostRegState);$i++){
 			$score+=$this->memberInfoState[$i]+$this->memberPostRegState[$i];
 			$full+=State::ST_PASS+State::ST_OK;
+			
+			$this->cfInfoState&=$this->memberInfoState[$i];
+			$this->cfPostRegState&=$this->memberPostRegState[$i];
 		}
-		return $score/$full;
+		$this->progress=$score/$full;
+		if($this->cfInfoState==State::ST_LOCKED) $this->cfInfoState=State::ST_PASS;
+	}
+	public function getProgression(){
+		return $this->progress;
 	}
 	
 	public function checkSession(){

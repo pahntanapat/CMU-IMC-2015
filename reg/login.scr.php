@@ -32,8 +32,10 @@ if(Config::isPost()){
 			
 			$sess->setInfoState($t->getInfoState());
 			$sess->setPostRegInfoState($t->getPostRegInfoState());
+			$sess->setProgression();
+			$sess->write();
 			
-			$elem->msg='Log in success. You are redirected to main page.';
+			$elem->msg='Log in success. You are redirected to main page.'."<pre>".var_export(SesPrt::check(),true)."</pre>";
 			$elem->result=true;
 		}else{
 			$elem->msg='Log in fail, there is not email or password in database.';

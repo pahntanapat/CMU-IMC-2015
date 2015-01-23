@@ -24,14 +24,7 @@ $(function(e){
 <body>
 <pre>
 <?php
-$password='';
-var_dump($password);
-
-var_dump(preg_match_all('/^[[:alnum:]_:;]{6,32}$/',$password,$match));
-var_dump($match);
-
-var_dump(Config::checkPW($password,$match));
-var_dump($match);
+var_dump(15&7,13|2,~-1,true,15&true,false-true);
 ?>
 </pre>
 <?php
