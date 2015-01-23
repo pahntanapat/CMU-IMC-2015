@@ -7,9 +7,10 @@ if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
 require_once 'class.Element.php';
 $elem=new Element();
-if(Config::isPost()||Config::isAjax()) require_once 'index.scr.php';
 
 require_once 'class.Message.php';
+require_once 'index.scr.php';
+
 require_once 'class.State.php';
 ?>
 <!doctype html>
@@ -25,6 +26,7 @@ require_once 'class.State.php';
 <link rel="stylesheet" href="../imc_main.css">
 
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/change_pw.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -57,20 +59,20 @@ require_once 'class.State.php';
   <li><a href="index.php#changePW">Change password</a></li>
   <li><a href="logout.php" title="Log out">Log out</a></li>
 </ul>
-</div><div id="regContent"><!-- InstanceBeginEditable name="reg_content" --><div>msg</div><div>
-  <form action="index.php" method="post" name="changePW" id="changePW"> <fieldset>
+</div><div id="regContent"><!-- InstanceBeginEditable name="reg_content" --><div id="msg"><?=$elem->msg?></div><div>
+  <form action="index.php" method="post" name="changePassword" id="changePassword" data-action="index.scr.php"> <fieldset>
       <legend>Change password</legend>
       <div>
         <label for="oldPassword">old password</label>
-        <input type="text" name="oldPassword" id="oldPassword">
+        <input type="password" name="oldPassword" id="oldPassword">
       </div>
       <div>
         <label for="pw">new password</label>
-        <input type="text" name="pw" id="pw">
+        <input type="password" name="pw" id="pw">
       </div>
       <div>
         <label for="cfPW">confirm password</label>
-        <input type="text" name="cfPW" id="cfPW">
+        <input type="password" name="cfPW" id="cfPW">
       </div>
       <div>
        <input name="savePW" type="submit" id="savePW" value="Save">

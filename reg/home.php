@@ -22,6 +22,7 @@ if(Config::isPost()) require_once 'home.scr.php';
 <link rel="stylesheet" href="../imc_main.css">
 
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/change_pw.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -44,7 +45,7 @@ if(Config::isPost()) require_once 'home.scr.php';
 </ul>
 </div><div id="adminContent"><!-- InstanceBeginEditable name="adminContent" -->
 <div><?=SesAdm::checkbox($sess->pms)?></div>
-  <form action="home.php" method="post" name="editProfile" id="editProfile">
+  <form action="home.php" method="post" name="editProfile" id="editProfile" data-action="home.scr.php">
     <fieldset>
       <legend>Edit profile</legend>
      <div>
@@ -63,20 +64,20 @@ if(Config::isPost()) require_once 'home.scr.php';
     <div id="msgEP"><?=$elem->msgEP?></div>
       </form>
 
-  <form action="home.php" method="post" name="changePassword" id="changePassword">
+  <form action="home.php" method="post" name="changePassword" id="changePassword" data-action="home.scr.php">
     <fieldset>
       <legend>Change password</legend>
       <div>
         <label for="oldPassword">old password</label>
-        <input type="text" name="oldPassword" id="oldPassword">
+        <input type="password" name="oldPassword" id="oldPassword">
       </div>
       <div>
         <label for="password">new password</label>
-        <input type="text" name="password" id="password">
+        <input type="password" name="password" id="password">
       </div>
       <div>
         <label for="cfPW">confirm password</label>
-        <input type="text" name="cfPW" id="cfPW">
+        <input type="password" name="cfPW" id="cfPW">
       </div>
       <div>
        <input name="savePW" type="submit" id="savePW" value="Save">
