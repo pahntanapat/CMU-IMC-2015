@@ -14,3 +14,15 @@ a:hover, a:active{
 	margin:0.5em;
 }
 
+label.require::after{
+	content:"*";
+	color:#F00;
+}
+
+fieldset.require::after{
+	content:"* = required field";
+	color:#F00;
+	font-style:italic;
+	font-size:small;
+}
+

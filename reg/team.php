@@ -2,16 +2,21 @@
 require_once 'config.inc.php';
 require_once 'class.SesPrt.php';
 
-$s=SesPrt::check();
+$s=SesPrt::check(true,true);
 if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
 require_once 'class.Element.php';
 $elem=new Element();
+if(Config::isPost()||Config::isAjax()) require_once 'team.scr.php';
 
 require_once 'class.Message.php';
-require_once 'index.scr.php';
-
 require_once 'class.State.php';
+require_once 'class.Team.php';
+
+$db=$config->PDO();
+$t=new Team($db);
+$t->id=$s->id;
+if(!Config::isPost()) $t->load();
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -27,7 +32,7 @@ require_once 'class.State.php';
 
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
-<script src="js/change_pw.js"></script>
+<script src="js/save.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -67,28 +72,55 @@ require_once 'class.State.php';
   <li><a href="index.php#changePW">Change password</a></li>
   <li><a href="logout.php" title="Log out">Log out</a></li>
 </ul>
-</div><div id="regContent"><!-- InstanceBeginEditable name="reg_content" --><div id="msg"><?=$elem->msg?></div><div>
-  <form action="index.php" method="post" name="changePassword" id="changePassword" data-action="index.scr.php"> <fieldset>
-      <legend>Change password</legend>
-      <div>
-        <label for="oldPassword">old password</label>
-        <input type="password" name="oldPassword" id="oldPassword">
-      </div>
-      <div>
-        <label for="pw">new password</label>
-        <input type="password" name="pw" id="pw">
-      </div>
-      <div>
-        <label for="cfPW">confirm password</label>
-        <input type="password" name="cfPW" id="cfPW">
-      </div>
-      <div>
-       <input name="savePW" type="submit" id="savePW" value="Save">
-     <input type="reset" name="resetPW" id="resetPW" value="Reset"></div>
-    </fieldset>
-    <div id="msgCP"><?=$elem->msgCP?></div>
-  </form>
-</div><!-- InstanceEndEditable --></div></div>
+</div><div id="regContent"><!-- InstanceBeginEditable name="reg_content" -->
+<p>Team &amp; Institution information</p>
+<div id="teamMsg"><?php
+$msg=new Message($db);
+$msg->team_id=$s->id;
+$msg->load(Message::PAGE_INFO_TEAM);
+echo Message::msg($msg);
+unset($msg);
+?></div>
+<form action="team.php" method="post" id="form" data-abide data-action="team.scr.php?updateInfo">
+<fieldset class="require">
+  <legend>Team's information</legend>
+  <div>
+  <label class="require">Email for overall contact
+    <input name="email" type="email" required id="email" value="<?=$elem->val('email',$t->email)?>">
+  </label>
+</div>
+<div>
+  <label class="require">Team's name
+    <input name="team_name" type="text" required id="team_name" value="<?=$elem->val('team_name',$t->team_name)?>" maxlength="40">
+  </label>
+</div>
+<div>
+  <label class="require">Institution
+    <input name="institution" type="text" id="institution" value="<?=$elem->val('institution',$t->institution)?>" required>
+  </label>
+</div><div>
+  <label class="require">University
+    <input name="university" type="text" id="university" value="<?=$elem->val('university',$t->university)?>" required>
+  </label>
+</div><div>
+  <label class="require">Address
+    <textarea name="address" id="address"><?=$elem->val('address',$t->address)?></textarea>
+  </label>
+</div><div>
+  <label class="require">Country
+    <?=Config::country($elem->val('country',$t->country))?>
+  </label>
+</div><div>
+  <label class="require">Institution's telephone number
+    <input name="phone" type="phone" id="phone" value="<?=$elem->val('phone',$t->phone)?>" placeholder="(with country code) +XXxxxxxx">
+  </label>
+</div><div>
+  <input type="submit" name="save" id="save" value="save">
+  <input type="reset" name="cancel" id="button" value="cancel">
+</div></fieldset>
+</form>
+<div id="msg"><?=$elem->msg?></div>
+<!-- InstanceEndEditable --></div></div>
 <div id="footer"><a href="admin.php" title="staff only">staff only</a></div>
 </body>
 <!-- InstanceEnd --></html>

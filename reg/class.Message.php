@@ -67,7 +67,7 @@ class Message extends SKeasySQL{
 		if($page) $stm->bindValue(2,$this->show_page,PDO::PARAM_INT);
 		$stm->execute();
 		$re=$stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
-		return $page?$re[0]:$re;
+		return $page?(isset($re[0])?$re[0]:new self($this->db)):$re;
 	}
 	
 	public function __toString(){
@@ -93,7 +93,8 @@ class Message extends SKeasySQL{
 		return ob_get_clean();
 	}
 	
-	public static function msg(self $msg){
+	public static function msg(self $i){
+		if($i->id<0||$i->id==NULL) return NULL;
 		ob_start();
 		?><div id="<?=$i->id?>"><p><?=$i->title?></p><p><?=$i->detail?></p><p><?=$i->time?></p></div><?php
 		return ob_get_clean();

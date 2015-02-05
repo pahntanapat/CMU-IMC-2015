@@ -21,6 +21,7 @@ if(Config::isPost()){
 		$t=Config::assocToObjProp($_POST,new Team($config->PDO()));
 		if($t->auth(true)){
 			$sess->id=$t->id;
+			$sess->teamName=$t->team_name;
 			
 			$sess->country=$t->country;
 			$sess->institution=$t->institution;

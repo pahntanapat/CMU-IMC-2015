@@ -24,6 +24,7 @@ require_once 'class.State.php';
 <script src="../reg/js/skajax.js"></script>
 <link rel="stylesheet" href="../css/imc_main.css">
 <!-- InstanceBeginEditable name="head" -->
+<link href="../reg/class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- TemplateBeginEditable name="head" -->
 <!-- TemplateEndEditable -->
 <!-- InstanceEndEditable -->
@@ -34,23 +35,30 @@ require_once 'class.State.php';
   <li><a href="../index.html" title="Homepage">home</a></li>
   <li><a href="../reg/login.php" title="log in">log in</a></li>
   <li><a href="../regist.html" title="registration">registration</a></li></ul></div>
-<div id="content"><!-- InstanceBeginEditable name="Content" --><div id="sidemenu"><div id="progression">Progress: <?=$s->getProgression()?></div>
+<div id="content"><!-- InstanceBeginEditable name="Content" --><div id="sidemenu">
+  <div>Team's name: <?=$s->teamName?><br>
+    Institution: <?=$s->institution?><br>
+    University: <?=$s->university?><br>
+    Country: <?=$s->country?>
+  </div>
+<div id="progression">Progress: <?=$s->getProgression()?></div>
 <ol>
-  <li><?=State::img($s->teamState)?> Team &amp; Institution information</li>
-  <li><?=State::img($s->getObserverInfoState())?> Professor's infomation</li>
+  <li class="<?=State::toClass($s->teamState)?>"><?=State::img($s->teamState)?> 
+    <a href="../reg/team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
+  <li class="<?=State::toClass($s->getObserverInfoState())?>"><?=State::img($s->getObserverInfoState())?> Professor's infomation</li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li><?=State::img($s->getParticipantInfoState($i))?> <?=Config::ordinal($i)?> participant's infomation</li>
+  <li class="<?=State::toClass($s->getParticipantInfoState($i))?>"><?=State::img($s->getParticipantInfoState($i))?> <?=Config::ordinal($i)?> participant's infomation</li>
   <? endfor;?>
-  <li><?=State::img($s->cfInfoState)?> Confirmation of Application Form</li>
-  <li><?=State::img($s->payState)?> Upload Transaction</li>
-  <li><?=State::img($s->getObserverPostRegInfoState())?> Update professor's shirt size &amp; passport</li>
+  <li class="<?=State::toClass($s->cfInfoState)?>"><?=State::img($s->cfInfoState)?> Confirmation of Application Form</li>
+  <li class="<?=State::toClass($s->payState)?>"><?=State::img($s->payState)?> Upload Transaction</li>
+  <li class="<?=State::toClass($s->getObserverPostRegInfoState())?>"><?=State::img($s->getObserverPostRegInfoState())?> Update professor's shirt size &amp; passport</li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li><?=State::img($s->getParticipantPostRegInfoState($i))?> Update
+  <li class="<?=State::toClass($s->getParticipantPostRegInfoState($i))?>"><?=State::img($s->getParticipantPostRegInfoState($i))?> Update
 <?=Config::ordinal($i)?>
     participant's shirt size &amp; passport</li>
   <? endfor;?>
-  <li><?=State::img($s->postRegState)?> Select route &amp; upload team's picture &amp; update arrival time</li>
-  <li><?=State::img($s->cfPostRegState)?> Confirmation of journey</li>
+  <li class="<?=State::toClass($s->postRegState)?>"><?=State::img($s->postRegState)?> Select route &amp; upload team's picture &amp; update arrival time</li>
+  <li class="<?=State::toClass($s->cfPostRegState)?>"><?=State::img($s->cfPostRegState)?> Confirmation of journey</li>
 </ol>
 <ul>
   <li><a href="../reg/index.php" title="Main page">Main page</a></li>

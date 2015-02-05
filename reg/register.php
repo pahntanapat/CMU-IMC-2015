@@ -39,6 +39,9 @@ if(Config::isPost()) require_once 'register.scr.php';
     <div>
     <label>Comfirm password
       <input name="cpw" type="password" id="cpw" maxlength="32" required></label></div>
+      <div>
+    <label>Team's name
+      <input name="team_name" type="text" required id="team_name" value="<?=$elem->val('team_name')?>" maxlength="100"></label></div>
   <div>
     <label>Medical school<input name="institution" type="text" required id="institution" value="<?=$elem->val('institution')?>" maxlength="100"></label></div>
   <div>

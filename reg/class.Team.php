@@ -6,6 +6,7 @@ class Team extends SKeasySQL{
 		ROW_EMAIL='email',
 		ROW_PW='password',
 		
+		ROW_TEAM_NAME='team_name',
 		ROW_INSTITUTION='institution',
 		ROW_UNIVERSITY='university',
 		ROW_ADDRESS='address',
@@ -25,6 +26,7 @@ class Team extends SKeasySQL{
 		;
 	
 	public $email, $pw,
+		$team_name,
 		$institution, $university, $address, $country, $phone,
 		$arrive_by, $arrive_time, $depart_by, $depart_time,
 		$route,
@@ -35,6 +37,7 @@ class Team extends SKeasySQL{
 			self::ROW_EMAIL=>':e',
 			self::ROW_PW=>':pw',
 			
+			self::ROW_TEAM_NAME=>':tmn',
 			self::ROW_INSTITUTION=>':in',
 			self::ROW_UNIVERSITY=>':u',
 			self::ROW_COUNTRY=>':c',
@@ -58,6 +61,7 @@ class Team extends SKeasySQL{
 		$tmp=array(new Observer(NULL),new Participant(NULL));
 		$rows=array(
 			$this->TABLE.'.'.self::ROW_ID=>self::ROW_ID,
+			$this->TABLE.'.'.self::ROW_TEAM_NAME=>self::ROW_TEAM_NAME,
 			$this->TABLE.'.'.self::ROW_INSTITUTION=>self::ROW_INSTITUTION,
 			$this->TABLE.'.'.self::ROW_UNIVERSITY=>self::ROW_UNIVERSITY,
 			$this->TABLE.'.'.self::ROW_COUNTRY=>self::ROW_COUNTRY,
@@ -171,7 +175,7 @@ class Team extends SKeasySQL{
 	public function add(){
 //		$this->db=new PDO();
 		$row=$this->rowArray(false,false,array(
-			self::ROW_EMAIL,self::ROW_PW,
+			self::ROW_EMAIL,self::ROW_PW,self::ROW_TEAM_NAME,
 			self::ROW_INSTITUTION,self::ROW_UNIVERSITY,self::ROW_COUNTRY
 		));
 		
