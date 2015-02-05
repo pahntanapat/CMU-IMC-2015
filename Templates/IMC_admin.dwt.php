@@ -12,10 +12,10 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
-<script src="../jquery-1.11.2.min.js"></script>
-<script src="../jquery-migrate-1.2.1.min.js"></script>
+<script src="../js/jquery-1.11.2.min.js"></script>
+<script src="../js/jquery-migrate-1.2.1.min.js"></script>
 <script src="../reg/js/skajax.js"></script>
-<link rel="stylesheet" href="../imc_main.css">
+<link rel="stylesheet" href="../css/imc_main.css">
 <!-- InstanceBeginEditable name="head" -->
 <!-- TemplateBeginEditable name="head" -->
 <!-- TemplateEndEditable -->

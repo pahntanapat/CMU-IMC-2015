@@ -15,10 +15,10 @@ if(Config::isPost()) require_once 'login.scr.php';
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Log in :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
-<script src="../jquery-1.11.2.min.js"></script>
-<script src="../jquery-migrate-1.2.1.min.js"></script>
+<script src="../js/jquery-1.11.2.min.js"></script>
+<script src="../js/jquery-migrate-1.2.1.min.js"></script>
 <script src="js/skajax.js"></script>
-<link rel="stylesheet" href="../imc_main.css">
+<link rel="stylesheet" href="../css/imc_main.css">
 <!-- InstanceBeginEditable name="head" -->
 <script src="js/login.js"></script>
 <!-- InstanceEndEditable -->

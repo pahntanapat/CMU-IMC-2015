@@ -11,8 +11,8 @@ require_once 'class.SesAdm.php';
 <meta charset="utf-8">
 <title>Test</title>
 <link rel="stylesheet" href="css/ui.css">
-<script src="../jquery-1.11.2.min.js"></script>
-<script src="../jquery-migrate-1.2.1.min.js"></script>
+<script src="../js/jquery-1.11.2.min.js"></script>
+<script src="../js/jquery-migrate-1.2.1.min.js"></script>
 <script src="js/skajax.js"></script>
 <script>
 $(function(e){
