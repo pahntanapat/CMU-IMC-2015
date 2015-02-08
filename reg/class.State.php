@@ -34,7 +34,7 @@ class State{
 			if(strpos($state,'ST_')===false) continue;
 			$state=self::toClass($v);
 			?>
- .<?=$state?>::before{
+ .<?=$state?>>a::before{
 	content:url(/reg/image/<?=$state?>.png);
 }
         	<?php

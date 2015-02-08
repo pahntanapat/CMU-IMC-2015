@@ -86,18 +86,19 @@ require_once 'class.State.php';
 <div id="progression">Progress: <?=$s->getProgression()?></div>
 <ol class="side-nav">
   <li class="<?=State::toClass($s->teamState)?>" id="menuTeamInfo"><a href="../reg/team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
-  <li class="<?=State::toClass($s->getObserverInfoState())?>" id="menuObsvInfo">Professor's infomation</li>
+  <li class="<?=State::toClass($s->getObserverInfoState())?>" id="menuObsvInfo"><a href="#" title="Professor's infomation">Professor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::toClass($s->getParticipantInfoState($i))?>" id="menuPartInfo<?=$i?>"><?=Config::ordinal($i)?> participant's infomation</li>
+  <li class="<?=State::toClass($s->getParticipantInfoState($i))?>" id="menuPartInfo<?=$i?>"><a href="#" title="<?=Config::ordinal($i)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
   <? endfor;?>
-  <li class="<?=State::toClass($s->cfInfoState)?>" id="menuCfInfo">Confirmation of Application Form</li>
-  <li class="<?=State::toClass($s->payState)?>" id="menuPay">Upload Transaction</li>
-  <li class="<?=State::toClass($s->getObserverPostRegInfoState())?>" id="menuObsvPostReg">Update professor's shirt size &amp; passport</li>
+  <li class="<?=State::toClass($s->cfInfoState)?>" id="menuCfInfo"><a href="#" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
+  <li class="<?=State::toClass($s->payState)?>" id="menuPay"><a href="#" title="Upload Transaction">Upload Transaction</a></li>
+  <li class="<?=State::toClass($s->getObserverPostRegInfoState())?>" id="menuObsvPostReg"><a href="#" title="Update professor's shirt size &amp; passport">Update professor's shirt size &amp; passport</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::toClass($s->getParticipantPostRegInfoState($i))?>" id="menuPartPostReg<?=$i?>">Update <?=Config::ordinal($i)?>  participant's shirt size &amp; passport</li>
+  <li class="<?=State::toClass($s->getParticipantPostRegInfoState($i))?>" id="menuPartPostReg<?=$i?>"><a href="#" title="Update <?=Config::ordinal($i)?> participant's shirt size &amp; passport">Update 
+    <?=Config::ordinal($i)?>  participant's shirt size &amp; passport</a></li>
   <? endfor;?>
-  <li class="<?=State::toClass($s->postRegState)?>" id="menuPostReg">Select route &amp; upload team's picture &amp; update arrival time</li>
-  <li class="<?=State::toClass($s->cfPostRegState)?>" id="cfPostReg">Confirmation of journey</li>
+  <li class="<?=State::toClass($s->postRegState)?>" id="menuPostReg"><a href="#" title="Select route &amp; upload team's picture &amp; update arrival time">Select route &amp; upload team's picture &amp; update arrival time</a></li>
+  <li class="<?=State::toClass($s->cfPostRegState)?>" id="cfPostReg"><a href="#" title="Confirmation of journey">Confirmation of journey</a></li>
 </ol>
 <ul class="side-nav">
   <li><a href="../reg/index.php" title="Main page">Main page</a></li>
