@@ -5,16 +5,18 @@ require_once 'class.SesPrt.php';
 $s=SesPrt::check(true,true);
 if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
-require_once 'class.Element.php';
-require_once 'class.State.php';
+require_once 'class.SKAjaxReg.php';
 require_once 'class.Team.php';
-$elem=new Element();
-$elem->result=false;
+$ajax=new SKAjaxReg();
+$ajax->result=false;
+
 if(!Config::isPost()){
+}elseif(!(State::is($s->teamState,State::ST_EDITABLE) && strtotime($config->REG_START_REG)<=time() && time()<strtotime($config->REG_END_REG))){
+	$ajax->message='You have no permission to change the information. Please contact adminstrator.';
 }elseif(Config::isBlank($_POST,'team_name','institution','university','country')){
-	$elem->msg='Team\'s name, Institution, University, and Country must not be blank.';
+	$ajax->message='Team\'s name, Institution, University, and Country must not be blank.';
 }elseif(strlen($_POST['team_name'])>30){
-	$elem->msg='Team\'s name must contain only 1 - 30 characters.';
+	$ajax->message='Team\'s name must contain only 1 - 30 characters.';
 }else{
 	try{
 		$t=Config::assocToObjProp($_POST,new Team($config->PDO()));
@@ -22,11 +24,12 @@ if(!Config::isPost()){
 		$t->beginTransaction();
 		
 		if($t->updateInfo()){
-			$elem->msg='Update Team\'s information sucess.';
-			$elem->result=true;
-			$s->changeID(true);
+			$ajax->message='Update Team\'s information sucess.';
+			$ajax->result=true;
+			$ajax->updateMenuState($s->changeID(true));
+			$ajax->setFormDefault();
 		}else{
-			$elem->msg='No information changed.';
+			$ajax->message='No information changed.';
 		}
 		$t->commit();
 	}catch(Exception $e){
@@ -36,16 +39,7 @@ if(!Config::isPost()){
 	}
 }
 
-if(Config::isAjax()){
-	require_once 'class.SKAjax.php';
-	$json=new SKAjax();
-	$json->result=$elem->result;
-	$json->message=$elem->msg;
-	$json->addHtmlTextVal(SKAjax::SET_HTML,'#msg',$elem->msg);
-	if($elem->result){
-		foreach($_POST as $k=>$v)
-			$json->addHtmlTextVal(SKAjax::SET_VAL,'input[name=\''.$k.'\']',$v);
-	}
-	Config::JSON($json,true);
-}
+if(Config::isAjax())
+	Config::JSON($ajax,true);
+
 ?>

@@ -1,12 +1,4 @@
 @charset "utf-8";
-a:link, a:visited{
-	color:#F00;
-	text-decoration:none;
-}
-a:hover, a:active{
-	color:#00F;
-	text-decoration:underline;
-}
 #mainMenu>ul>li{
 	display:inline-block;
 	font-weight:bold;
@@ -14,7 +6,7 @@ a:hover, a:active{
 	margin:0.5em;
 }
 
-label.require::after{
+label.require::before{
 	content:"*";
 	color:#F00;
 }

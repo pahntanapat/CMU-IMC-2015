@@ -7,8 +7,8 @@ class State{
 		ST_PASS=6,				// ST_CONFIRM|ST_B_PASS
 		ST_OK=7				// ST_CONFIRM|ST_B_PASS| ST_EDITABLE
 		;
-	public static function is($st1,$st2,$strTime=true){
-		return (($st1&$st2)!=0)&&(strtotime($strTime,time())<=time());
+	public static function is($st1,$st2,$strTime=false){
+		return (($st1&$st2)!=0)&&($strTime?strtotime($strTime,time())<=time():true);
 	}
 	public static function toClass($state){
 		switch($state){
@@ -18,7 +18,7 @@ class State{
 			case self::ST_NOT_PASS: return 'not_pass';
 			case self::ST_PASS: return 'pass';
 			case self::ST_OK: return 'ok';
-			default: return false;
+			default: return '';
 		}
 	}
 	public static function img($state){

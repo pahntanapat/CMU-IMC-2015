@@ -6,11 +6,11 @@ class Config extends MyConfig{
 		DB_USER="root", DB_PW="053721872",
 		DB_NAME="imc", DB_HOST='localhost',
 		
-		REG_START_REG='2014-12-29 00:00:00',
-		REG_END_REG='2014-12-29 23:59:59',
-		REG_START_PAY='2014-12-29 23:59:59',
-		REG_END_PAY='2014-12-29 23:59:59',
-		REG_END_INFO='2014-12-30 00:00:00',
+		REG_START_REG='2015-01-01 00:00:00',
+		REG_END_REG='2015-02-14 00:00:00',
+		REG_START_PAY='2015-01-01 00:00:00',
+		REG_END_PAY='2015-02-18 00:00:00',
+		REG_END_INFO='2015-02-28 00:00:00',
 		
 		REG_PARTICIPANT_NUM=4,
 		REG_MAX_TEAM=50,
@@ -134,13 +134,22 @@ class Config extends MyConfig{
 		}
 		return $num.($supScript?"<sup>".$sup."</sup>":$sup);
 	}
+	
+	public static function readonly(){
+		if(func_num_args()>0)
+			if(!func_get_arg(0)) return '';
+		return ' readonly="readonly"';				
+	}
+	
 	public static function country(){
 		if(func_num_args()>0) $c=func_get_arg(0);
 		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['country'];
 		else $c='';
+		$d=func_num_args()>1?func_get_arg(1):false;
+			
 		ob_start();
 		?>
-<select name="country" id="country">
+<select name="country" id="country"<? if($d):?> disabled="disabled"<? endif;?>>
        <?php
 		foreach(json_decode(file_get_contents('country.json')) as $i){
 			?>

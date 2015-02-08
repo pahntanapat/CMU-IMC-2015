@@ -1,7 +1,7 @@
 <?php
-class SKAjax{
+class SKAjaxOriginal{
 	private $arrayAction;
-	public $result,$message;
+	public $result, $message;
 	const ALERT="alert", REDIRECT="redirect", EVALUTE="eval", FOCUS="focus",
 		SET_TEXT="setText", SET_HTML="setHTML", SET_VAL="setVal",
 		RELOAD_CAPTCHA="reloadCAPTCHA", SCROLL_TO="scrollTo",
@@ -103,6 +103,41 @@ class SKAjax{
 			if(isset($arr->{$key})) return $arr->{$key};
 			else return $arr->__toString();
 		}else return $arr;
+	}
+}
+ 
+class SKAjax extends SKAjaxOriginal{
+	/**
+	  *@return <div id="msg">{$this->message}</div>
+	  *for export message to web browser that not support AJAX
+	  */
+	public function toMsg(){
+		return <<<HTML
+<div id="msg">{$this->message}</div>
+HTML;
+	}
+	
+	/**
+	  *@return SKAjax's JSON
+	  *add Command that set inner HTML of tag id msg (#msg) to $this->message
+	  */
+	public function toJSON($option=0,$depth=512){
+		if(strlen($this->message)>0)
+			$this->addHtmlTextVal(self::SET_HTML,'#msg',$this->message);
+		return parent::toJSON($option,$depth);
+	}
+
+	/**
+	  *@return $this
+	  *add Command that set value of input to default value
+	  */
+	public function setFormDefault($assoc=NULL){
+		if(!is_array($assoc))
+			$assoc=$_POST;
+		require_once 'class.State.php';
+		foreach($assoc as $k=>$v)
+			$this->addHtmlTextVal(SKAjax::SET_VAL,'input[name=\''.$k.'\']',$v);
+		return $this;
 	}
 }
 ?>

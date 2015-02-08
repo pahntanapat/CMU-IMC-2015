@@ -102,6 +102,10 @@ class SesPrt extends Session{
 		$this->progress=$score/$full;
 		if($this->cfInfoState==State::ST_LOCKED) $this->cfInfoState=State::ST_PASS;
 	}
+	
+	public function updateState(){
+		
+	}
 	public function getProgression(){
 		return $this->progress;
 	}
