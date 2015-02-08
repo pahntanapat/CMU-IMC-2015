@@ -84,7 +84,7 @@ require_once 'class.State.php';
     Country: <?=$s->country?>
   </div>
 <div id="progression">Progress: <?=$s->getProgression()?></div>
-<ol class="side-nav">
+<ul class="side-nav">
   <li class="<?=State::toClass($s->teamState)?>" id="menuTeamInfo"><a href="../reg/team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
   <li class="<?=State::toClass($s->getObserverInfoState())?>" id="menuObsvInfo"><a href="#" title="Professor's infomation">Professor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
@@ -99,8 +99,7 @@ require_once 'class.State.php';
   <? endfor;?>
   <li class="<?=State::toClass($s->postRegState)?>" id="menuPostReg"><a href="#" title="Select route &amp; upload team's picture &amp; update arrival time">Select route &amp; upload team's picture &amp; update arrival time</a></li>
   <li class="<?=State::toClass($s->cfPostRegState)?>" id="cfPostReg"><a href="#" title="Confirmation of journey">Confirmation of journey</a></li>
-</ol>
-<ul class="side-nav">
+<li class="divider"></li>
   <li><a href="../reg/index.php" title="Main page">Main page</a></li>
   <li><a href="../reg/index.php#changePW">Change password</a></li>
   <li><a href="../reg/logout.php" title="Log out">Log out</a></li>
