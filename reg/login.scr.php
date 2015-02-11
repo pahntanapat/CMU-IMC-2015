@@ -5,17 +5,17 @@ require_once 'class.SesPrt.php';
 $sess=new SesPrt();
 if($sess->checkSession()) Config::redirect('./','You have already logged in');
 
-require_once 'class.Element.php';
-$elem=new Element();
-$elem->result=false;
+require_once 'class.SKAjax.php';
+$ajax=new SKAjax();
+$ajax->result=false;
 
 if(Config::isPost()){
 	if(!Config::checkCAPTCHA()){
-		$elem->msg='The CAPTCHA Answer is wrong. Please try again.';
+		$ajax->message='The CAPTCHA Answer is wrong. Please try again.';
 	}elseif(Config::isBlank($_POST,'email','pw')){
-		$elem->msg='You must fill out all fields';
+		$ajax->message='You must fill out all fields';
 	}elseif(!Config::checkEmail($_POST['email'],$e)){
-		$elem->msg=$e;
+		$ajax->message=$e;
 	}else{
 		require_once 'class.Team.php';
 		$t=Config::assocToObjProp($_POST,new Team($config->PDO()));
@@ -36,22 +36,16 @@ if(Config::isPost()){
 			$sess->setProgression();
 			$sess->write();
 			
-			$elem->msg='Log in success. You are redirected to main page.';
-			$elem->result=true;
+			$ajax->message='Log in success. You are redirected to main page.';
+			if(Config::isAjax()) $ajax->addAction(SKAjax::REDIRECT,'./');
+			$ajax->result=true;
 		}else{
-			$elem->msg='Log in fail, there is not email or password in database.';
+			$ajax->message='Log in fail, there is not email or password in database.';
+			$ajax->addAction(SKAjax::RELOAD_CAPTCHA);
 		}
 	}
 }
 
-if(Config::isAjax()){
-	require_once 'class.SKAjax.php';
-	$ajax=new SKAjax();
-	$ajax->addAction(SKAjax::RELOAD_CAPTCHA);
-	$ajax->addHtmlTextVal(SKAjax::SET_HTML,'#msg',$elem->msg);
-	if($elem->result) $ajax->addAction(SKAjax::REDIRECT,'./');
-	Config::JSON($ajax,true);
-}elseif($elem->auth){
-	Config::redirect('./',$elem->msg);
-}
+if(Config::isAjax()) Config::JSON($ajax,true);
+elseif($ajax->result) Config::redirect('./',$ajax->message);
 ?>

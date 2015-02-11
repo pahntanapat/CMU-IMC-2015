@@ -5,13 +5,9 @@ require_once 'class.SesPrt.php';
 $s=SesPrt::check();
 if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
-require_once 'class.Element.php';
-$elem=new Element();
-
-require_once 'class.Message.php';
+require_once 'class.State.php';
 require_once 'index.scr.php';
 
-require_once 'class.State.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -106,7 +102,7 @@ require_once 'class.State.php';
   <li><a href="index.php#changePW">Change password</a></li>
   <li><a href="logout.php" title="Log out">Log out</a></li>
 </ul>
-</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" --><div id="msg"><?=$elem->msg?></div><div>
+</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" --><div id="teamMsg" class="panel radius callout"><?=$msg?></div><div>
   <form action="index.php" method="post" name="changePassword" id="changePassword" data-action="index.scr.php"> <fieldset>
       <legend>Change password</legend>
       <div>
@@ -122,10 +118,17 @@ require_once 'class.State.php';
         <input type="password" name="cfPW" id="cfPW">
       </div>
       <div>
-       <input name="savePW" type="submit" id="savePW" value="Save">
-     <input type="reset" name="resetPW" id="resetPW" value="Reset"></div>
+       <button name="savePW" type="submit" id="savePW" value="Save">Save</button>
+     <button type="reset" name="resetPW" id="resetPW" value="Cancel">Cancel</button></div>
     </fieldset>
-    <div id="msgCP"><?=$elem->msgCP?></div>
+    <?php 
+	if(!isset($ajax)){
+		require_once 'class.SKAjax.php';
+		$ajax=new SKAjax();
+		$ajax->msgID="msgCP";
+	}
+	echo $ajax->toMsg();
+?>
   </form>
 </div><!-- InstanceEndEditable --></div></div>
 </div><!--End Body-->
@@ -133,11 +136,10 @@ require_once 'class.State.php';
 		<div class="large-12 columns">
 			<hr>
             <div class="row">
-				<div class="large-6 columns">
-					<p>Copyright © 2015 Faculty of Medicine, Chiang Mai University
-					</p>
+				<div class="small-10 columns">
+					<p>Copyright © 2015 <a href="http://labs.sinkanok.com" title="Sinkanok Labs" target="_blank">Sinkanok Labs</a>, <a href="http://sinkanok.com" title="Sinkanok Groups" target="_blank">Sinkanok Groups</a> for CMU-IMC, Faculty of Medicine, Chiang Mai University </p>
 				</div>
-				<div class="large-6 columns">
+				<div class="small-2 columns">
 					<ul class="inline-list right">
 						<li><a href="#">Contact</a></li>
 					</ul>

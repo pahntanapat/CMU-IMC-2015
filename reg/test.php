@@ -1,6 +1,5 @@
 <?php
 require_once 'config.inc.php';
-require_once 'class.Element.php';
 require_once 'class.Admin.php';
 require_once 'class.SesAdm.php';
 

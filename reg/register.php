@@ -4,9 +4,12 @@ require_once 'class.SesPrt.php';
 
 if(SesPrt::check(false)) Config::redirect('./','You have already logged in');
 
-require_once 'class.Element.php';
-$elem=new Element();
 if(Config::isPost()) require_once 'register.scr.php';
+else{
+	require_once 'class.SKAjax.php';
+	$ajax=new SKAjax();
+	$ajax->result=false;
+}
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_Main.dwt" codeOutsideHTMLIsLocked="false" -->
@@ -72,10 +75,15 @@ if(Config::isPost()) require_once 'register.scr.php';
 
 <div class="row"> <!--Whole Body -->
 <div class="small-12 columns" id="content"><!-- InstanceBeginEditable name="Content" -->
-  <?php if(!$elem->result):?>
+<?php
+	if(!$ajax->result):
+  		require_once 'class.Team.php';
+		$t=Config::assocToObjProp($_POST,new Team(NULL));
+?>
   <form action="register.php" method="post" name="reg" id="reg">
+  <fieldset><legend>Register</legend>
   <div>
-    <label>E-mail<input name="email" type="email" required id="email" value="<?=$elem->val('email')?>" maxlength="127"></label></div>
+    <label>E-mail<input name="email" type="email" required id="email" value="<?=$t->email?>" maxlength="127"></label></div>
   <div>
     <label>Password<input name="pw" type="password" id="pw" maxlength="32" required></label></div>
     <div>
@@ -83,32 +91,31 @@ if(Config::isPost()) require_once 'register.scr.php';
       <input name="cpw" type="password" id="cpw" maxlength="32" required></label></div>
       <div>
     <label>Team's name
-      <input name="team_name" type="text" required id="team_name" value="<?=$elem->val('team_name')?>" maxlength="100"></label></div>
+      <input name="team_name" type="text" required id="team_name" value="<?=$t->team_name?>" maxlength="100"></label></div>
   <div>
-    <label>Medical school<input name="institution" type="text" required id="institution" value="<?=$elem->val('institution')?>" maxlength="100"></label></div>
+    <label>Medical school<input name="institution" type="text" required id="institution" value="<?=$t->institution?>" maxlength="100"></label></div>
   <div>
-    <label>University<input name="university" type="text" required id="university" value="<?=$elem->val('university')?>" maxlength="100"></label></div>
+    <label>University<input name="university" type="text" required id="university" value="<?=$t->university?>" maxlength="100"></label></div>
   <div>
     <label>Country<?=Config::country()?></label></div>
   <div>
   <? require 'captcha.php'; ?>
   <div>
-    <input type="submit" name="submit" id="submit" value="register">
-    <input type="reset" name="cancel" id="cancel" value="cancel"></div>
-  </div>
+    <button type="submit" name="submit" id="submit" value="register">Register</button>
+    <button type="reset" name="cancel" id="cancel" value="cancel">Cancel</button></div>
+  </div></fieldset>
   </form><? endif;?>
-  <div id="msg"><?=$elem->msg?></div>
+  <?=$ajax->toMsg()?>
 <!-- InstanceEndEditable --></div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">
 			<hr>
             <div class="row">
-				<div class="large-6 columns">
-					<p>Copyright © 2015 Faculty of Medicine, Chiang Mai University
-					</p>
+				<div class="small-10 columns">
+					<p>Copyright © 2015 <a href="http://labs.sinkanok.com" title="Sinkanok Labs" target="_blank">Sinkanok Labs</a>, <a href="http://sinkanok.com" title="Sinkanok Groups" target="_blank">Sinkanok Groups</a> for CMU-IMC, Faculty of Medicine, Chiang Mai University </p>
 				</div>
-				<div class="large-6 columns">
+				<div class="small-2 columns">
 					<ul class="inline-list right">
 						<li><a href="#">Contact</a></li>
 					</ul>

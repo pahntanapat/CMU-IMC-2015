@@ -88,7 +88,8 @@ if(Config::isPost()) require_once 'home.scr.php';
   <li><a href="edit_admin.php" title="Edit administrator">Edit administrator</a></li>
 </ul>
 </div></div><div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
-<div><?=SesAdm::checkbox($sess->pms)?></div>
+<div><fieldset>
+      <legend>Your roles</legend><?=SesAdm::checkbox($sess->pms)?></fieldset></div>
   <form action="home.php" method="post" name="editProfile" id="editProfile" data-action="home.scr.php" data-magellan-destination="editProfile">
     <fieldset>
       <legend>Edit profile</legend>
@@ -135,11 +136,10 @@ if(Config::isPost()) require_once 'home.scr.php';
 		<div class="large-12 columns">
 			<hr>
             <div class="row">
-				<div class="large-6 columns">
-					<p>Copyright © 2015 Faculty of Medicine, Chiang Mai University
-					</p>
+				<div class="small-10 columns">
+					<p>Copyright © 2015 <a href="http://labs.sinkanok.com" title="Sinkanok Labs" target="_blank">Sinkanok Labs</a>, <a href="http://sinkanok.com" title="Sinkanok Groups" target="_blank">Sinkanok Groups</a> for CMU-IMC, Faculty of Medicine, Chiang Mai University </p>
 				</div>
-				<div class="large-6 columns">
+				<div class="small-2 columns">
 					<ul class="inline-list right">
 						<li><a href="#">Contact</a></li>
 					</ul>

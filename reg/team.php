@@ -12,7 +12,9 @@ if(Config::isPost()||Config::isAjax()) require_once 'team.scr.php';
 require_once 'class.Message.php';
 require_once 'class.Team.php';
 
-$t=new Team($config->PDO());
+$db=$config->PDO();
+
+$t=new Team($db);
 $t->id=$s->id;
 $t->submitLoad();
 ?>
@@ -166,11 +168,10 @@ $r=!(State::is($s->teamState,State::ST_EDITABLE) && strtotime($config->REG_START
 		<div class="large-12 columns">
 			<hr>
             <div class="row">
-				<div class="large-6 columns">
-					<p>Copyright © 2015 Faculty of Medicine, Chiang Mai University
-					</p>
+				<div class="small-10 columns">
+					<p>Copyright © 2015 <a href="http://labs.sinkanok.com" title="Sinkanok Labs" target="_blank">Sinkanok Labs</a>, <a href="http://sinkanok.com" title="Sinkanok Groups" target="_blank">Sinkanok Groups</a> for CMU-IMC, Faculty of Medicine, Chiang Mai University </p>
 				</div>
-				<div class="large-6 columns">
+				<div class="small-2 columns">
 					<ul class="inline-list right">
 						<li><a href="#">Contact</a></li>
 					</ul>

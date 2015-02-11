@@ -33,9 +33,9 @@ if(!Config::isPost()){
 		}
 		$t->commit();
 	}catch(Exception $e){
-		$elem->result=false;
+		$ajax->result=false;
 		$t->rollBack();
-		$elem->msg.=Config::e($e);
+		$ajax->msg.=Config::e($e);
 	}
 }
 

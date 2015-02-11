@@ -23,6 +23,7 @@ if(!Config::checkCAPTCHA()){
 		$ajax->result=$adm->auth();
 		if($ajax->result){
 			$sess=new SesAdm();
+			$sess->id=$adm->id;
 			$sess->student_id=$adm->student_id;
 			$sess->nickname=$adm->nickname;
 			$sess->pms=(int) $adm->permission;

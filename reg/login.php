@@ -4,9 +4,11 @@ require_once 'class.SesPrt.php';
 
 if(SesPrt::check(false)) Config::redirect('./','You have already logged in');
 
-require_once 'class.Element.php';
-$elem=new Element();
 if(Config::isPost()) require_once 'login.scr.php';
+else{
+	require_once 'class.SKAjax.php';
+	$ajax=new SKAjax();
+}
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_Main.dwt" codeOutsideHTMLIsLocked="false" -->
@@ -71,28 +73,28 @@ if(Config::isPost()) require_once 'login.scr.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><!-- InstanceBeginEditable name="Content" -->Content
+<div class="small-12 columns" id="content"><!-- InstanceBeginEditable name="Content" -->
   <form action="login.php" method="post" name="login" id="login">
+  <fieldset><legend>Log in</legend>
   <div>
-    <label>E-mail<input name="email" type="email" required id="email" value="<?=$elem->val('email')?>" maxlength="127"></label></div>
+    <label>E-mail<input name="email" type="email" required id="email" value="<?=@$_POST['email']?>" maxlength="127"></label></div>
   <div>
     <label>Password<input name="pw" type="password" id="pw" maxlength="32" required></label></div>
       <? require 'captcha.php'; ?><div>
-    <input type="submit" name="submit" id="submit" value="log in">
-    <input type="reset" name="cancel" id="cancel" value="cancel"></div>
+    <button type="submit" name="submit" id="submit" value="log in">Log in</button>
+    <button type="reset" name="cancel" id="cancel" value="cancel">Cancel</button></div></fieldset>
   </form>
-  <div id="msg"><?=$elem->msg?></div>
+  <?=$ajax->toMsg()?>
 <!-- InstanceEndEditable --></div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">
 			<hr>
             <div class="row">
-				<div class="large-6 columns">
-					<p>Copyright © 2015 Faculty of Medicine, Chiang Mai University
-					</p>
+				<div class="small-10 columns">
+					<p>Copyright © 2015 <a href="http://labs.sinkanok.com" title="Sinkanok Labs" target="_blank">Sinkanok Labs</a>, <a href="http://sinkanok.com" title="Sinkanok Groups" target="_blank">Sinkanok Groups</a> for CMU-IMC, Faculty of Medicine, Chiang Mai University </p>
 				</div>
-				<div class="large-6 columns">
+				<div class="small-2 columns">
 					<ul class="inline-list right">
 						<li><a href="#">Contact</a></li>
 					</ul>
