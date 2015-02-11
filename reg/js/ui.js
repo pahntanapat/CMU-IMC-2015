@@ -1,12 +1,7 @@
 (function($){
 	$.addDialog=function(html){
-		$('<div class="dialog"><button>Close</button><div>'+html+'</div></div>')
-			.appendTo('body').fadeIn();
-		$('div.dialog, div.dialog>button').click(function(e) {
-			if(e.target!=this) return;
-			$('div.dialog, div.dialog').fadeOut(function(){$(this).remove();});
-		});
-		return $('div.dialog');
+		return $('<div class="reveal-modal" data-reveal>'+html+'<a class="close-reveal-modal">&#215;</a></div>')
+			.appendTo('body').foundation('reveal', 'open');
 	};
 	$.fn.tabs=function(){
 		var me=this;

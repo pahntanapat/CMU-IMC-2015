@@ -76,18 +76,21 @@ if(isset($_GET['act'])) require_once 'config.scr.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div id="profileBar" class="small-12 large-3 columns"><?=$sess->student_id?><br><?=$sess->nickname?>
-  <br>  <a href="home.php#editProfile" title="edit profile">Edit profile</a> <a href="home.php#changePassword">Chage password</a> <a href="logout.php?admin" title="Log out">Log out</a>
-</div><div id="adminMenu" class="small-12 large-9"><ul><li><a href="home.php" title="Admin dashboard">Main page</a></li>
-  <li>Edit team's, participants', and Observers' information</li>
-  <li>Information confirmation</li>
-  <li>Payment confirmation</li>
-  <li>Post-registration confirmation</li>
-  <li>for General Modulator</li>
+<div class="small-12 columns" id="content"><div class="small-12 large-3 columns"><div id="profileBar"><b>Student ID: <?=$sess->student_id?><br>Nickname: <?=$sess->nickname?></b>
+</div><div id="adminMenu" class="small-12 large-9"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard">Main page</a></li>
+    <li> <a href="home.php#editProfile" title="edit profile">Edit profile</a></li>
+    <li><a href="home.php#changePassword">Chage password</a></li>
+    <li><a href="logout.php?admin" title="Log out">Log out</a></li>
+    <li class="divider"></li>
+  <li><a href="#" title="Edit team's, participants', and Observers' information">Edit team's, participants', and Observers' information</a></li>
+  <li><a href="#" title="Information confirmation">Information confirmation</a></li>
+  <li><a href="#" title="Payment confirmation">Payment confirmation</a></li>
+  <li><a href="#" title="Post-registration confirmation">Post-registration confirmation</a></li>
+  <li><a href="#" title="for General Modulator">for General Modulator</a></li>
   <li><a href="config.php" title="System configuration">System configuration</a></li>
   <li><a href="edit_admin.php" title="Edit administrator">Edit administrator</a></li>
 </ul>
-</div><div id="adminContent"><!-- InstanceBeginEditable name="adminContent" -->
+</div></div><div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
  <form action="config.php?act=save" method="post">
     <fieldset class="left">
       <legend>ตั้งค่าระบบ</legend>

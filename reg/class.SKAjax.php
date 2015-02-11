@@ -107,13 +107,14 @@ class SKAjaxOriginal{
 }
  
 class SKAjax extends SKAjaxOriginal{
+	public $msgID='msg';
 	/**
 	  *@return <div id="msg">{$this->message}</div>
 	  *for export message to web browser that not support AJAX
 	  */
 	public function toMsg(){
 		return <<<HTML
-<div id="msg">{$this->message}</div>
+<div id="{$this->msgID}">{$this->message}</div>
 HTML;
 	}
 	
@@ -123,7 +124,7 @@ HTML;
 	  */
 	public function toJSON($option=0,$depth=512){
 		if(strlen($this->message)>0)
-			$this->addHtmlTextVal(self::SET_HTML,'#msg',$this->message);
+			$this->addHtmlTextVal(self::SET_HTML,'#'.$this->msgID,$this->message);
 		return parent::toJSON($option,$depth);
 	}
 

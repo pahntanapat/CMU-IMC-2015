@@ -12,8 +12,7 @@ if(Config::isPost()||Config::isAjax()) require_once 'team.scr.php';
 require_once 'class.Message.php';
 require_once 'class.Team.php';
 
-$db=$config->PDO();
-$t=new Team($db);
+$t=new Team($config->PDO());
 $t->id=$s->id;
 $t->submitLoad();
 ?>

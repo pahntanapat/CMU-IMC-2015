@@ -1,12 +1,11 @@
 <?php
 require_once 'config.inc.php';
 require_once 'class.SesAdm.php';
-require_once 'class.Element.php';
 
 $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
 
-$elem=new Element();
+$elem=new ArrayObject();
 if(Config::isPost()) require_once 'home.scr.php';
 ?>
 <!doctype html>
@@ -74,39 +73,42 @@ if(Config::isPost()) require_once 'home.scr.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div id="profileBar" class="small-12 large-3 columns"><?=$sess->student_id?><br><?=$sess->nickname?>
-  <br>  <a href="home.php#editProfile" title="edit profile">Edit profile</a> <a href="home.php#changePassword">Chage password</a> <a href="logout.php?admin" title="Log out">Log out</a>
-</div><div id="adminMenu" class="small-12 large-9"><ul><li><a href="home.php" title="Admin dashboard">Main page</a></li>
-  <li>Edit team's, participants', and Observers' information</li>
-  <li>Information confirmation</li>
-  <li>Payment confirmation</li>
-  <li>Post-registration confirmation</li>
-  <li>for General Modulator</li>
+<div class="small-12 columns" id="content"><div class="small-12 large-3 columns"><div id="profileBar"><b>Student ID: <?=$sess->student_id?><br>Nickname: <?=$sess->nickname?></b>
+</div><div id="adminMenu" class="small-12 large-9"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard">Main page</a></li>
+    <li> <a href="home.php#editProfile" title="edit profile">Edit profile</a></li>
+    <li><a href="home.php#changePassword">Chage password</a></li>
+    <li><a href="logout.php?admin" title="Log out">Log out</a></li>
+    <li class="divider"></li>
+  <li><a href="#" title="Edit team's, participants', and Observers' information">Edit team's, participants', and Observers' information</a></li>
+  <li><a href="#" title="Information confirmation">Information confirmation</a></li>
+  <li><a href="#" title="Payment confirmation">Payment confirmation</a></li>
+  <li><a href="#" title="Post-registration confirmation">Post-registration confirmation</a></li>
+  <li><a href="#" title="for General Modulator">for General Modulator</a></li>
   <li><a href="config.php" title="System configuration">System configuration</a></li>
   <li><a href="edit_admin.php" title="Edit administrator">Edit administrator</a></li>
 </ul>
-</div><div id="adminContent"><!-- InstanceBeginEditable name="adminContent" -->
+</div></div><div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
 <div><?=SesAdm::checkbox($sess->pms)?></div>
-  <form action="home.php" method="post" name="editProfile" id="editProfile" data-action="home.scr.php">
+  <form action="home.php" method="post" name="editProfile" id="editProfile" data-action="home.scr.php" data-magellan-destination="editProfile">
     <fieldset>
       <legend>Edit profile</legend>
      <div>
        <label for="student_id">Student ID</label>
-       <input name="student_id" type="text" id="student_id" value="<?=$elem->val('student_id',$sess->student_id)?>">
+       <input name="student_id" type="text" id="student_id" value="<?=isset($_POST['student_id'])?$_POST['student_id']:$sess->student_id?>">
      </div>
      <div>
        <label for="nickname">Nickname</label>
-       <input name="nickname" type="text" id="nickname" value="<?=$elem->val('nickname',$sess->nickname)?>">
+       <input name="nickname" type="text" id="nickname" value="<?=isset($_POST['nickname'])?$_POST['nickname']:$sess->nickname?>">
      </div>
      <div>
-       <input name="saveEP" type="submit" id="saveEP" value="Save">
-     <input type="reset" name="resetEP" id="resetEP" value="Reset">
+       <button name="saveEP" type="submit" id="saveEP" value="Save">Save</button>
+     <button type="reset" name="resetEP" id="resetEP" value="Reset">Reset</button>
      </div>
     </fieldset>
-    <div id="msgEP"><?=$elem->msgEP?></div>
+    <div id="msgEP"><?=isset($elem->msgEP)?$elem->msgEP:''?></div>
       </form>
 
-  <form action="home.php" method="post" name="changePassword" id="changePassword" data-action="home.scr.php">
+  <form action="home.php" method="post" name="changePassword" id="changePassword" data-action="home.scr.php" data-magellan-destination="changePassword">
     <fieldset>
       <legend>Change password</legend>
       <div>
@@ -122,10 +124,10 @@ if(Config::isPost()) require_once 'home.scr.php';
         <input type="password" name="cfPW" id="cfPW">
       </div>
       <div>
-       <input name="savePW" type="submit" id="savePW" value="Save">
-     <input type="reset" name="resetPW" id="resetPW" value="Reset"></div>
+     <button name="savePW" type="submit" id="savePW" value="Save">Save</button>
+     <button type="reset" name="resetPW" id="resetPW" value="Reset">Reset</button></div>
     </fieldset>
-    <div id="msgCP"><?=$elem->msgCP?></div>
+    <div id="msgCP"><?=isset($elem->msgCP)?$elem->msgCP:''?></div>
   </form>
 <!-- InstanceEndEditable --></div></div>
 </div><!--End Body-->

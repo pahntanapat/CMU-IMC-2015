@@ -24,7 +24,9 @@ $(function(e){
 <body>
 <pre>
 <?php
-var_dump(15&7,13|2,~-1,true,15&true,false-true);
+require_once 'class.SesAdm.php';
+$s=new SesAdm();
+var_dump($s);
 ?>
 </pre>
 <?php

@@ -1,13 +1,14 @@
 <?php
 require_once 'config.inc.php';
 require_once 'class.SesAdm.php';
-require_once 'class.Element.php';
 
 if(SesAdm::check(false)){
 	Config::redirect('home.php');
 	exit('You have already logged in');
 }
-$elem=new Element();
+
+require_once 'class.SKAjax.php';
+$ajax=new SKAjax();
 if(Config::isPost()) require_once 'admin.scr.php';
 ?>
 <!doctype html>
@@ -78,7 +79,7 @@ if(Config::isPost()) require_once 'admin.scr.php';
       <legend>Log in</legend>
       <div>
         <label for="student_id">Student ID: </label>
-        <input name="student_id" type="text" required id="student_id" value="<?=$elem->val('student_id')?>">
+        <input name="student_id" type="text" required id="student_id" value="<?=@$_POST['student_id']?>">
       </div>
       <div>
         <label for="password">Password: </label>
@@ -88,7 +89,7 @@ if(Config::isPost()) require_once 'admin.scr.php';
       <div class="btnset"><button type="submit">Log in</button><button type="reset">Clear</button></div>
     </fieldset>
 </form>
-<div id="msg"><?=$elem->msg?></div><!-- InstanceEndEditable --></div>
+<?=$ajax->toMsg()?><!-- InstanceEndEditable --></div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">
