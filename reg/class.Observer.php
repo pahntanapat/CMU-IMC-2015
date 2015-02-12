@@ -166,7 +166,7 @@ class Observer extends SKeasySQL{
 			.(isset($this->id)?self::ROW_ID:self::ROW_TEAM_ID).'=? LIMIT 1');
 		$stm->bindValue(1,isset($this->id)?$this->id:$this->team_id);
 		$stm->execute();
-		foreach($stm->fetch(PDO::FETCH_OBJ) as $k=>$v)
+		foreach($stm->fetchAll(PDO::FETCH_OBJ) as $k=>$v)
 			if(isset($this->$k)) $this->$k=$v;
 		return $this;
 	}

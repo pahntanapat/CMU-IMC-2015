@@ -84,9 +84,9 @@ require_once 'index.scr.php';
 <div id="progression">Progress: <?=$s->getProgression()?></div>
 <ul class="side-nav">
   <li class="<?=State::toClass($s->teamState)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
-  <li class="<?=State::toClass($s->getObserverInfoState())?>" id="menuObsvInfo"><a href="#" title="Professor's infomation">Professor's infomation</a></li>
+  <li class="<?=State::toClass($s->getObserverInfoState())?>" id="menuObsvInfo"><a href="member.php?no=0" title="Professor's infomation">Professor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::toClass($s->getParticipantInfoState($i))?>" id="menuPartInfo<?=$i?>"><a href="#" title="<?=Config::ordinal($i)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
+  <li class="<?=State::toClass($s->getParticipantInfoState($i))?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
   <? endfor;?>
   <li class="<?=State::toClass($s->cfInfoState)?>" id="menuCfInfo"><a href="#" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li class="<?=State::toClass($s->payState)?>" id="menuPay"><a href="#" title="Upload Transaction">Upload Transaction</a></li>

@@ -5,25 +5,40 @@ require_once 'class.SesPrt.php';
 $s=SesPrt::check(true,true);
 if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
-require_once 'class.SKAjaxReg.php';
-$ajax=new SKAjaxReg();
-if(Config::isPost()||Config::isAjax()) require_once 'team.scr.php';
+if(Config::isPost()||Config::isAjax()) require_once 'member.scr.php';
 
-require_once 'class.Message.php';
-require_once 'class.Team.php';
+$no=intval(isset($_GET['no'])?$_GET['no']:-1);
+if($no<0||$no>$config->REG_PARTICIPANT_NUM) Config::redirect('member.php?no=0','Redirecting...');
+
+$who=array(
+	$no==0?'Professor':Config::ordinal($no,true).' paricipant',
+	$no==0?'Professor':Config::ordinal($no,false).' paricipant'
+);
 
 $db=$config->PDO();
+require_once 'class.Participant.php';
+$member=$no==0?new Observer($db):new Participant($db);
+$member->id=0;
+$member->team_id=$s->id;
 
-$t=new Team($db);
-$t->id=$s->id;
-$t->submitLoad();
+if(Config::isPost()||Config::isAjax()) $member=Config::assocToObjProp($_POST,$member);
+else $member->load();
+
+
+if(!isset($ajax)){
+	require_once 'class.SKAjax.php';
+	$ajax=new SKAjax();
+}
+
+require_once 'class.Message.php';
+require_once 'class.State.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Chiang Mai University International Medical Challenge</title>
+<title>Edit <?=$who[1]?>'s information :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
@@ -38,8 +53,6 @@ $t->submitLoad();
 
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
-<script src="js/updateMenuState.js"></script>
-<script src="js/save.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -113,7 +126,7 @@ $t->submitLoad();
   <li><a href="logout.php" title="Log out">Log out</a></li>
 </ul>
 </div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
-<h3>Team &amp; Institution information</h3>
+<h3><?=$who[0]?>'s Information</h3>
 <div id="teamMsg"><?php
 $msg=new Message($db);
 $msg->team_id=$s->id;
@@ -123,45 +136,85 @@ unset($msg);
 
 $r=!(State::is($s->teamState,State::ST_EDITABLE) && strtotime($config->REG_START_REG)<=time() && time()<strtotime($config->REG_END_REG));
 ?></div>
-<form action="team.php" method="post" id="form" data-abide data-action="team.scr.php?updateInfo">
-<fieldset class="require">
-  <legend>Team's information</legend>
-  <div>
-  <label class="require">Email for overall contact
-    <input name="email" type="email" required id="email" value="<?=$t->email?>"<?=Config::readonly($r)?>>
-  </label>
-</div>
-<div>
-  <label class="require">Team's name
-    <input name="team_name" type="text" required id="team_name" value="<?=$t->team_name?>" maxlength="40"<?=Config::readonly($r)?>>
-  </label>
-</div>
-<div>
-  <label class="require">Institution
-    <input name="institution" type="text" id="institution" value="<?=$t->institution?>" required<?=Config::readonly($r)?>>
-  </label>
-</div><div>
-  <label class="require">University
-    <input name="university" type="text" id="university" value="<?=$t->university?>" required<?=Config::readonly($r)?>>
-  </label>
-</div><div>
-  <label class="require">Address
-    <textarea name="address" rows="5" id="address"<?=Config::readonly($r)?>><?=$t->address?></textarea>
-  </label>
-</div><div>
-  <label class="require">Country
-    <?=Config::country($t->country,$r)?>
-  </label>
-</div><div>
-  <label class="require">Institution's telephone number
-    <input name="phone" type="phone" id="phone" value="<?=$t->phone?>" placeholder="(with country code) +XXxxxxxx"<?=Config::readonly($r)?>>
-  </label>
-</div><? if(!$r):?><div>
-  <button type="submit" name="save" id="save" value="save">save</button>
-  <button type="reset" name="cancel" id="button" value="cancel">cancel</button><? endif;?>
-</div></fieldset>
-</form>
-<?=$ajax->toMsg()?>
+   <form action="member.php" method="post" name="infoForm" id="infoForm">
+      <fieldset>
+        <legend>General Information</legend>
+        <div>
+          <label class="require">Title
+            <input name="id" type="hidden" id="id" value="<?=$member->id?>">
+            <input name="part_no" type="hidden" id="part_no" value="<?=$no?>">
+            <input name="title" type="text" id="title" value="<?=$member->title?>"<?=Config::readonly($r)?>>
+          </label>
+        </div>
+         <div><label class="require">Firstname
+            <input name="firstname" type="text" id="firstname" value="<?=$member->firstname?>"<?=Config::readonly($r)?>>
+          </label></div>
+        <div>
+          <label>Middlename
+<input name="middlename" type="text" id="middlename" value="<?=$member->middlename?>"<?=Config::readonly($r)?>>
+          </label></div>
+           <div>
+             <label class="require">Lastname
+<input name="lastname" type="text" id="lastname" value="<?=$member->lastname?>"<?=Config::readonly($r)?>>
+          </label></div>
+<?php
+echo Config::gender($member->gender,$r);
+if($no>0):?>
+           <div>
+             <label class="require">Medical student year
+               <input name="std_y" type="text" id="std_y" value="<?=$member->std_y?>">
+          </label></div><? endif;?>
+           <div>
+             <label class="require">Date of Birth
+               <input name="birth" type="text" id="birth" placeholder="YYYY-MM-DD" value="<?=$member->birth?>"<?=Config::readonly($r)?>>
+          </label></div>
+           <div>
+             <label class="require">Nationality
+               <input name="nationality" type="text" id="nationality" value="<?=$member->nationality?>"<?=Config::readonly($r)?>>
+          </label></div>
+      </fieldset>
+      <fieldset>
+        <legend>Contact</legend>
+        <div>
+          <label class="require">Mobile phone number
+            <input name="phone" type="text" id="phone" value="<?=$member->phone?>"<?=Config::readonly($r)?>>
+          </label></div>
+                   <div>
+                     <label class="require">Email address <small>You can fill out same email as log-in email.</small>
+                       <input name="email" type="email" id="email" value="<?=$member->email?>"<?=Config::readonly($r)?>>
+          </label></div>
+                   <div>
+                     <label class="require">Facebook Profile name/URL
+                       <input name="fb" type="text" id="fb" placeholder="Mark Zuckerberg or https://www.facebook.com/zuck" value="<?=$member->fb?>"<?=Config::readonly($r)?>>
+          </label></div>
+                   <div>
+                     <label class="require">Twitter
+                       <input name="tw" type="text" id="tw" placeholder="@twitter" value="<?=$member->tw?>"<?=Config::readonly($r)?>>
+          </label></div>
+         <div><label class="require">Firstname
+            <input name="firstname" type="text" id="firstname" value="<?=$member->firstname?>"<?=Config::readonly($r)?>>
+          </label></div>
+      </fieldset>
+      <fieldset>
+        <legend>Lifestyle</legend>
+         <div><label>Firstname
+            <input name="firstname" type="text" id="firstname" value="<?=$member->firstname?>">
+          </label></div>
+      </fieldset>
+      <fieldset class="require"><legend>Save</legend>
+      <div><button type="submit" name="submitInfo">Save</button><button type="reset" name="resetInfo">Cancel</button></div>
+      </fieldset>
+    </form>
+    <? if($no>0):?>
+   <form action="member.scr.php" method="post" enctype="multipart/form-data" name="upload" target="uploadFrame" id="uploadForm">
+   <fieldset class="require">
+        <legend>Upload Student Card</legend>
+        <div><label class="require">Student card image
+        <input type="file" name="std_card" id="std_card" required></label></div>
+        <div><button type="submit" name="submitUpload">Upload</button><button type="reset" name="resetUpload">Cancel</button></div>
+        <div><iframe id="uploadFrame" name="uploadFrame"></iframe></div>
+      </fieldset>
+    </form><? endif;?>
 <!-- InstanceEndEditable --></div></div>
 </div><!--End Body-->
 	<footer class="row">

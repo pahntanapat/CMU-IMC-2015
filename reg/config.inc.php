@@ -141,6 +141,19 @@ class Config extends MyConfig{
 		return ' readonly="readonly"';				
 	}
 	
+	public static function gender(){
+		if(func_num_args()>0) $c=func_get_arg(0);
+		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['gender'];
+		else $c='';
+		$d=func_num_args()>1?func_get_arg(1):false;
+		ob_start();?>
+          <div><label class="require">Gender</label>
+                <input name="gender" type="radio" id="gender_1" value="1"<? if($c==1):?> checked="CHECKED"<? endif; if($d):?> disabled="disabled"<? endif;?>><label for="gender_1">Male</label>
+               <input name="gender" type="radio" id="gender_0" value="0"<? if($c==0):?> checked="CHECKED"<? endif; if($d):?> disabled="disabled"<? endif;?>><label for="gender_0">Female</label>
+          </div>
+<?php
+        return ob_get_clean();
+	}
 	public static function country(){
 		if(func_num_args()>0) $c=func_get_arg(0);
 		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['country'];
