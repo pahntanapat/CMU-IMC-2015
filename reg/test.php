@@ -23,9 +23,8 @@ $(function(e){
 <body>
 <pre>
 <?php
-require_once 'class.SesAdm.php';
-$s=new SesAdm();
-var_dump($s);
+$n=Config::isDate('2015-01-12',$e);
+var_dump($n,$e);
 ?>
 </pre>
 <?php

@@ -7,7 +7,7 @@ class Config extends MyConfig{
 		DB_NAME="imc", DB_HOST='localhost',
 		
 		REG_START_REG='2015-01-01 00:00:00',
-		REG_END_REG='2015-02-14 00:00:00',
+		REG_END_REG='2015-02-21 00:00:00',
 		REG_START_PAY='2015-01-01 00:00:00',
 		REG_END_PAY='2015-02-18 00:00:00',
 		REG_END_INFO='2015-02-28 00:00:00',
@@ -50,15 +50,23 @@ class Config extends MyConfig{
 				return false;
 		}
 	}
+	public static function isDate($date,&$msg){
+		if(preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$date)){
+			return true;
+		}else{
+			$msg='Date format must be YYYY-MM-DD only, for example, 2015-01-31, or 1990-12-01.';
+			return false;
+		}
+	}
 	public static function checkCAPTCHA(){
 		if(!isset($_POST['captcha'])) return false;
 		require_once('securimage/securimage.php');
 		$cp=new Securimage();
 		return ($cp->check($_POST['captcha']));
 	}
-	public static function checkPW($password,&$match){
-		if(preg_match_all('/^[[:alnum:]_:;]{6,32}$/',$password,$match)==0){
-			$match='Password must contains a - z, A - Z, 0-9, _ (underscore), : (colon), and ; (semicolon) in 6 to 32 letters.';
+	public static function checkPW($password,&$msg){
+		if(preg_match_all('/^[[:alnum:]_:;]{6,32}$/',$password,$msg)==0){
+			$msg='Password must contains a - z, A - Z, 0-9, _ (underscore), : (colon), and ; (semicolon) in 6 to 32 letters.';
 			return false;
 		}else return true;
 	}
@@ -86,6 +94,9 @@ class Config extends MyConfig{
 	}
 	public static function isPost(){ //Check the request if its method is post.
 		return isset($_POST)?count($_POST)>0:false;
+	}
+	public static function isFile(){ //Check the request if file(s) is sent.
+		return isset($_FILES)?count($_FILES)>0:false;
 	}
 	
 	public static function redirect($url='/',$exitMsg=false){ //Redirect to $url with/without exit message & AJAX request

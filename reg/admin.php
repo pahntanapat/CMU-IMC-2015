@@ -24,6 +24,7 @@ if(Config::isPost()) require_once 'admin.scr.php';
 <script src="../js/vendor/modernizr.js"></script>
 <script src="../slick/slick.min.js"></script>
 <script src="js/skajax.js"></script>
+<link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="../slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="../css/foundation.min.css"/>
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">

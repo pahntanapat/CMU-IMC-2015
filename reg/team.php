@@ -31,14 +31,15 @@ $t->submitLoad();
 <script src="../js/vendor/modernizr.js"></script>
 <script src="../slick/slick.min.js"></script>
 <script src="js/skajax.js"></script>
+<link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="../slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="../css/foundation.min.css"/>
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
+<script src="js/updateMenuState.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
-<script src="js/updateMenuState.js"></script>
 <script src="js/save.js"></script>
 <!-- InstanceEndEditable -->
 

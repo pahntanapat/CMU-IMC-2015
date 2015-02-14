@@ -7,27 +7,26 @@ if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
 if(Config::isPost()||Config::isAjax()) require_once 'member.scr.php';
 
-$no=intval(isset($_GET['no'])?$_GET['no']:-1);
+$no=isset($_GET['no'])?(is_numeric($_GET['no'])?intval($_GET['no']):-1):-1;
 if($no<0||$no>$config->REG_PARTICIPANT_NUM) Config::redirect('member.php?no=0','Redirecting...');
-
 $who=array(
 	$no==0?'Professor':Config::ordinal($no,true).' paricipant',
 	$no==0?'Professor':Config::ordinal($no,false).' paricipant'
 );
 
 $db=$config->PDO();
-require_once 'class.Participant.php';
-$member=$no==0?new Observer($db):new Participant($db);
-$member->id=0;
-$member->team_id=$s->id;
-
-if(Config::isPost()||Config::isAjax()) $member=Config::assocToObjProp($_POST,$member);
-else $member->load();
-
+if(!isset($member)){
+	require_once 'class.Participant.php';
+	$member=$no==0?new Observer($db):new Participant($db);
+	$member->id=false;
+	$member->team_id=$s->id;
+	if($no>0) $member->part_no=$no;
+	$member->load();
+}
 
 if(!isset($ajax)){
-	require_once 'class.SKAjax.php';
-	$ajax=new SKAjax();
+	require_once 'class.SKAjaxReg.php';
+	$ajax=new SKAjaxReg();
 }
 
 require_once 'class.Message.php';
@@ -46,13 +45,19 @@ require_once 'class.State.php';
 <script src="../js/vendor/modernizr.js"></script>
 <script src="../slick/slick.min.js"></script>
 <script src="js/skajax.js"></script>
+<link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="../slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="../css/foundation.min.css"/>
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
+<script src="js/updateMenuState.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/foundation-datepicker.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/member.js"></script>
+<link href="css/foundation-datepicker.css" rel="stylesheet" type="text/css">
 <!-- InstanceEndEditable -->
 
 </head>
@@ -136,7 +141,7 @@ unset($msg);
 
 $r=!(State::is($s->teamState,State::ST_EDITABLE) && strtotime($config->REG_START_REG)<=time() && time()<strtotime($config->REG_END_REG));
 ?></div>
-   <form action="member.php" method="post" name="infoForm" id="infoForm">
+   <form action="member.php?no=<?=$no?>" method="post" name="infoForm" id="infoForm">
       <fieldset>
         <legend>General Information</legend>
         <div>
@@ -165,8 +170,8 @@ if($no>0):?>
                <input name="std_y" type="text" id="std_y" value="<?=$member->std_y?>">
           </label></div><? endif;?>
            <div>
-             <label class="require">Date of Birth
-               <input name="birth" type="text" id="birth" placeholder="YYYY-MM-DD" value="<?=$member->birth?>"<?=Config::readonly($r)?>>
+             <label class="require">Date of Birth <small>Click on the form to show calendar, and click on title bar of calendar to change month, or double click it to select year.</small>
+               <input name="birth" type="date" id="birth" placeholder="YYYY-MM-DD" value="<?=$member->birth?>"<?=Config::readonly($r)?>>
           </label></div>
            <div>
              <label class="require">Nationality
@@ -176,8 +181,8 @@ if($no>0):?>
       <fieldset>
         <legend>Contact</legend>
         <div>
-          <label class="require">Mobile phone number
-            <input name="phone" type="text" id="phone" value="<?=$member->phone?>"<?=Config::readonly($r)?>>
+          <label class="require">Mobile phone number <small>with country code</small>
+            <input name="phone" type="tel" id="phone" placeholder="+xx xxx xxx xxx ..." value="<?=$member->phone?>"<?=Config::readonly($r)?>>
           </label></div>
                    <div>
                      <label class="require">Email address <small>You can fill out same email as log-in email.</small>
@@ -190,29 +195,48 @@ if($no>0):?>
                    <div>
                      <label class="require">Twitter
                        <input name="tw" type="text" id="tw" placeholder="@twitter" value="<?=$member->tw?>"<?=Config::readonly($r)?>>
-          </label></div>
-         <div><label class="require">Firstname
-            <input name="firstname" type="text" id="firstname" value="<?=$member->firstname?>"<?=Config::readonly($r)?>>
-          </label></div>
+          </label></div><? if($no>0):?>
+         <div>
+           <label class="require">Emergency contact <small>with country code</small>
+             <input name="emerg_contact" type="tel" id="emerg_contact" placeholder="+xx xxx xxx xxx ..." value="<?=$member->emerg_contact?>"<?=Config::readonly($r)?>>
+          </label></div><? endif;?>
       </fieldset>
       <fieldset>
         <legend>Lifestyle</legend>
-         <div><label>Firstname
-            <input name="firstname" type="text" id="firstname" value="<?=$member->firstname?>">
+         <div>
+           <label>Religion
+             <input name="religion" type="text" id="religion" value="<?=$member->religion?>">
+          </label></div>
+          <div>
+            <label>Cuisine
+              <textarea name="cuisine" rows="5" id="cuisine"><?=$member->cuisine?></textarea>
+          </label></div>
+          <div>
+            <label>Allergy
+              <textarea name="allergy" rows="5" id="allergy"><?=$member->allergy?></textarea>
+          </label></div>
+          <div>
+            <label>Underlying disease
+              <textarea name="disease" rows="5" id="disease"><?=$member->disease?></textarea>
+          </label></div>
+          <div>
+            <label>Other requirements
+              <textarea name="other_req" rows="5" id="other_req"><?=$member->other_req?></textarea>
           </label></div>
       </fieldset>
       <fieldset class="require"><legend>Save</legend>
       <div><button type="submit" name="submitInfo">Save</button><button type="reset" name="resetInfo">Cancel</button></div>
       </fieldset>
+      <?=$ajax->toMsg()?>
     </form>
-    <? if($no>0):?>
+    <? if($no>0):?><hr><h3>Upload <?=$who[0]?>'s student card</h3>
    <form action="member.scr.php" method="post" enctype="multipart/form-data" name="upload" target="uploadFrame" id="uploadForm">
    <fieldset class="require">
         <legend>Upload Student Card</legend>
         <div><label class="require">Student card image
         <input type="file" name="std_card" id="std_card" required></label></div>
         <div><button type="submit" name="submitUpload">Upload</button><button type="reset" name="resetUpload">Cancel</button></div>
-        <div><iframe id="uploadFrame" name="uploadFrame"></iframe></div>
+        <div><div id="uploadMsg"></div><iframe id="uploadFrame" name="uploadFrame"></iframe></div>
       </fieldset>
     </form><? endif;?>
 <!-- InstanceEndEditable --></div></div>
