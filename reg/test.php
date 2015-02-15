@@ -23,8 +23,9 @@ $(function(e){
 <body>
 <pre>
 <?php
-$n=Config::isDate('2015-01-12',$e);
-var_dump($n,$e);
+require_once 'class.UploadImage.php';
+$u=new UploadImage();
+$u->team_id=123456;
 ?>
 </pre>
 <?php

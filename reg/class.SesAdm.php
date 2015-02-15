@@ -23,7 +23,7 @@ class SesAdm extends Session{
 	
 	public static function check($pms=true,$returnObj=true,$autoWrite=true){
 		$sess=new self($autoWrite&&$returnObj);
-		return $sess->checkSession()?($returnObj?$sess:true):false;
+		return ($sess->checkSession() &&$sess->checkPMS($pms))?($returnObj?$sess:true):false;
 	}
 	public static function isPMS($myPMS,$testPMS){
 		return $testPMS===true?true:($myPMS&$testPMS)!=0;

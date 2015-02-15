@@ -14,7 +14,9 @@ if(Config::isFile()){
 	$ajax->msgID='uploadMsg';
 	
 }elseif(Config::isPost()){
-	if(!(Config::isBlank($_POST,'email') || Config::checkEmail($_POST['email'],$e))){
+	if(!State::is($s->teamState,State::ST_EDITABLE) || time()>strtotime($config->REG_END_REG) || time()<strtotime($config->REG_START_REG)){
+		$ajax->message='You are not allowed to change the information. Please contact administrators.';
+	}elseif(!(Config::isBlank($_POST,'email') || Config::checkEmail($_POST['email'],$e))){
 		$ajax->message=$e;
 	}elseif(!(Config::isBlank($_POST,'birth') || Config::isDate($_POST['birth'],$e))){
 		$ajax->message=$e;

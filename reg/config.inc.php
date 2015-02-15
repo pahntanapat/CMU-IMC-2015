@@ -5,6 +5,7 @@ class Config extends MyConfig{
 	const
 		DB_USER="root", DB_PW="053721872",
 		DB_NAME="imc", DB_HOST='localhost',
+		UPLOAD_FOLDER='images',
 		
 		REG_START_REG='2015-01-01 00:00:00',
 		REG_END_REG='2015-02-21 00:00:00',

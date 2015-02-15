@@ -145,6 +145,8 @@ if(isset($_GET['act'])) require_once 'config.scr.php';
         <input type="text" name="DB_USERNAME" id="DB_USERNAME"  value="<?=$config->DB_USER?>" required></div>
       <div><label for="DB_PW">Password: </label>
         <input type="text" name="DB_PW" id="DB_PW" value="<?=$config->DB_PW?>" required></div>
+        <div><label for="DB_PW">Upload folder: </label>
+        <input type="text" name="UPLOAD_FOLDER" id="UPLOAD_FOLDER" value="<?=$config->UPLOAD_FOLDER?>" required></div>
       </div></div>
       <div class="btnset"><button type="submit">บันทึก</button><button type="submit">ยกเลิก</button>
         <a href="config.php?act=reset" title="reset" class="reset">Reset

@@ -229,12 +229,18 @@ if($no>0):?>
       </fieldset>
       <?=$ajax->toMsg()?>
     </form>
-    <? if($no>0):?><hr><h3>Upload <?=$who[0]?>'s student card</h3>
+    <?php
+if($no>0):
+	require_once 'class.UploadImage.php';
+	$img=new UploadImage();
+	$img->team_id=$s->id;
+	?><hr><h3>Upload <?=$who[0]?>'s student card</h3>
    <form action="member.scr.php" method="post" enctype="multipart/form-data" name="upload" target="uploadFrame" id="uploadForm">
    <fieldset class="require">
         <legend>Upload Student Card</legend>
+		<? ?>
         <div><label class="require">Student card image
-        <input type="file" name="std_card" id="std_card" required></label></div>
+       <?=$img->toForm($r)?></label></div>
         <div><button type="submit" name="submitUpload">Upload</button><button type="reset" name="resetUpload">Cancel</button></div>
         <div><div id="uploadMsg"></div><iframe id="uploadFrame" name="uploadFrame"></iframe></div>
       </fieldset>

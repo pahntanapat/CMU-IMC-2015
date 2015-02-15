@@ -132,7 +132,12 @@ require_once 'index.scr.php';
 	echo $ajax->toMsg();
 ?>
   </form>
-</div><!-- InstanceEndEditable --></div></div>
+</div>
+<ul class="accordion" data-accordion>
+<li class="accordion-navigation"><a href="#sponsor1">Booking form 1</a><div id="sponsor1" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+5%2C000+THB"/></div></li>
+<li class="accordion-navigation"><a href="#sponsor2">Booking form 2</a><div id="sponsor2" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+4%2C000+THB"/></div></li>
+<li class="accordion-navigation"><a href="#sponsor3">Booking form 3</a><div id="sponsor3" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+3%2C000+THB"/></div></li>
+</ul><!-- InstanceEndEditable --></div></div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">
