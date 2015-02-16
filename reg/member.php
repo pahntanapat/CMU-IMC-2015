@@ -24,11 +24,6 @@ if(!isset($member)){
 	$member->load();
 }
 
-if(!isset($ajax)){
-	require_once 'class.SKAjaxReg.php';
-	$ajax=new SKAjaxReg();
-}
-
 require_once 'class.Message.php';
 require_once 'class.State.php';
 ?>
@@ -55,6 +50,7 @@ require_once 'class.State.php';
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
 <script src="js/foundation-datepicker.js"></script>
+<script src="js/jquery.form.min.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/member.js"></script>
 <link href="css/foundation-datepicker.css" rel="stylesheet" type="text/css">
@@ -104,19 +100,20 @@ require_once 'class.State.php';
 
 <div class="row"> <!--Whole Body -->
 <div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
-  <div>Team's name: <?=$s->teamName?><br>
-    Institution: <?=$s->institution?><br>
-    University: <?=$s->university?><br>
-    Country: <?=$s->country?>
+  <div><b>Team's name:</b> <?=$s->teamName?><br>
+    <b>Institution:</b> <?=$s->institution?><br>
+    <b>University:</b> <?=$s->university?><br>
+    <b>Country:</b> <?=$s->country?><br><br>
+    <b>Progression</b>
   </div>
-<div id="progression">Progress: <?=$s->getProgression()?></div>
+<div id="progression" class="progress round"><span class="meter" style="width:<?=$s->getProgression()?>%"></span></div>
 <ul class="side-nav">
   <li class="<?=State::toClass($s->teamState)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
   <li class="<?=State::toClass($s->getObserverInfoState())?>" id="menuObsvInfo"><a href="member.php?no=0" title="Professor's infomation">Professor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
   <li class="<?=State::toClass($s->getParticipantInfoState($i))?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
   <? endfor;?>
-  <li class="<?=State::toClass($s->cfInfoState)?>" id="menuCfInfo"><a href="#" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
+  <li class="<?=State::toClass($s->cfInfoState)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li class="<?=State::toClass($s->payState)?>" id="menuPay"><a href="#" title="Upload Transaction">Upload Transaction</a></li>
   <li class="<?=State::toClass($s->getObserverPostRegInfoState())?>" id="menuObsvPostReg"><a href="#" title="Update professor's shirt size &amp; passport">Update professor's shirt size &amp; passport</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
@@ -124,7 +121,7 @@ require_once 'class.State.php';
     <?=Config::ordinal($i)?>  participant's shirt size &amp; passport</a></li>
   <? endfor;?>
   <li class="<?=State::toClass($s->postRegState)?>" id="menuPostReg"><a href="#" title="Select route &amp; upload team's picture &amp; update arrival time">Select route &amp; upload team's picture &amp; update arrival time</a></li>
-  <li class="<?=State::toClass($s->cfPostRegState)?>" id="cfPostReg"><a href="#" title="Confirmation of journey">Confirmation of journey</a></li>
+  <li class="<?=State::toClass($s->cfPostRegState)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of journey</a></li>
 <li class="divider"></li>
   <li><a href="index.php" title="Main page">Main page</a></li>
   <li><a href="index.php#changePW">Change password</a></li>
@@ -181,19 +178,19 @@ if($no>0):?>
       <fieldset>
         <legend>Contact</legend>
         <div>
-          <label class="require">Mobile phone number <small>with country code</small>
+          <label>Mobile phone number <small>with country code</small>
             <input name="phone" type="tel" id="phone" placeholder="+xx xxx xxx xxx ..." value="<?=$member->phone?>"<?=Config::readonly($r)?>>
           </label></div>
                    <div>
-                     <label class="require">Email address <small>You can fill out same email as log-in email.</small>
+                     <label>Email address <small>You can fill out same email as log-in email.</small>
                        <input name="email" type="email" id="email" value="<?=$member->email?>"<?=Config::readonly($r)?>>
           </label></div>
                    <div>
-                     <label class="require">Facebook Profile name/URL
+                     <label>Facebook Profile name/URL
                        <input name="fb" type="text" id="fb" placeholder="Mark Zuckerberg or https://www.facebook.com/zuck" value="<?=$member->fb?>"<?=Config::readonly($r)?>>
           </label></div>
                    <div>
-                     <label class="require">Twitter
+                     <label>Twitter
                        <input name="tw" type="text" id="tw" placeholder="@twitter" value="<?=$member->tw?>"<?=Config::readonly($r)?>>
           </label></div><? if($no>0):?>
          <div>
@@ -204,15 +201,15 @@ if($no>0):?>
       <fieldset>
         <legend>Lifestyle</legend>
          <div>
-           <label>Religion
+           <label class="require">Religion
              <input name="religion" type="text" id="religion" value="<?=$member->religion?>">
           </label></div>
           <div>
-            <label>Cuisine
+            <label>Preferred specific cuisine
               <textarea name="cuisine" rows="5" id="cuisine"><?=$member->cuisine?></textarea>
           </label></div>
           <div>
-            <label>Allergy
+            <label>Food/Drug allergy
               <textarea name="allergy" rows="5" id="allergy"><?=$member->allergy?></textarea>
           </label></div>
           <div>
@@ -227,23 +224,39 @@ if($no>0):?>
       <fieldset class="require"><legend>Save</legend>
       <div><button type="submit" name="submitInfo">Save</button><button type="reset" name="resetInfo">Cancel</button></div>
       </fieldset>
-      <?=$ajax->toMsg()?>
+      <?php
+if(!isset($ajax)){
+	require_once 'class.SKAjaxReg.php';
+	$ajax=new SKAjaxReg();
+}
+echo $ajax->toMsg();
+unset($ajax);
+?>
     </form>
-    <?php
-if($no>0):
-	require_once 'class.UploadImage.php';
-	$img=new UploadImage();
-	$img->team_id=$s->id;
-	?><hr><h3>Upload <?=$who[0]?>'s student card</h3>
-   <form action="member.scr.php" method="post" enctype="multipart/form-data" name="upload" target="uploadFrame" id="uploadForm">
+    <? if($no>0):?><hr><h3>Upload <?=$who[0]?>'s student card</h3>
+   <form action="member.php?no=<?=$no?>" method="post" enctype="multipart/form-data" name="upload" id="uploadForm">
    <fieldset class="require">
-        <legend>Upload Student Card</legend>
-		<? ?>
-        <div><label class="require">Student card image
-       <?=$img->toForm($r)?></label></div>
+        <legend>Upload a copy of student ID card or certificate of student</legend>
+        <div><label class="require">Image file
+       <?php
+require_once 'class.UploadImage.php';
+$img=new UploadImage();
+$img->team_id=$s->id;
+
+if(!isset($uploadAjax)){
+	require_once 'class.SKAjaxReg.php';
+	
+	$uploadAjax=new SKAjaxReg();
+	$uploadAjax->msgID='uploadMsg';
+	$uploadAjax->message=$img->toImgPartStudentCard($no);
+}
+echo $img->toForm($r);
+?>
+       <input name="part_no" type="hidden" id="part_no" value="<?=$no?>">
+        </label>
+        </div>
         <div><button type="submit" name="submitUpload">Upload</button><button type="reset" name="resetUpload">Cancel</button></div>
-        <div><div id="uploadMsg"></div><iframe id="uploadFrame" name="uploadFrame"></iframe></div>
-      </fieldset>
+      </fieldset><?=$uploadAjax->toMsg()?>
     </form><? endif;?>
 <!-- InstanceEndEditable --></div></div>
 </div><!--End Body-->

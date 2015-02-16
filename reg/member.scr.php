@@ -7,12 +7,35 @@ if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
 require_once 'class.SKAjaxReg.php';
 $ajax=new SKAjaxReg();
+$uploadAjax=new SKAjaxReg();
 
 $db=$config->PDO();
 
-if(Config::isFile()){
-	$ajax->msgID='uploadMsg';
-	
+if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PARTICIPANT_NUM){
+	$uploadAjax->msgID='uploadMsg';
+	$uploadAjax->result=false;
+	try{
+		require_once 'class.UploadImage.php';
+		$upload=new UploadImage();
+		$upload->team_id=$s->id;
+		// $upload->minResolutionArray=array(720,435); // Student Card 3.583*2.165 in 200dpi
+		// Use A4
+		$upload->minFileSize=60000;
+		$upload->quality=50;
+		if($upload->uploadPartStudentCard($_POST['part_no'])){
+			$uploadAjax->message='Upload your image complete'."<br/><br/>".$upload->toImgPartStudentCard($_POST['part_no']);
+			$uploadAjax->result=true;
+		}else{
+			$uploadAjax->message='Fail to upload your image. Please try again.';
+		}
+	}catch(UploadImageException $e){
+		$uploadAjax->result=false;
+		$uploadAjax->message=$e->getMessage();
+	}catch(Exception $e){
+		$uploadAjax->result=false;
+		$uploadAjax->message=Config::e($e);;
+	}
+	unset($upload);
 }elseif(Config::isPost()){
 	if(!State::is($s->teamState,State::ST_EDITABLE) || time()>strtotime($config->REG_END_REG) || time()<strtotime($config->REG_START_REG)){
 		$ajax->message='You are not allowed to change the information. Please contact administrators.';
@@ -42,7 +65,7 @@ if(Config::isFile()){
 				$ajax->message=$ajax->result?'Update the information success.':'No any information change.';
 			}
 			if($ajax->result){
-				$ajax->setFormDefault();
+				$ajax->setFormDefault($member);
 				$s->setParticipantInfoState($_POST['part_no'],$member->info_state);
 				$ajax->updateMenuState($s);
 			}
@@ -54,5 +77,6 @@ if(Config::isFile()){
 		}
 	}
 }
-if(Config::isAjax()) Config::JSON($ajax,true);
+
+if(Config::isAjax()) Config::JSON(Config::isFile()?$uploadAjax:$ajax,true);
 ?>

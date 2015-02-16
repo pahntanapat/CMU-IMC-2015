@@ -10,7 +10,7 @@ class UploadImageException extends Exception{
 			CODE_UNWRITTABLE=3;
 	public function __construct($filename='',$code=0,$type=0){
 		if($type==self::TYPE_IMG_ERROR){
-			$message="Fail to process ".$message." because ";
+			$message="Fail to process ".$filename." because ";
 			switch($code){
 				case self::CODE_UNSUPPORT_EXT:
 					$message.="uploaded file is not supported. Please upload JPEG (*.jpg, *.jpeg), PNG (*.png), or GIF (*.gif)  image only.";
@@ -24,7 +24,7 @@ class UploadImageException extends Exception{
 				default:
 			}
 		}elseif($type==self::TYPE_UPLOAD_ERROR){
-			$message.="Unable to upload file because ";
+			$message.="Unable to upload file $filename because ";
 			switch($code){
 				case UPLOAD_ERR_INI_SIZE:
 				case UPLOAD_ERR_FORM_SIZE:
@@ -86,7 +86,7 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 		}
 		
 		if($move){ // Move if Small size
-			if(move_uploaded_file($_FILES['tsp']['tmp_name'], $this->getFolder($filename))){
+			if(move_uploaded_file($file['tmp_name'], $this->getFolder($filename))){
 				return true;
 			}else{
 				throw new UploadImageException($file['name'], UploadImageException::CODE_UNWRITTABLE, UploadImageException::TYPE_IMG_ERROR);
@@ -124,6 +124,7 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 				else
 					$h=round($w*$imgH/$imgW); // ใช้ $w เป็นหลัก
 				*/
+				
 				$resize=($imgH*$w)>($h*$imgW);
 				if($this->algorithmFit?$resize:!$resize) // Equivalent to ($imgH/$imgW)>($h/$w) when size>=0
 					$w=round($h*$imgW/$imgH); // ใช้ $h เป็นหลัก
@@ -152,7 +153,7 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 		$filename=$this->getFolder($filename);
 ?><div><?php
 		if(file_exists($filename)):
-			$filename=urlencode(base64_encode($filename));
+			$filename=urlencode(base64_encode(base64_encode($filename).'|'.rand()));
 ?><a href="images.php?img=<?=$filename?>" target="_blank" class="th"><img src="images.php?img=<?=$filename?>"/></a><?php
 		else:
 ?><b>&quot;No image&quot;</b><?php
@@ -164,7 +165,8 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 	// return file_get_contens(IMG)
 	public function getImg($queryString){
 		ob_start();
-		$filename=base64_decode($queryString);
+		$queryString=base64_decode($queryString);
+		$filename=base64_decode(substr($queryString,0,strpos($queryString,'|')));
 		$img=file_exists($filename)?file_get_contents($filename):false;
 		if($img===false){
 			echo "<br/>\n".'Unable to read file: '.$this->getFolder($filename);
@@ -178,10 +180,12 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 	
 	protected function getFolder($filename){
 		global $config;
-		return $_SERVER['DOCUMENT_ROOT'].'/'.
+		$dir=$_SERVER['DOCUMENT_ROOT'].'/'.
 			$config->UPLOAD_FOLDER.'/'.
-			implode('/',str_split(sprintf("%020d",$this->team_id),2)).'/'.
-			$filename.self::JPG;
+			implode('/',str_split(sprintf("%020d",$this->team_id),2)).'/';
+		if(!is_dir($dir))
+			mkdir($dir,0777,true);
+		return $dir.$filename.'.'.self::JPG;
 	}
 	
 	protected function toJPG($file){

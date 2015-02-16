@@ -7,4 +7,19 @@ $(document).ready(function(e) {
 		}
 		return $(this).postSK('member.scr.php?'+$.SK(),true);
     });
+	$('#uploadForm').ajaxForm({
+		clearForm: true,
+		dataType: 'json',
+		url: 'member.scr.php?'+$.SK(),
+		type: 'POST',
+		beforeSerialize:function(){
+			$('#uploadMsg').html('<div class="progress round"><span class="meter" style="width:0%"></span></div>');
+		},
+		uploadProgress:function(e,c,t,p){
+			$('#uploadMsg>div>span').css({width: p+'%'});
+		},
+		success:function(msg){
+			return $('#uploadForm').SKAjax(msg,true);
+		}
+	});
 });

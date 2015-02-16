@@ -5,12 +5,28 @@ class State{
 		ST_WAIT=2,				// ST_CONFIRM
 		ST_NOT_PASS=3,	// ST_EDITABLE|ST_CONFIRM
 		ST_PASS=6,				// ST_CONFIRM|ST_B_PASS
-		ST_OK=7				// ST_CONFIRM|ST_B_PASS| ST_EDITABLE
+		ST_OK=7	,			// ST_CONFIRM|ST_B_PASS| ST_EDITABLE
+		
+		ST_NOT_START=-1,
+		ST_TIME_UP=-2
 		;
 	public static function is($st1,$st2,$strTime=false){
 		return (($st1&$st2)!=0)&&($strTime?strtotime($strTime,time())<=time():true);
 	}
 	public static function toClass($state){
+		switch($state){
+			case self::ST_TIME_UP:
+			case self::ST_NOT_START:
+			case self::ST_LOCKED: return 'locked';
+			case self::ST_EDITABLE: return 'edittable';
+			case self::ST_WAIT: return 'waiting';
+			case self::ST_NOT_PASS: return 'not_pass';
+			case self::ST_PASS: return 'pass';
+			case self::ST_OK: return 'ok';
+			default: return '';
+		}
+	}
+	public static function toHTML($state){
 		switch($state){
 			case self::ST_LOCKED: return 'locked';
 			case self::ST_EDITABLE: return 'edittable';
@@ -18,6 +34,8 @@ class State{
 			case self::ST_NOT_PASS: return 'not_pass';
 			case self::ST_PASS: return 'pass';
 			case self::ST_OK: return 'ok';
+			case self::ST_NOT_START: return '';
+			case self::ST_NOT_START: return '';
 			default: return '';
 		}
 	}

@@ -31,6 +31,23 @@ class Participant extends Observer{
 		}
 	}
 	
+	public function load(){
+		$stm=$this->db->prepare('SELECT '.self::row().' FROM '.$this->TABLE.' WHERE '
+			.($this->id?self::ROW_ID:self::ROW_PART_NO.'=? AND '.self::ROW_TEAM_ID).'=? LIMIT 1');
+		
+		if($this->id){
+			$stm->bindValue(1,$this->id);
+		}else{
+			$stm->bindValue(1,$this->part_no);
+			$stm->bindValue(2,$this->team_id);
+		}
+		$stm->execute();
+		if($stm->rowCount()>0)
+			foreach($stm->fetch(PDO::FETCH_OBJ) as $k=>$v)
+				if(property_exists($this, $k)) $this->$k=$v;
+		return $this;
+	}
+	
 	public function getList(){
 		return $this->getPDOStm()->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
 	}

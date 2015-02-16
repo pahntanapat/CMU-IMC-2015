@@ -27,6 +27,7 @@ class SKAjaxReg extends SKAjax{
 			$param[1]["menuPartPostReg".$i]=State::toClass($s->getParticipantPostRegInfoState($i));
 		}
 		
+		$param[2]=$s->getProgression();
 		return $this->addAction(self::EVALUTE,'$.updateMenuState('.json_encode($param).');');
 	}
 }

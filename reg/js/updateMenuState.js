@@ -5,5 +5,6 @@
 		for(k in json[1]){
 			$('#'+k).removeClass(css).addClass(json[1][k]);
 		}
+		$("#progression>span").css({width:json[2]+'100%'});
 	};
 }(jQuery));

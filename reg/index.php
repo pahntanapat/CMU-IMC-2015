@@ -78,19 +78,20 @@ require_once 'index.scr.php';
 
 <div class="row"> <!--Whole Body -->
 <div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
-  <div>Team's name: <?=$s->teamName?><br>
-    Institution: <?=$s->institution?><br>
-    University: <?=$s->university?><br>
-    Country: <?=$s->country?>
+  <div><b>Team's name:</b> <?=$s->teamName?><br>
+    <b>Institution:</b> <?=$s->institution?><br>
+    <b>University:</b> <?=$s->university?><br>
+    <b>Country:</b> <?=$s->country?><br><br>
+    <b>Progression</b>
   </div>
-<div id="progression">Progress: <?=$s->getProgression()?></div>
+<div id="progression" class="progress round"><span class="meter" style="width:<?=$s->getProgression()?>%"></span></div>
 <ul class="side-nav">
   <li class="<?=State::toClass($s->teamState)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
   <li class="<?=State::toClass($s->getObserverInfoState())?>" id="menuObsvInfo"><a href="member.php?no=0" title="Professor's infomation">Professor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
   <li class="<?=State::toClass($s->getParticipantInfoState($i))?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
   <? endfor;?>
-  <li class="<?=State::toClass($s->cfInfoState)?>" id="menuCfInfo"><a href="#" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
+  <li class="<?=State::toClass($s->cfInfoState)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li class="<?=State::toClass($s->payState)?>" id="menuPay"><a href="#" title="Upload Transaction">Upload Transaction</a></li>
   <li class="<?=State::toClass($s->getObserverPostRegInfoState())?>" id="menuObsvPostReg"><a href="#" title="Update professor's shirt size &amp; passport">Update professor's shirt size &amp; passport</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
@@ -98,7 +99,7 @@ require_once 'index.scr.php';
     <?=Config::ordinal($i)?>  participant's shirt size &amp; passport</a></li>
   <? endfor;?>
   <li class="<?=State::toClass($s->postRegState)?>" id="menuPostReg"><a href="#" title="Select route &amp; upload team's picture &amp; update arrival time">Select route &amp; upload team's picture &amp; update arrival time</a></li>
-  <li class="<?=State::toClass($s->cfPostRegState)?>" id="cfPostReg"><a href="#" title="Confirmation of journey">Confirmation of journey</a></li>
+  <li class="<?=State::toClass($s->cfPostRegState)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of journey</a></li>
 <li class="divider"></li>
   <li><a href="index.php" title="Main page">Main page</a></li>
   <li><a href="index.php#changePW">Change password</a></li>

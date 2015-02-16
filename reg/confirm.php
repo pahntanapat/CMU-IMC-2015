@@ -5,25 +5,24 @@ require_once 'class.SesPrt.php';
 $s=SesPrt::check(true,true);
 if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
-require_once 'class.SKAjaxReg.php';
-$ajax=new SKAjaxReg();
-if(Config::isPost()||Config::isAjax()) require_once 'team.scr.php';
+if(isset($_GET['step']))
+	if(is_numeric($_GET['step'])) $step=intval($_GET['step']);
 
-require_once 'class.Message.php';
-require_once 'class.Team.php';
+if(!isset($step))
+	Config::redirect('./','You are redirected.');
 
-$db=$config->PDO();
-
-$t=new Team($db);
-$t->id=$s->id;
-$t->submitLoad();
+$msg='';
+if(Config::isPost()||Config::isAjax()){
+	
+}
+require_once 'class.State.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Chiang Mai University International Medical Challenge</title>
+<title>Confirm your Information :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
@@ -40,7 +39,6 @@ $t->submitLoad();
 <script src="js/updateMenuState.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
-<script src="js/save.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -115,56 +113,33 @@ $t->submitLoad();
   <li><a href="logout.php" title="Log out">Log out</a></li>
 </ul>
 </div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
-<h3>Team &amp; Institution information</h3>
-<div id="teamMsg"><?php
-$msg=new Message($db);
-$msg->team_id=$s->id;
-$msg->load(Message::PAGE_INFO_TEAM);
-echo Message::msg($msg);
-unset($msg);
-
-$r=!(State::is($s->teamState,State::ST_EDITABLE) && strtotime($config->REG_START_REG)<=time() && time()<strtotime($config->REG_END_REG));
-?></div>
-<form action="team.php" method="post" id="form" data-abide data-action="team.scr.php?updateInfo">
-<fieldset class="require">
-  <legend>Team's information</legend>
-  <div>
-  <label class="require">Email for overall contact
-    <input name="email" type="email" required id="email" value="<?=$t->email?>"<?=Config::readonly($r)?>>
-  </label>
-</div>
-<div>
-  <label class="require">Team's name
-    <input name="team_name" type="text" required id="team_name" value="<?=$t->team_name?>" maxlength="40"<?=Config::readonly($r)?>>
-  </label>
-</div>
-<div>
-  <label class="require">Institution
-    <input name="institution" type="text" id="institution" value="<?=$t->institution?>" required<?=Config::readonly($r)?>>
-  </label>
-</div><div>
-  <label class="require">University
-    <input name="university" type="text" id="university" value="<?=$t->university?>" required<?=Config::readonly($r)?>>
-  </label>
-</div><div>
-  <label class="require">Address
-    <textarea name="address" rows="5" id="address"<?=Config::readonly($r)?>><?=$t->address?></textarea>
-  </label>
-</div><div>
-  <label class="require">Country
-    <?=Config::country($t->country,$r)?>
-  </label>
-</div><div>
-  <label class="require">Institution's telephone number
-    <input name="phone" type="phone" id="phone" value="<?=$t->phone?>" placeholder="(with country code) +XXxxxxxx"<?=Config::readonly($r)?>>
-  </label>
-</div><? if(!$r):?><div>
-  <button type="submit" name="save" id="save" value="save">save</button>
-  <button type="reset" name="cancel" id="button" value="cancel">cancel</button><? endif;?>
-</div></fieldset>
-</form>
-<?=$ajax->toMsg()?>
-<!-- InstanceEndEditable --></div></div>
+<h2>Confirm your information</h2>
+<? if(($step==1 && $s->cfInfoState==State::ST_WAIT) || ($step==2 && $s->cfPostRegState==State::ST_WAIT)): /*กำลังตรวจ*/ ?>
+<div><b>This section is being approved.</b></div>
+<? elseif(($step==1 && $s->cfInfoState==State::ST_PASS) || ($step==2 && State::is($s->cfInfoState,State::ST_B_PASS))): /*step 1 ผ่าน step 2 ผ่าน แก้ไขได้*/?>
+<div><b>This section is approved.</b></div>
+<? elseif(($step==1 && $s->cfInfoState==State::ST_LOCKED) ||  ($step==2 && $s->cfPostRegState==State::ST_LOCKED) || time()<=$config->REG_START_REG || time()>=$config->REG_END_REG ||  time()<=$config->REG_START_PAY || time()>=$config->REG_END_INFO): /* Not allowed*/?>
+<div><b>This section is locked. You are not allowed to edit any information.</b></div>
+<? elseif(($step==1 && State::is($s->cfInfoState,State::ST_EDITABLE) && time()>$config->REG_START_REG && time()<$config->REG_END_REG) || ($step==2 && State::is($s->cfPostRegState,State::ST_EDITABLE) && time()>$config->REG_START_PAY && time()<$config->REG_END_INFO)):
+?>
+<form action="confirm.php?step=<?=$step?>" method="post" id="confirmForm"><fieldset><legend>Confirm Registration information</legend><div>
+<? if($step==1):?>
+      <input type="checkbox" name="cf[]" value="1" id="cf_0">
+      <label for="cf_0">I agree with <a href="http://cmu-imc.med.cmu.ac.th/competition.html" title="CMU-IMC Competition Rule" target="_blank">CMU-IMC Competition Rule</a>.</label><br>
+      <input type="checkbox" name="cf[]" value="1" id="cf_1">
+      <label for="cf_1">I understand <a href="http://cmu-imc.med.cmu.ac.th/registration.html" title="The Registration" target="_blank">The Registration</a>.</label><br>
+      <input type="checkbox" name="cf[]" value="1" id="cf_2">
+      <label for="cf_2">I have already completed <a href="./" title="all application forms in previous steps" target="_blank">all application forms in the previous steps</a>.</label><br>
+      <input type="checkbox" name="cf[]" value="1" id="cf_3">
+      <label for="cf_3">I confirm that all information is true.</label>
+<? elseif($step==2):?><input type="checkbox" name="cf[]" value="1" id="cf_0">
+      <label for="cf_0">I have already completed <a href="./" title="all application forms in previous steps" target="_blank">all application forms in the previous steps</a>.</label><br>
+      <input type="checkbox" name="cf[]" value="1" id="cf_1">
+      <label for="cf_1">I am ready to go to <a href="http://cmu-imc.med.cmu.ac.thl" title="CMU-IMC" target="_blank">CMU-IMC</a>.</label>
+      <? endif;?>
+</div><div><button type="submit">Confirm</button><button type="reset">Cancel</button></div></fieldset>
+<fieldset><legend></legend></fieldset></form>
+<? endif;?><!-- InstanceEndEditable --></div></div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">
