@@ -9,6 +9,14 @@
 	<script src="js/vendor/modernizr.js"></script>
 </head>
 <body>
+
+<div id="myModal" class="reveal-modal" data-reveal>
+  <h2>Not Available</h2>
+  <p class="lead">Registration system will be opened on March 1, 2015.</p>
+  <p>Meanwhile, please check out the detail <a href="registration.html">here</a>.</p>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -66,7 +74,7 @@
 									<li><a href="invite_package.html">Invitation Package</a></li>
 								</ul>
 							</li>
-							<li><a href="" style="color:#777777">REGISTER</a></li>
+							<li><a data-reveal-id="myModal" style="color:#777777">REGISTER</a></li>
 							
 						</ul>
 						<ul class="right">
@@ -138,7 +146,7 @@
 						<p><div id="regis-countdown"></div></p>
 						
 						<a href="registration.html" class="button floor">Learn more</a>
-						<a class="button floor disabled" href="#">Register for CMU-IMC 2015</a>
+						<a class="button floor disabled" data-reveal-id="myModal">Register for CMU-IMC 2015</a>
 					</div>
 				</div>
 				
@@ -164,7 +172,7 @@
 								<h6>NEWS</h6>
 							</div>
 						</div></a>
-						<a href="#">
+						<a data-reveal-id="myModal">
 						<div class="large-3 small-6 columns" data-equalizer-watch>
 							<img src="img/003.jpg"/>
 							<div class="panel">
