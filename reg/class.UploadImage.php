@@ -19,7 +19,7 @@ class UploadImageException extends Exception{
 					$message.="upload file format does not match its filetype (extension). Please check your image whether it is damage.";
 					break;
 				case self::CODE_UNWRITTABLE:
-					$message.="the registration system can not save uploaded file on server. Please contact administrator.";
+					$message.="the registration system cannot save uploaded file on server. Please contact administrator.";
 					break;
 				default:
 			}
@@ -40,7 +40,7 @@ class UploadImageException extends Exception{
 					$message.="temporary directory on web server is not found (Code: UPLOAD_ERR_NO_TMP_DIR). Please contact administrator.";
 					break;
 				case UPLOAD_ERR_CANT_WRITE:
-					$message.="the registration system can not write any file to the server (Code: UPLOAD_ERR_CANT_WRITE). Please contact administrator.";
+					$message.="the registration system cannot write any file to the server (Code: UPLOAD_ERR_CANT_WRITE). Please contact administrator.";
 					break;
 				case UPLOAD_ERR_EXTENSION:
 					$message.="unknown problem occurs in the registration system (Code: UPLOAD_ERR_EXTENSION). Please contact administrator.";
@@ -92,7 +92,7 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 				throw new UploadImageException($file['name'], UploadImageException::CODE_UNWRITTABLE, UploadImageException::TYPE_IMG_ERROR);
 				return false;
 			}
-		}elseif($img===false){ // If can not create img resource
+		}elseif($img===false){ // If cannot create img resource
 			throw new UploadImageException($file['name'], UploadImageException::CODE_WRONG_FORMAT, UploadImageException::TYPE_IMG_ERROR);
 			return false;
 		}else{
@@ -139,8 +139,8 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 				return false;
 			}
 			// destroy
-			if(isset($img)) imagedestroy($img);
-			if(isset($resize)) imagedestroy($resize);
+			if(isset($img)) @imagedestroy($img);
+			if(isset($resize)) @imagedestroy($resize);
 			unset($img,$resize,$imgH,$imgW,$file,$filename,$h,$w,$move);
 			return true;
 		}

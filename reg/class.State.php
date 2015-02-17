@@ -10,15 +10,22 @@ class State{
 		ST_NOT_START=-1,
 		ST_TIME_UP=-2
 		;
-	public static function is($st1,$st2,$strTime=false){
-		return (($st1&$st2)!=0)&&($strTime?strtotime($strTime,time())<=time():true);
+	public static function is($st1,$st2,$startTime=false,$endTime=false){
+		return (($st1&$st2)!=0)
+			&&($startTime?strtotime($startTime,time())<=time():true)
+			&&($endTime?strtotime($endTime,time())>time():true);
+	}
+	public static function inTime($state,$startTime,$endTime,$toClass=false){
+		if(strtotime($startTime,time())>=time()) $state=self::ST_NOT_START;
+		elseif(strtotime($endTime,time())<time()) $state=self::ST_TIME_UP;
+		return $toClass?self::toClass($state):$state;
 	}
 	public static function toClass($state){
 		switch($state){
 			case self::ST_TIME_UP:
 			case self::ST_NOT_START:
 			case self::ST_LOCKED: return 'locked';
-			case self::ST_EDITABLE: return 'edittable';
+			case self::ST_EDITABLE: return 'editable';
 			case self::ST_WAIT: return 'waiting';
 			case self::ST_NOT_PASS: return 'not_pass';
 			case self::ST_PASS: return 'pass';
@@ -26,18 +33,51 @@ class State{
 			default: return '';
 		}
 	}
-	public static function toHTML($state){
+	
+	public static function toDivClass($state){
 		switch($state){
-			case self::ST_LOCKED: return 'locked';
-			case self::ST_EDITABLE: return 'edittable';
-			case self::ST_WAIT: return 'waiting';
-			case self::ST_NOT_PASS: return 'not_pass';
-			case self::ST_PASS: return 'pass';
-			case self::ST_OK: return 'ok';
-			case self::ST_NOT_START: return '';
-			case self::ST_NOT_START: return '';
+			case self::ST_TIME_UP:
+			case self::ST_NOT_START:
+			case self::ST_LOCKED: return 'secondary';
+			case self::ST_EDITABLE: return 'info';
+			case self::ST_WAIT: return 'warning';
+			case self::ST_NOT_PASS: return 'alert';
+			case self::ST_PASS:
+			case self::ST_OK: return 'success';
 			default: return '';
 		}
+	}
+	
+	public static function toHTML($state, $addInfo=''){
+		$html=self::img($state).' This section is ';
+		switch($state){
+			case self::ST_NOT_START:
+				$html.='"not ready" to edit. Please visit this page in "'.$addInfo.'".';
+				break;
+			case self::ST_TIME_UP:
+				$html.='"over the deadline" at "'.$addInfo.'", so you cannot edit any information.';
+				break;
+			case self::ST_LOCKED:
+				$html.='"locked". You are not allowed to edit any information.';
+				break;
+			case self::ST_EDITABLE:
+				$html.='"editable". You can change your information.';
+				break;
+			case self::ST_WAIT:
+				$html.='"waiting" for approval.';
+				break;
+			case self::ST_NOT_PASS:
+				$html.='"not pass" because of some reasons.';
+				break;
+			case self::ST_PASS:
+				$html.='"pass". If you want edit your information, please contact administrator.';
+				break;
+			case self::ST_OK:
+				$html.='"pass" and "editable", so you can change it anytime.';
+				break;
+			//default: return '';
+		}
+		return "<div data-alert class=\"alert-box ".self::toDivClass($state)." radius\">".$html."<a href=\"#\" class=\"close\">&times;</a></div>";
 	}
 	public static function img($state){
 		$state=self::toClass($state);

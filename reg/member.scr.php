@@ -59,13 +59,13 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 			if($member->id==0){
 				$member->id=$member->add();
 				$ajax->result=true;
-				$ajax->message='Add new team\'s member success';
+				$ajax->message='Add new team\'s member success ';
 			}else{
 				$ajax->result=$member->update()>0;
 				$ajax->message=$ajax->result?'Update the information success.':'No any information change.';
 			}
 			if($ajax->result){
-				$ajax->setFormDefault($member);
+				$ajax->setFormDefault((array) $member);
 				$s->setParticipantInfoState($_POST['part_no'],$member->info_state);
 				$ajax->updateMenuState($s);
 			}

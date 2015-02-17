@@ -141,7 +141,7 @@ class Observer extends SKeasySQL{
 		return $stm->rowCount();
 	}
 	
-	public function setState($state){
+	public function setState($state){ // for Admin or Confirmation
 		switch($state){
 			case self::ROW_POST_REG_STATE:
 				$v=$this->post_reg_state;
@@ -151,9 +151,9 @@ class Observer extends SKeasySQL{
 				break;
 			default: return false;
 		}
-		$stm=$this->db->prepare('UPDATE '.$this->TABLE.' SET '.$state.'=:state WHERE '.self::ROW_ID.'=:id');
-		$stm->bindValue(':state',$v,PDO::PARAM_INT);
-		$stm->bindValue(':id',$this->id,PDO::PARAM_INT);
+		$stm=$this->db->prepare('UPDATE '.$this->TABLE.' SET '.$state.'=:state WHERE '.($this->id?self::ROW_ID:self::ROW_TEAM_ID).'=:i');
+		$stm->bindValue(':state',$v,PDO::PARAM_INT); // Team ID for comfirmation
+		$stm->bindValue(':i',$this->id?$this->id:$this->team_id,PDO::PARAM_INT);
 		$stm->execute();
 		return $stm->rowCount();
 	}

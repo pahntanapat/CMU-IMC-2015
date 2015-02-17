@@ -147,7 +147,7 @@ LEFT JOIN participant_info ON participant_info.team_id=team_info.id
 	public function menuClass($item,$toCSS=array('wrong','correct','wait','lock','q','edit','err')){
 		$priority=array( #from min to max
 			self::STATE_PASS, # (pass) correct = lowest
-			self::STATE_EDITTABLE, #  (edittable)  edit
+			self::STATE_EDITTABLE, #  (editable)  edit
 			self::STATE_NOT_FINISHED, # (not complete) q
 			self::STATE_MUST_CHANGE, # (error) err
 			self::STATE_WAIT, # (waiting) wait
@@ -190,7 +190,7 @@ LEFT JOIN participant_info ON participant_info.team_id=team_info.id
 				$temp[]=array_search($this->sTeamInfo,$priority);
 				$css=$priority[max($temp)];
 				unset($temp,$v);
-				if($css==self::STATE_EDITTABLE) $css=self::STATE_NOT_FINISHED; //PAGE_RECEIVE_ID is one time edittable
+				if($css==self::STATE_EDITTABLE) $css=self::STATE_NOT_FINISHED; //PAGE_RECEIVE_ID is one time editable
 				break;
 			case self::PAGE_PAY:
 				$css=$this->sTeamPay;

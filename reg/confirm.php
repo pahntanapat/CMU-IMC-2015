@@ -11,11 +11,61 @@ if(isset($_GET['step']))
 if(!isset($step))
 	Config::redirect('./','You are redirected.');
 
+require_once 'class.State.php';
+
 $msg='';
 if(Config::isPost()||Config::isAjax()){
-	
+	if(array_sum($_POST['cf'])==$_POST['sum']){
+		$msg='You have already confirm your information.';
+		$db=$config->PDO();
+		if($step==1){
+			try{
+				require_once 'class.Team.php';
+				require_once 'class.Observer.php';
+				require_once 'class.Participant.php';
+				$db->beginTransaction();
+				$t=new Team($db);
+			//	$t->beginTransaction();
+				$t->id=$s->id;
+				
+				$ob=new Observer($db);
+			//	$ob->beginTransaction();
+				$ob->team_id=$s->id;
+				
+				$mem=new Participant($db);
+			//	$mem->beginTransaction();
+				$mem->team_id=$s->id;
+				
+				$t->team_state=State::ST_WAIT;
+				$ob->info_state=State::ST_WAIT;
+				$mem->info_state=State::ST_WAIT;
+				
+				$t->setState(Team::ROW_TEAM_STATE);
+				$ob->setState(Observer::ROW_INFO_STATE);
+				$mem->setState(Participant::ROW_INFO_STATE);
+				
+			//	$t->commit();
+			//	$ob->commit();
+			//	$mem->commit();
+				$db->commit();
+				$s->changeID(true);
+			}catch(Exception $e){
+		//		if(isset($t) && $t->inTransaction()) $t->rollBack();
+		//		if(isset($ob) && $ob->inTransaction()) $ob->rollBack();
+		//		if(isset($mem) && $mem->inTransaction()) $mem->rollBack();
+				if($db->inTransaction()) $db->rollBack();
+				
+				$msg=Config::e($e);
+			}
+		}elseif($step==2){
+			try{
+				
+			}catch(Exception $e){
+				$msg=Config::e($e);
+			}
+		}
+	}
 }
-require_once 'class.State.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -93,38 +143,36 @@ require_once 'class.State.php';
   </div>
 <div id="progression" class="progress round"><span class="meter" style="width:<?=$s->getProgression()?>%"></span></div>
 <ul class="side-nav">
-  <li class="<?=State::toClass($s->teamState)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
-  <li class="<?=State::toClass($s->getObserverInfoState())?>" id="menuObsvInfo"><a href="member.php?no=0" title="Professor's infomation">Professor's infomation</a></li>
+  <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
+  <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="member.php?no=0" title="Professor's infomation">Professor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::toClass($s->getParticipantInfoState($i))?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
+  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
   <? endfor;?>
-  <li class="<?=State::toClass($s->cfInfoState)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
-  <li class="<?=State::toClass($s->payState)?>" id="menuPay"><a href="#" title="Upload Transaction">Upload Transaction</a></li>
-  <li class="<?=State::toClass($s->getObserverPostRegInfoState())?>" id="menuObsvPostReg"><a href="#" title="Update professor's shirt size &amp; passport">Update professor's shirt size &amp; passport</a></li>
+  <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="#" title="Upload Transaction">Upload Transaction</a></li>
+  <li class="<?=State::inTime($s->getObserverPostRegInfoState(), $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuObsvPostReg"><a href="#" title="Update professor's shirt size &amp; passport">Update professor's shirt size &amp; passport</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::toClass($s->getParticipantPostRegInfoState($i))?>" id="menuPartPostReg<?=$i?>"><a href="#" title="Update <?=Config::ordinal($i)?> participant's shirt size &amp; passport">Update 
+  <li class="<?=State::inTime($s->getParticipantPostRegInfoState($i), $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPartPostReg<?=$i?>"><a href="#" title="Update <?=Config::ordinal($i, false)?> participant's shirt size &amp; passport">Update 
     <?=Config::ordinal($i)?>  participant's shirt size &amp; passport</a></li>
   <? endfor;?>
-  <li class="<?=State::toClass($s->postRegState)?>" id="menuPostReg"><a href="#" title="Select route &amp; upload team's picture &amp; update arrival time">Select route &amp; upload team's picture &amp; update arrival time</a></li>
-  <li class="<?=State::toClass($s->cfPostRegState)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of journey</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="#" title="Select route &amp; upload team's picture &amp; update arrival time">Select route &amp; upload team's picture &amp; update arrival time</a></li>
+  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of journey</a></li>
 <li class="divider"></li>
   <li><a href="index.php" title="Main page">Main page</a></li>
   <li><a href="index.php#changePW">Change password</a></li>
   <li><a href="logout.php" title="Log out">Log out</a></li>
 </ul>
 </div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
-<h2>Confirm your information</h2>
-<? if(($step==1 && $s->cfInfoState==State::ST_WAIT) || ($step==2 && $s->cfPostRegState==State::ST_WAIT)): /*กำลังตรวจ*/ ?>
-<div><b>This section is being approved.</b></div>
-<? elseif(($step==1 && $s->cfInfoState==State::ST_PASS) || ($step==2 && State::is($s->cfInfoState,State::ST_B_PASS))): /*step 1 ผ่าน step 2 ผ่าน แก้ไขได้*/?>
-<div><b>This section is approved.</b></div>
-<? elseif(($step==1 && $s->cfInfoState==State::ST_LOCKED) ||  ($step==2 && $s->cfPostRegState==State::ST_LOCKED) || time()<=$config->REG_START_REG || time()>=$config->REG_END_REG ||  time()<=$config->REG_START_PAY || time()>=$config->REG_END_INFO): /* Not allowed*/?>
-<div><b>This section is locked. You are not allowed to edit any information.</b></div>
-<? elseif(($step==1 && State::is($s->cfInfoState,State::ST_EDITABLE) && time()>$config->REG_START_REG && time()<$config->REG_END_REG) || ($step==2 && State::is($s->cfPostRegState,State::ST_EDITABLE) && time()>$config->REG_START_PAY && time()<$config->REG_END_INFO)):
+<h2><?=State::img(State::inTime($s->cfInfoState,$config->REG_START_REG,$config->REG_END_REG))?>Confirm your information</h2>
+<?php
+echo State::toHTML(State::inTime($s->cfInfoState,$config->REG_START_REG,$config->REG_END_REG));
+
+if(($step==1 && State::is($s->cfInfoState,State::ST_EDITABLE, $config->REG_START_REG, $config->REG_END_REG)) || ($step==2 && State::is($s->cfPostRegState,State::ST_EDITABLE, $config->REG_START_PAY, $config->REG_END_INFO))):
 ?>
 <form action="confirm.php?step=<?=$step?>" method="post" id="confirmForm"><fieldset><legend>Confirm Registration information</legend><div>
 <? if($step==1):?>
-      <input type="checkbox" name="cf[]" value="1" id="cf_0">
+<input name="sum" type="hidden" id="sum" value="4">
+<input type="checkbox" name="cf[]" value="1" id="cf_0">
       <label for="cf_0">I agree with <a href="http://cmu-imc.med.cmu.ac.th/competition.html" title="CMU-IMC Competition Rule" target="_blank">CMU-IMC Competition Rule</a>.</label><br>
       <input type="checkbox" name="cf[]" value="1" id="cf_1">
       <label for="cf_1">I understand <a href="http://cmu-imc.med.cmu.ac.th/registration.html" title="The Registration" target="_blank">The Registration</a>.</label><br>
@@ -132,14 +180,16 @@ require_once 'class.State.php';
       <label for="cf_2">I have already completed <a href="./" title="all application forms in previous steps" target="_blank">all application forms in the previous steps</a>.</label><br>
       <input type="checkbox" name="cf[]" value="1" id="cf_3">
       <label for="cf_3">I confirm that all information is true.</label>
-<? elseif($step==2):?><input type="checkbox" name="cf[]" value="1" id="cf_0">
+<? elseif($step==2):?>
+<input name="sum" type="hidden" id="sum" value="3">
+<input type="checkbox" name="cf[]" value="1" id="cf_0">
       <label for="cf_0">I have already completed <a href="./" title="all application forms in previous steps" target="_blank">all application forms in the previous steps</a>.</label><br>
       <input type="checkbox" name="cf[]" value="1" id="cf_1">
       <label for="cf_1">I am ready to go to <a href="http://cmu-imc.med.cmu.ac.thl" title="CMU-IMC" target="_blank">CMU-IMC</a>.</label>
       <? endif;?>
 </div><div><button type="submit">Confirm</button><button type="reset">Cancel</button></div></fieldset>
-<fieldset><legend></legend></fieldset></form>
-<? endif;?><!-- InstanceEndEditable --></div></div>
+</form>
+<? endif; if(strlen($msg)>0):?><div class="alert-box radius warning"><b><?=$msg?></b></div><? endif;?><!-- InstanceEndEditable --></div></div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">
