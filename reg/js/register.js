@@ -1,6 +1,7 @@
 $(document).ready(function(e) {
     $('#reg').submit(function(e) {
 		e.preventDefault();
-        return $(this).postSK('register.scr.php?'+$.SK(),true);
+		$(this).formWaitSK(null,null);
+        return $(this).postSK('register.scr.php?'+$.SK(),$(this).formWaitSK);
     });
 });

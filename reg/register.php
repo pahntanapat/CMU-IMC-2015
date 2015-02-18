@@ -81,7 +81,7 @@ else{
   		require_once 'class.Team.php';
 		$t=Config::assocToObjProp($_POST,new Team(NULL));
 ?>
-  <form action="register.php" method="post" name="reg" id="reg">
+  <form action="register.php" method="post" name="reg" id="reg" data-waitSK="<?=$ajax->msgID?>">
   <fieldset><legend>Register</legend>
   <div>
     <label>E-mail<input name="email" type="email" required id="email" value="<?=$t->email?>" maxlength="127"></label></div>

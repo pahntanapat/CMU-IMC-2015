@@ -81,6 +81,27 @@
 	$.fn.getSK=function(url,success){
 		return $(this).loadSK(url,$(this).serialize(),success);
 	};
+	
+	$.fn.waitSK=function(result, msg){
+		//if(typeof $(this).data('waitsk')=='undefined') 
+		alert($(this).length);
+		if($(this).removeClass('warning success alert info secondary').data('waitsk')==true){ // Remove Waiting message
+			$(this).html(msg).data('waitsk',false)
+				.addClass('alert-box radius')
+				.addClass((result==true?'success':(result==false?'alert':'info')));
+		}else{
+			$(this).html('<i class="fa fa-spinner fa-pulse"></i> Please wait. The registration system is processing.')
+				.addClass('alert-box warning radius').data('waitsk',true);
+		}
+		return function(result,msg){
+			return $(this).waitSK(result,msg);
+		};
+	};
+	$.fn.formWaitSK=function(result, msg){
+		alert($(this).prop("tagName"));
+		$('#'+$(this).data('waitsk')).waitSK(result, msg);return this;
+	};
+	
 	$.fn.checkAll=function(checkbox){
 		return $(this).click(function(e) {
             if($(this).data("checked")===1){

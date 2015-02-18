@@ -75,7 +75,7 @@ else{
 
 <div class="row"> <!--Whole Body -->
 <div class="small-12 columns" id="content"><!-- InstanceBeginEditable name="Content" -->
-  <form action="login.php" method="post" name="login" id="login">
+  <form action="login.php" method="post" name="login" id="login" data-waitSK="<?=$ajax->msgID?>">
   <fieldset><legend>Log in</legend>
   <div>
     <label>E-mail<input name="email" type="email" required id="email" value="<?=@$_POST['email']?>" maxlength="127"></label></div>
