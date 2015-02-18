@@ -5,7 +5,7 @@ $(document).ready(function(e) {
 			$('#msg').html('Date of birth is greater than today. Please fill out the correct date.');
 			return false;
 		}
-		return $(this).postSK('member.scr.php?'+$.SK(),true);
+		return $(this).postSK('member.scr.php?'+$.SK());
     });
 	$('#uploadForm').ajaxForm({
 		clearForm: true,

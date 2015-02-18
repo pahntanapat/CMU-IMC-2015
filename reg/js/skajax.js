@@ -58,6 +58,7 @@
 			return data.result;
 		return callback;
 	};
+	/**
 	$.fn.ajaxSK=function(setting){
 		var me=this;
 		return $.ajax($.extend({},setting,{
@@ -81,7 +82,47 @@
 	$.fn.getSK=function(url,success){
 		return $(this).loadSK(url,$(this).serialize(),success);
 	};
+	**/
+	$.fn.postSK=function(url){
+		var me=$(this).waitSK(null,null);
+		return $.post(url,$(this).serialize(), function(data){
+			return $(me).SKAjax(data, function(r, m){
+				$(me).waitSK(r, m);
+			});
+		});
+	};
 	
+	$.fn.loadSK=function(url,data){
+		var me=$(this).waitSK(null,null);
+		return $.get(url,data,function(data){
+			return $(me).SKAjax(data, function(r, m){
+				$(me).waitSK(r, m);
+			});
+		});
+	};
+	$.fn.loadSKOriginal=function(url,data,success){
+		var me=this;
+		return $.get(url,data,function(data){
+			return $(me).SKAjax(data,success);
+		});
+	};
+	$.fn.waitSK=function(r, m){
+		if($(this).data('waitsk')=='1'){
+			$(this).removeData('waitsk').find('#waitsk').remove();
+			$('#'+m).removeClass('alert-box radius round warning success alert info secondary')
+				.addClass('alert-box radius')
+				.addClass((r==true?'success':(r==false?'alert':'info')))
+				.append('<br/><small>Time: '+Date()+'</small>');
+		}else{
+			$(this).data('waitsk','1').append(
+				'<div id="waitsk" class="alert-box radius warning">'
+				+'<i class="fa fa-spinner fa-pulse"></i>'
+				+' Please wait. The registration system is processing.</div>'
+			);
+		}
+		return this;
+	};
+	/*
 	$.fn.waitSK=function(result, msg){
 		//if(typeof $(this).data('waitsk')=='undefined') 
 		alert($(this).length);
@@ -101,6 +142,8 @@
 		alert($(this).prop("tagName"));
 		$('#'+$(this).data('waitsk')).waitSK(result, msg);return this;
 	};
+	*/
+	
 	
 	$.fn.checkAll=function(checkbox){
 		return $(this).click(function(e) {

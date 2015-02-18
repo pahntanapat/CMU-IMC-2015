@@ -52,6 +52,7 @@ if(isset($_POST['del'])){ // Delete Admin
 }elseif(isset($_GET['id'])){
 	$ajax->msgID="divAdminForm";
 	$ajax->message=formAdmin($adm,$_GET['id']);
+	if(Config::isAjax()) $ajax->addAction(SKAjax::EVALUTE,'$.addDialog(\''.$ajax->msgID.'\');');
 }else{ // Load admin list
 	$ajax->msgID="adminList";
 	$ajax->message=tableAdmin($adm);

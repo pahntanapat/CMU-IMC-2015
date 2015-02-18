@@ -21,9 +21,6 @@ require_once 'class.SesAdm.php';
 <link rel="stylesheet" type="text/css" href="../slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="../css/foundation.min.css"/>
 <script>
-$(function(e){
-	$.addDialog('asdkldakdlkldas<br>asdjklasdf');
-});
 </script>
 </head>
 

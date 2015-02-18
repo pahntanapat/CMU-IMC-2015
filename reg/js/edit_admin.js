@@ -11,18 +11,16 @@ $(function(e){
 	$('#selectAll').checkAll('.del');
 	$('#reloadAdminList').click(function(e) {
 		e.preventDefault();
-		return $('#adminList').loadSK('edit_admin.scr.php',$.SK(),true);
+		return $('#adminList').loadSK('edit_admin.scr.php',$.SK());
     });
 	$(document).on('submit','form',function(e) {
 		e.preventDefault();
-		return $(this).postSK('edit_admin.scr.php?'+$.SK(),true);
+		return $(this).postSK('edit_admin.scr.php?'+$.SK());
     });
 	$(document).on('click','a.edit',function(e) {
         e.preventDefault();
-		$(this).loadSK('edit_admin.scr.php',
-			$(this).act().split('?')[1]+'&'+$.SK(),
-			function(r,msg){
-				$.addDialog(msg).prop('id','divAdminForm');//'<div id="divAdminForm">'+msg+'</div>'
-		});
+		return $(this).loadSKOriginal('edit_admin.scr.php',
+			$(this).act().split('?')[1]+'&'+$.SK(), true
+		);
     });
 });
