@@ -4,6 +4,7 @@ require_once 'config.inc.php';
 class SesPrt extends Session{
 	protected $SESSION_NAME=__CLASS__;
 	public $id,
+		$teamName,
 		$institution, $university, $country,
 		$teamState, $payState, $postRegState,
 		$cfInfoState, $cfPostRegState;
@@ -16,21 +17,19 @@ class SesPrt extends Session{
 			require_once 'class.Team.php';
 			if($this->id!=NULL){
 				$t=new Team($config->PDO());
-				$this->id=$t->id;
+				$t->id=$this->id;
 				
 				if(!$t->auth()) Config::redirect('logout.php','Update authenicated session error, please log in again');
-				
 				$this->institution=$t->institution;
 				$this->university=$t->university;
 				$this->country=$t->country;
 				$this->teamState=$t->team_state;
+				$this->teamName=$t->team_name;
 				$this->payState=$t->pay_state;
 				$this->postRegState=$t->post_reg_state;
 				
-				for($i=0;$i<=$config->REG_PARTICIPANT_NUM;$i++){
-					$this->setParticipantInfoState($i,$t->getParticipantInfoState($i));
-					$this->setParticipantPostRegInfoState($i,$t->getParticipantPostRegInfoState($i));
-				}
+				$this->memberInfoState=$t->getInfoState();
+				$this->memberPostRegState=$t->getPostRegInfoState();
 			}
 			$this->setProgression();
 		}
@@ -87,7 +86,7 @@ class SesPrt extends Session{
 	public function setProgression(){
 		global $config;
 		require_once 'class.State.php';
-		$this->cfInfoState=State::ST_EDITABLE|State::ST_B_PASS|State::ST_CONFIRM;
+		$this->cfInfoState=$this->teamState;
 		$this->cfPostRegState=State::ST_EDITABLE|State::ST_B_PASS|State::ST_CONFIRM;
 		
 		$score=$this->payState + $this->postRegState + $this->teamState;
@@ -100,9 +99,10 @@ class SesPrt extends Session{
 			$this->cfInfoState&=$this->memberInfoState[$i];
 			$this->cfPostRegState&=$this->memberPostRegState[$i];
 		}
-		$this->progress=$score/$full;
+		$this->progress=(100*$score)/$full;
 		if($this->cfInfoState==State::ST_LOCKED) $this->cfInfoState=State::ST_PASS;
 	}
+	
 	public function getProgression(){
 		return $this->progress;
 	}

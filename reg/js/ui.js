@@ -1,12 +1,13 @@
 (function($){
 	$.addDialog=function(html){
-		$('<div class="dialog"><button>Close</button><div>'+html+'</div></div>')
-			.appendTo('body').fadeIn();
-		$('div.dialog, div.dialog>button').click(function(e) {
-			if(e.target!=this) return;
-			$('div.dialog, div.dialog').fadeOut(function(){$(this).remove();});
-		});
-		return $('div.dialog');
+		return $('<div class="reveal-modal" data-reveal>'+html+'<a class="close-reveal-modal">&#215;</a></div>')
+			.appendTo('body').foundation('reveal', 'open');
+	};
+	$.checkDate=function(date){
+		return date.match(/^\d{4}[\-](0?[1-9]|1[012])[\-](0?[1-9]|[12][0-9]|3[01])$/)?true:false;
+	};
+	$.fn.checkDate=function(){
+		return $.checkDate($(this).val());
 	};
 	$.fn.tabs=function(){
 		var me=this;
@@ -18,3 +19,6 @@
 		return me;
 	};
 }(jQuery));
+$(document).ready(function(e) {
+    $('input[type="date"]').fdatepicker({format:'yyyy-mm-dd',viewMode:'years'});
+});

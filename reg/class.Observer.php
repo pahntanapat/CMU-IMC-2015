@@ -50,6 +50,7 @@ class Observer extends SKeasySQL{
 		else
 			return array(
 				self::ROW_TEAM_ID=>':tid',
+				
 				self::ROW_TITLE=>':t',
 				self::ROW_FIRSTNAME=>':f',
 				self::ROW_MIDDLENAME=>':m',
@@ -88,7 +89,7 @@ class Observer extends SKeasySQL{
 			$stm->bindValue(':l',$this->lastname);
 			
 			$stm->bindValue(':g',$this->gender,PDO::PARAM_BOOL);
-			$stm->bindValue(':bth',$this->birth);
+			$stm->bindValue(':bth',$this->birth?$this->birth:NULL);
 	//		$stm->bindValue(':pno',$this->passport_no);
 	//		$stm->bindValue(':pexp',$this->passport_exp);
 			$stm->bindValue(':religion',$this->religion);
@@ -100,11 +101,12 @@ class Observer extends SKeasySQL{
 			$stm->bindValue(':tw',$this->tw);
 			
 	//		$stm->bindValue(':ss',$this->shirt_size);
-			$stm->bindValue(':cuisine:',$this->cuisine);
-			$stm->bindValue(':allergy',$this->allery);
+			$stm->bindValue(':cuisine',$this->cuisine);
+			$stm->bindValue(':allergy',$this->allergy);
 			$stm->bindValue(':disease',$this->disease);
 			$stm->bindValue(':oreq',$this->other_req);
 		}
+	//	return $stm;
 	}
 	
 	public function add(){
@@ -126,9 +128,10 @@ class Observer extends SKeasySQL{
 			.' SET '.self::equal($rows)
 			.' WHERE '.self::ROW_ID.'=:id'
 		);
-		$this->bindValue($stm);
-		
-		if(!$isAdmin){
+		$this->bindValue($stm,$postReg);
+		if($isAdmin) $this->bindValue($stm,!$postReg);
+		else{
+			require_once 'class.State.php';
 			$this->info_state=State::ST_EDITABLE;
 			$stm->bindValue(':state',$this->info_state,PDO::PARAM_INT);
 		}
@@ -138,7 +141,7 @@ class Observer extends SKeasySQL{
 		return $stm->rowCount();
 	}
 	
-	public function setState($state){
+	public function setState($state){ // for Admin or Confirmation
 		switch($state){
 			case self::ROW_POST_REG_STATE:
 				$v=$this->post_reg_state;
@@ -148,9 +151,9 @@ class Observer extends SKeasySQL{
 				break;
 			default: return false;
 		}
-		$stm=$this->db->prepare('UPDATE '.$this->TABLE.' SET '.$state.'=:state WHERE '.self::ROW_ID.'=:id');
-		$stm->bindValue(':state',$v,PDO::PARAM_INT);
-		$stm->bindValue(':id',$this->id,PDO::PARAM_INT);
+		$stm=$this->db->prepare('UPDATE '.$this->TABLE.' SET '.$state.'=:state WHERE '.($this->id?self::ROW_ID:self::ROW_TEAM_ID).'=:i');
+		$stm->bindValue(':state',$v,PDO::PARAM_INT); // Team ID for comfirmation
+		$stm->bindValue(':i',$this->id?$this->id:$this->team_id,PDO::PARAM_INT);
 		$stm->execute();
 		return $stm->rowCount();
 	}
@@ -163,11 +166,12 @@ class Observer extends SKeasySQL{
 	
 	public function load(){
 		$stm=$this->db->prepare('SELECT '.self::row().' FROM '.$this->TABLE.' WHERE '
-			.(isset($this->id)?self::ROW_ID:self::ROW_TEAM_ID).'=? LIMIT 1');
-		$stm->bindValue(1,isset($this->id)?$this->id:$this->team_id);
+			.($this->id?self::ROW_ID:self::ROW_TEAM_ID).'=? LIMIT 1');
+		$stm->bindValue(1,$this->id?$this->id:$this->team_id);
 		$stm->execute();
-		foreach($stm->fetch(PDO::FETCH_OBJ) as $k=>$v)
-			if(isset($this->$k)) $this->$k=$v;
+		if($stm->rowCount()>0)
+			foreach($stm->fetch(PDO::FETCH_OBJ) as $k=>$v)
+				if(property_exists($this, $k)) $this->$k=$v;
 		return $this;
 	}
 	protected function getPDOStm(){

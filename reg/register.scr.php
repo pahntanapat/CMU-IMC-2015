@@ -5,21 +5,20 @@ require_once 'class.SesPrt.php';
 $sess=new SesPrt();
 if($sess->checkSession()) Config::redirect('./','You have already logged in.');
 
-require_once 'class.Element.php';
-$elem=new Element();
-
 if(Config::isPost()){
-	$elem->result=false;
+	require_once 'class.SKAjax.php';
+	$ajax=new SKAjax();
+	$ajax->result=false;
 	if(!Config::checkCAPTCHA()){
-		$elem->msg='The CAPTCHA Answer is wrong. Please try again.';
+		$ajax->message='The CAPTCHA Answer is wrong. Please try again.';
 	}elseif(Config::isBlank($_POST,'email','pw','country','institution','university')){
-		$elem->msg='You must fill out all fields';
+		$ajax->message='You must fill out all fields';
 	}elseif(!Config::checkEmail($_POST['email'],$e)){
-		$elem->msg=$e;
+		$ajax->message=$e;
 	}elseif(!Config::checkPW($_POST['pw'],$e)){
-		$elem->msg=$e;
+		$ajax->message=$e;
 	}elseif($_POST['pw']!=$_POST['cpw']){
-		$elem->msg='Comfirm password must be same to password.';
+		$ajax->message='Comfirm password must be same to password.';
 	}else{
 		try{
 			require_once 'class.Team.php';
@@ -28,30 +27,21 @@ if(Config::isPost()){
 			
 			$team=Config::assocToObjProp($_POST,$team);
 			if($team->add()===false){
-				$elem->msg='Error: Can not regist new team';
+				$ajax->message='Error: Can not regist new team';
+				$json->addAction(SKAjax::RELOAD_CAPTCHA);
 			}else{
-				$elem->msg='Register: Create new account success. Please go to '."<a href=\"login.php\" title=\"Log in page\">Log in page</a>";
-				$elem->result=true;
+				$ajax->result=true;
+				$ajax->message='Register: Create new account success. Please go to '."<a href=\"login.php\" title=\"Log in page\">Log in page</a>";
+				$ajax->addHtmlTextVal(SKAjax::SET_HTML,'#reg',NULL);
 			}
 			
 			$team->commit();
 		}catch(Exception $e){
 			$team->rollBack();
-			$elem->result=false;
-			$elem->msg=Config::e($e);
+			$ajax->result=false;
+			$ajax->message=Config::e($e);
 		}
 	}
-}
-
-if(Config::isAjax()){
-	require_once 'class.SKAjax.php';
-	$json=new SKAjax();
-	$json->result=$elem->result;
-	$json->addHtmlTextVal(SKAjax::SET_HTML,'#msg',$elem->msg);
-	if($elem->result)
-		$json->addHtmlTextVal(SKAjax::SET_HTML,'#reg',NULL);
-	else
-		$json->addAction(SKAjax::RELOAD_CAPTCHA);
-	Config::JSON($json);
+	if(Config::isAjax()) Config::JSON($ajax);
 }
 ?>

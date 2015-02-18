@@ -85,13 +85,13 @@
 		return $(this).click(function(e) {
             if($(this).data("checked")===1){
 				$(checkbox).prop("checked",false);
-				$(this).data("checked",0).find("span").text("Select All");
+				$(this).data("checked",0).text("Select All");
 			}else{
 				$(checkbox).prop("checked",true);
-				$(this).data("checked",1).find("span").text("Unselect All");
+				$(this).data("checked",1).text("Unselect All");
 			}
 			return false;
-        }).data("checked",0).find("span").text("Select All");
+        }).data("checked",0).text("Select All");
 	};
 	$.query=function(str){
 		return str.replace('#','').split('?',2)[1];

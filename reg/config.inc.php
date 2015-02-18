@@ -5,12 +5,13 @@ class Config extends MyConfig{
 	const
 		DB_USER="root", DB_PW="053721872",
 		DB_NAME="imc", DB_HOST='localhost',
+		UPLOAD_FOLDER='images',
 		
-		REG_START_REG='2014-12-29 00:00:00',
-		REG_END_REG='2014-12-29 23:59:59',
-		REG_START_PAY='2014-12-29 23:59:59',
-		REG_END_PAY='2014-12-29 23:59:59',
-		REG_END_INFO='2014-12-30 00:00:00',
+		REG_START_REG='2015-01-01 00:00:00',
+		REG_END_REG='2015-02-21 00:00:00',
+		REG_START_PAY='2015-01-01 00:00:00',
+		REG_END_PAY='2015-02-18 00:00:00',
+		REG_END_INFO='2015-02-28 00:00:00',
 		
 		REG_PARTICIPANT_NUM=4,
 		REG_MAX_TEAM=50,
@@ -50,15 +51,23 @@ class Config extends MyConfig{
 				return false;
 		}
 	}
+	public static function isDate($date,&$msg){
+		if(preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$date)){
+			return true;
+		}else{
+			$msg='Date format must be YYYY-MM-DD only, for example, 2015-01-31, or 1990-12-01.';
+			return false;
+		}
+	}
 	public static function checkCAPTCHA(){
 		if(!isset($_POST['captcha'])) return false;
 		require_once('securimage/securimage.php');
 		$cp=new Securimage();
 		return ($cp->check($_POST['captcha']));
 	}
-	public static function checkPW($password,&$match){
-		if(preg_match_all('/^[[:alnum:]_:;]{6,32}$/',$password,$match)==0){
-			$match='Password must contains a - z, A - Z, 0-9, _ (underscore), : (colon), and ; (semicolon) in 6 to 32 letters.';
+	public static function checkPW($password,&$msg){
+		if(preg_match_all('/^[[:alnum:]_:;]{6,32}$/',$password,$msg)==0){
+			$msg='Password must contains a - z, A - Z, 0-9, _ (underscore), : (colon), and ; (semicolon) in 6 to 32 letters.';
 			return false;
 		}else return true;
 	}
@@ -86,6 +95,9 @@ class Config extends MyConfig{
 	}
 	public static function isPost(){ //Check the request if its method is post.
 		return isset($_POST)?count($_POST)>0:false;
+	}
+	public static function isFile(){ //Check the request if file(s) is sent.
+		return isset($_FILES)?count($_FILES)>0:false;
 	}
 	
 	public static function redirect($url='/',$exitMsg=false){ //Redirect to $url with/without exit message & AJAX request
@@ -134,13 +146,35 @@ class Config extends MyConfig{
 		}
 		return $num.($supScript?"<sup>".$sup."</sup>":$sup);
 	}
+	
+	public static function readonly(){
+		if(func_num_args()>0)
+			if(!func_get_arg(0)) return '';
+		return ' readonly="readonly"';				
+	}
+	
+	public static function gender(){
+		if(func_num_args()>0) $c=func_get_arg(0);
+		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['gender'];
+		else $c='';
+		$d=func_num_args()>1?func_get_arg(1):false;
+		ob_start();?>
+          <div><label class="require">Gender</label>
+                <input name="gender" type="radio" id="gender_1" value="1"<? if($c==1):?> checked="CHECKED"<? endif; if($d):?> disabled="disabled"<? endif;?>><label for="gender_1">Male</label>
+               <input name="gender" type="radio" id="gender_0" value="0"<? if($c==0):?> checked="CHECKED"<? endif; if($d):?> disabled="disabled"<? endif;?>><label for="gender_0">Female</label>
+          </div>
+<?php
+        return ob_get_clean();
+	}
 	public static function country(){
 		if(func_num_args()>0) $c=func_get_arg(0);
 		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['country'];
 		else $c='';
+		$d=func_num_args()>1?func_get_arg(1):false;
+			
 		ob_start();
 		?>
-<select name="country" id="country">
+<select name="country" id="country"<? if($d):?> disabled="disabled"<? endif;?>>
        <?php
 		foreach(json_decode(file_get_contents('country.json')) as $i){
 			?>

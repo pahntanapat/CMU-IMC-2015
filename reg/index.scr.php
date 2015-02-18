@@ -5,46 +5,44 @@ require_once 'class.SesPrt.php';
 $sess=SesPrt::check();
 if(!$sess) Config::redirect('login.php','You do not log in.');
 
-require_once 'class.Element.php';
-$elem=new Element();
-$elem->result=false;
-
 if(Config::isPost()){ //Change Password
 	require_once 'class.Team.php';
+	require_once 'class.SKAjax.php';
+	$ajax=new SKAjax();
+	$ajax->result=false;
+	$ajax->msgID='msgCP';
 	
-	$elem->msgCP='';
 	if(Config::isBlank($_POST,'pw','cfPW','oldPassword')){
-		$elem->msgCP='Password must not leave blank.';
+		$ajax->message='Password must not leave blank.';
 	}else	if($_POST['pw']!=$_POST['cfPW']){
-		$elem->msgCP='Confirm password must same to new password!';
-	}elseif(!Config::checkPW($_POST['cfPW'],$adm)){
-		$elem->msgCP=$adm;
+		$ajax->message='Confirm password must same to new password!';
+	}elseif(!Config::checkPW($_POST['cfPW'],$t)){
+		$ajax->message=$t;
 	}else{
 		try{
 			$t=new Team($config->PDO());
 			$t->id=$sess->id;
 			$t->pw=$_POST['pw'];
-			$elem->result=$t->changePW($_POST['oldPassword']);
-			$elem->msgCP='Change password '.($elem->result?' success':'fail');
+			$ajax->result=$t->changePW($_POST['oldPassword']);
+			$ajax->message='Change password '.($elem->result?' success':'fail');
+			if($ajax->result && Config::isAjax()) $ajax->addHtmlTextVal(SKAjax::SET_VAL,':password','');
 		}catch(Exception $e){
-			$elem->result=false;
-			$elem->msgCP=Config::e($e);
+			$ajax->result=false;
+			$ajax->message=Config::e($e);
 		}
 	}
+	if(Config::isAjax()) Config::JSON($ajax,true);
 }else{ //Reload message
 	require_once 'class.Message.php';
 	$msg=new Message($config->PDO());
 	$msg->team_id=$sess->id;
-	$elem->msg=$msg->__toString();
-	$elem->result=true;
-}
-
-if(Config::isAjax()){
-	require_once 'class.SKAjax.php';
-	$json=new SKAjax();
-	$json->addHtmlTextVal(SKAjax::SET_HTML,'#'.(isset($elem->msgCP)?'msgCP':'msg'),(isset($elem->msgCP)?$elem->msgCP:$elem->msg));
-	$json->addHtmlTextVal(SKAjax::SET_VAL,':password','');
-	$json->result=$elem->result;
-	Config::JSON($json,true);
+	
+	if(Config::isAjax()){
+		require_once 'class.SKAjax.php';
+		$ajax=new SKAjax();
+		$ajax->message=$msg->__toString();
+		$ajax->msgID="teamMsg";
+		Config::JSON($ajax,true);
+	}
 }
 ?>

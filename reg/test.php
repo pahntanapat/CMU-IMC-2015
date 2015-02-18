@@ -1,6 +1,5 @@
 <?php
 require_once 'config.inc.php';
-require_once 'class.Element.php';
 require_once 'class.Admin.php';
 require_once 'class.SesAdm.php';
 
@@ -24,7 +23,9 @@ $(function(e){
 <body>
 <pre>
 <?php
-var_dump(15&7,13|2,~-1,true,15&true,false-true);
+require_once 'class.UploadImage.php';
+$u=new UploadImage();
+$u->team_id=123456;
 ?>
 </pre>
 <?php

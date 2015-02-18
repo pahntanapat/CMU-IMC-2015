@@ -1,5 +1,5 @@
 <?php
-class SKeasySQL{
+abstract class SKeasySQL{
 	const ROW_ID='id';
 	
 	public $id;
@@ -52,6 +52,20 @@ class SKeasySQL{
 	public function insert($rowList, $table=false){
 		if($table===false) $table=$this->TABLE;
 		return 'INSERT INTO '.$table.' ('.implode(', ',array_keys($rowList)).') VALUES ('.implode(', ',$rowList).')';
+	}
+	
+	abstract public function load();
+	/**
+	  * Load object from $_POST if the page was submit
+	  * In other way, Load from DB
+	  *
+	  */
+	public function submitLoad(){
+		require_once 'config.inc.php';
+		if(Config::isPost())
+			return Config::assocToObjProp($_POST,$this);
+		else
+			return $this->load();
 	}
 	
 	public static function IN($list){

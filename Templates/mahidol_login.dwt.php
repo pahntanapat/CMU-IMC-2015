@@ -8,7 +8,7 @@ $db=newPDO();
 $_SESSION=$sess->updateData($db,$_SESSION);
 ?>
 <!doctype html>
-<html><!-- InstanceBegin template="/reg/mahidol_abstract.dwt" codeOutsideHTMLIsLocked="false" -->
+<html><!-- InstanceBegin template="/not_used/mahidol_abstract.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="utf-8">
 <!-- InstanceBeginEditable name="doctitle" -->

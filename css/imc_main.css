@@ -1,16 +1,20 @@
 @charset "utf-8";
-a:link, a:visited{
-	color:#F00;
-	text-decoration:none;
-}
-a:hover, a:active{
-	color:#00F;
-	text-decoration:underline;
-}
 #mainMenu>ul>li{
 	display:inline-block;
 	font-weight:bold;
 	list-style-type:none;
 	margin:0.5em;
+}
+
+label.require::before{
+	content:"*";
+	color:#F00;
+}
+
+fieldset.require::after{
+	content:"* = required field";
+	color:#F00;
+	font-style:italic;
+	font-size:small;
 }
 

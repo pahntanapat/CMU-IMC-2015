@@ -67,7 +67,7 @@ class Message extends SKeasySQL{
 		if($page) $stm->bindValue(2,$this->show_page,PDO::PARAM_INT);
 		$stm->execute();
 		$re=$stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
-		return $page?$re[0]:$re;
+		return $page?(isset($re[0])?$re[0]:new self($this->db)):$re;
 	}
 	
 	public function __toString(){
@@ -85,17 +85,18 @@ class Message extends SKeasySQL{
 	public static function msgList($msg){
 		ob_start();
 		?><div><button id="reloadMsg" type="button">reload</button> Last update: <?=date('Y-m-d H:i:s')?></div>
-        <ul class="accordion"><?php
+        <ul class="accordion" data-accordion><?php
 		foreach($msg as $i):
-			?><li><a href="#teamMessage<?=$i->id?>"><?=$i->title?></a><div id="<?=$i->id?>"><p><?=$i->detail?></p><p><?=$i->time?></p></div></li>
+			?><li class="accordion-navigation"><a href="#teamMessage<?=$i->id?>"><?=$i->title?></a><div id="<?=$i->id?>"><p><?=$i->detail?></p><h6><?=$i->time?></h6></div></li>
 		<?php endforeach;
-		?></ul><?php
+		?><li class="accordion-navigation"><a href="#SinkanokLabs">About the Registration system</a><div id="#SinkanokLabs"><p>Powered by SKAjax Framwork and Storage-Processor-Carrier-View Architecture of Sinkanok Groups (Sinkanok SPVSA)</p><p>Copyright &copy; 2015 <a href="http://labs.sinkanok.com">Sinkanok Labs</a>, <a href="http://sinkanok.com">Sinkanok Groups</a></p></div></li></ul><?php
 		return ob_get_clean();
 	}
 	
-	public static function msg(self $msg){
+	public static function msg(self $i){
+		if($i->id<0||$i->id==NULL) return NULL;
 		ob_start();
-		?><div id="<?=$i->id?>"><p><?=$i->title?></p><p><?=$i->detail?></p><p><?=$i->time?></p></div><?php
+		?><div id="teamMsg" data-id="<?=$i->id?>" class="round panel callout"><h3><?=$i->title?></h3><p><?=$i->detail?></p><h6><?=$i->time?></h6></div><?php
 		return ob_get_clean();
 	}
 

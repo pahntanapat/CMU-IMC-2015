@@ -83,7 +83,7 @@ class Admin extends SKeasySQL{
 	}
 	public function updateInfo(){
 		$stm=$this->db->prepare('UPDATE '.$this->TABLE
-			.' SET'.self::ROW_STD_ID.'=:s, '.self::ROW_NICK.'=:n WHERE '.self::ROW_ID.'=:i');
+			.' SET '.self::ROW_STD_ID.'=:s, '.self::ROW_NICK.'=:n WHERE '.self::ROW_ID.'=:i');
 		$stm->bindValue(':i',$this->id,PDO::PARAM_INT);
 		$stm->bindValue(':s',$this->student_id);
 		$stm->bindValue(':n',$this->nickname);
@@ -92,7 +92,7 @@ class Admin extends SKeasySQL{
 	}
 	
 	public function changePW($oldPassword){
-		$stm=$this->db->prepare('UPDATE '.$this->TABLE.' SET'.self::ROW_PW.'=:n '.' WHERE '.self::ROW_ID.'=:i AND '.self::ROW_PW.'=:o');
+		$stm=$this->db->prepare('UPDATE '.$this->TABLE.' SET '.self::ROW_PW.'=:n '.' WHERE '.self::ROW_ID.'=:i AND '.self::ROW_PW.'=:o');
 		$stm->bindValue(':i',$this->id,PDO::PARAM_INT);
 		$stm->bindValue(':o',$oldPassword);
 		$stm->bindValue(':n',$this->password);

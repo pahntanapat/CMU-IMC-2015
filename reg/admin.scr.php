@@ -1,51 +1,48 @@
 <?php
 require_once 'config.inc.php';
-require_once 'class.Element.php';
 require_once 'class.SesAdm.php';
-require_once 'class.Admin.php';
 
-//Model section
-$elem=new Element();
-$elem->msg='';
-$elem->auth=false;
+// Processing section
 $sess=SesAdm::check();
 if($sess){ //Have already logged in
 	Config::redirect('home.php','You have already logged in.');
 }
 
+require_once 'class.SKAjax.php';
+$ajax=new SKAjax();
+$ajax->result=false;
+
 if(!Config::checkCAPTCHA()){
-	$elem->msg="The CAPTCHA Answer is wrong. Please try again.";
+	$ajax->message="The CAPTCHA Answer is wrong. Please try again.";
 }elseif(Config::isBlank($_POST,'student_id','password')){
-	$elem->msg="You must fill out Student ID and Password. Do not leave it blank.";
+	$ajax->message="You must fill out Student ID and Password. Do not leave it blank.";
 }else{
 	try{
-		$adm=new Admin($config->PDO(true));
-		$adm=Config::assocToObjProp($_POST,$adm);
-		$elem->auth=$adm->auth();
-		if($elem->auth){
+		require_once 'class.Admin.php';
+		$adm=Config::assocToObjProp($_POST,new Admin($config->PDO(true)));
+		$ajax->result=$adm->auth();
+		if($ajax->result){
 			$sess=new SesAdm();
+			$sess->id=$adm->id;
 			$sess->student_id=$adm->student_id;
 			$sess->nickname=$adm->nickname;
 			$sess->pms=(int) $adm->permission;
-			$elem->msg='Log in success. You are redirected to main page.';
+			$ajax->message='Log in success. You are redirected to main page.';
 		}else{
-			$elem->msg='Log in fail, your student ID or password are incorrect.';
+			$ajax->message='Log in fail, your student ID or password are incorrect.';
 		}
 	}catch(Exception $e){
-		$elem->msg.="<br>\nLog in fail, ".Config::e($e);
-		$elem->auth=false;
+		$ajax->message.="<br>\nLog in fail, ".Config::e($e);
+		$ajax->result=false;
 	}
 }
 
-//Controller section
+//Controller of Processor section
 if(Config::isAjax()){
-	require_once 'class.SKAjax.php';
-	$ajax=new SKAjax();
-	$ajax->addAction(SKAjax::RELOAD_CAPTCHA);
-	$ajax->addHtmlTextVal(SKAjax::SET_HTML,'#msg',$elem->msg);
-	if($elem->auth) $ajax->addAction(SKAjax::REDIRECT,'home.php');
+	if($ajax->result) $ajax->addAction(SKAjax::REDIRECT,'home.php');
+	else $ajax->addAction(SKAjax::RELOAD_CAPTCHA);
 	Config::JSON($ajax,true);
-}elseif($elem->auth){
-	Config::redirect('home.php',$elem->msg);
+}elseif($ajax->result){
+	Config::redirect('home.php',$ajax->message);
 }
 ?>
