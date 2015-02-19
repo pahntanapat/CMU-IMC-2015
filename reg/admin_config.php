@@ -7,7 +7,7 @@ $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
 elseif(!$sess->checkPMS(SesAdm::PMS_WEB)) Config::redirect('home.php','you don\'t have permission here.');
 $json=new SKAjax();
-if(isset($_GET['act'])) require_once 'config.scr.php';
+if(isset($_GET['act'])) require_once 'admin_config.scr.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_admin.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -29,8 +29,9 @@ if(isset($_GET['act'])) require_once 'config.scr.php';
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/foundation-datepicker.js"></script>
 <script src="js/ui.js"></script>
-<script src="js/config.js"></script>
+<script src="js/admin_config.js"></script>
 <link rel="stylesheet" href="css/ui.css">
 <!-- InstanceEndEditable -->
 
@@ -109,31 +110,49 @@ if(isset($_GET['act'])) require_once 'config.scr.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns"><div id="profileBar"><b>Student ID: <?=$sess->student_id?><br>Nickname: <?=$sess->nickname?></b>
-</div><div id="adminMenu" class="small-12 large-9"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard">Main page</a></li>
-    <li> <a href="home.php#editProfile" title="edit profile">Edit profile</a></li>
-    <li><a href="home.php#changePassword">Chage password</a></li>
-    <li><a href="logout.php?admin" title="Log out">Log out</a></li>
-    <li class="divider"></li>
-  <li><a href="#" title="Edit team's, participants', and Observers' information">Edit team's, participants', and Observers' information</a></li>
-  <li><a href="#" title="Information confirmation">Information confirmation</a></li>
-  <li><a href="#" title="Payment confirmation">Payment confirmation</a></li>
-  <li><a href="#" title="Post-registration confirmation">Post-registration confirmation</a></li>
-  <li><a href="#" title="for General Modulator">for General Modulator</a></li>
-  <li><a href="config.php" title="System configuration">System configuration</a></li>
-  <li><a href="edit_admin.php" title="Edit administrator">Edit administrator</a></li>
+<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<ul class="accordion" data-accordion>
+    <li class="accordion-navigation">
+    	<a href="#profileBar"><i class="fa fa-user-md"></i> Admin's Profile</a>
+        <div id="profileBar" class="content active"><b>Student ID:</b> <?=$sess->student_id?><br><b>Nickname:</b> <?=$sess->nickname?></div>
+    </li>
+    <li class="accordion-navigation">
+    	<a href="#adminMenu"><i class="fa fa-bars"></i> Main menu</a>
+    	<div class="content" id="adminMenu"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard">Main page</a></li>
+    		<li><a href="home.php#editProfile" title="edit profile">Edit profile</a></li>
+    		<li><a href="home.php#changePassword">Chage password</a></li>
+    		<li><a href="logout.php?admin" title="Log out">Log out</a></li></ul></div>
+    </li>
+    <li class="accordion-navigation">
+    	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
+    	 <div class="content" id="adminTask"><ul class="side-nav">
+            <li><a href="admin_team_list.php" title="Edit team's, participants', and Observers' information">Edit teams', participants', and professors' information</a></li>
+      		<li class="divider"></li>
+      		<li><a href="admin_approve_info.php">Approve teams' information: step 1</a></li>
+      		<li><a href="admin_pay.php">Approve the transactions</a></li>
+      		<li><a href="admin_approve_post_reg.php">Approve teams' information: step 2</a></li>
+      		<li class="divider"></li>
+      		<li><a href="#" title="for General Modulator">for General Modulator</a></li>
+      		<li class="divider"></li>
+      		<li><a href="admin_edit.php" title="Edit administrator">Edit administrator</a></li>
+      		<li><a href="admin_config.php" title="System configuration">System configuration</a></li>
+		</ul></div></li>
 </ul>
-</div></div><div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
- <form action="config.php?act=save" method="post">
-    <fieldset class="left">
+</div>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
+<h2>System configuration</h2>
+ <form action="admin_config.php?act=save" method="post">
+    <fieldset>
       <legend>ตั้งค่าระบบ</legend>
-      <div id="tabs">
-      <ul>
-        <li><a href="#sch">Schedule</a></li>
-        <li><a href="#regCf">Register</a></li>
-        <li><a href="#db">Database</a></li>
+      <ul class="tabs" data-tab>
+        <li class="tab-title active"><a href="#cpr">&copy; Copyright</a></li>
+        <li class="tab-title"><a href="#sch">Schedule</a></li>
+        <li class="tab-title"><a href="#regCf">Register</a></li>
+        <li class="tab-title"><a href="#db">Database</a></li>
       </ul>
-      <div id="sch">
+      <div class="tabs-content">
+      <div id="cpr" class="content active">&copy; 2015 By Sinkanok Labs, Sinkanok Groups</div>
+      <div id="sch" class="content">
       <div>
         <label for="REG_START_REG">เปิดรับสมัคร: </label>
         <input type="text" name="REG_START_REG" id="REG_START_REG" value="<?=$config->REG_START_REG?>" required>
@@ -152,7 +171,7 @@ if(isset($_GET['act'])) require_once 'config.scr.php';
       </div><div>
         <label for="REG_END_PAY">หมดเขตแก้ไขข้อมูลเพิ่มเติม: </label>
         <input type="text" name="REG_END_INFO" id="REG_END_INFO" value="<?=$config->REG_END_INFO?>" required></div>
-      </div><div id="regCf">
+      </div><div class="content" id="regCf">
       <div>
         <label for="REG_PARTICIPANT_NUM">จำนวนผู้แข่งขันต่อทีม: </label>
         <input type="number" step="1" min="0" max="255" name="REG_PARTICIPANT_NUM" id="REG_PARTICIPANT_NUM" value="<?=$config->REG_PARTICIPANT_NUM?>" required>
@@ -163,7 +182,7 @@ if(isset($_GET['act'])) require_once 'config.scr.php';
         <label for="REG_PAY_PER_PART_US">ค่าสมัครต่อคน (USD): $</label>
         <input type="number" step="0.01" min="0" name="REG_PAY_PER_PART_US" id="REG_PAY_PER_PART_US" value="<?=$config->REG_PAY_PER_PART_US?>" required></div><div>
         <label for="REG_PAY_PER_PART_TH">ค่าสมัครต่อคน (THB): ฿</label>
-        <input type="number" min="0" step="0.01" name="REG_PAY_PER_PART_TH" id="REG_PAY_PER_PART_TH" value="<?=$config->REG_PAY_PER_PART_TH?>" required></div></div><div id="db">
+        <input type="number" min="0" step="0.01" name="REG_PAY_PER_PART_TH" id="REG_PAY_PER_PART_TH" value="<?=$config->REG_PAY_PER_PART_TH?>" required></div></div><div class="content" id="db">
       <div>
         <label for="DB_HOST">DB Host: </label>
         <input type="text" name="DB_HOST" id="DB_HOST" value="<?=$config->DB_HOST?>" required>
@@ -179,14 +198,17 @@ if(isset($_GET['act'])) require_once 'config.scr.php';
         <input type="text" name="DB_PW" id="DB_PW" value="<?=$config->DB_PW?>" required></div>
         <div><label for="DB_PW">Upload folder: </label>
         <input type="text" name="UPLOAD_FOLDER" id="UPLOAD_FOLDER" value="<?=$config->UPLOAD_FOLDER?>" required></div>
-      </div></div>
-      <div class="btnset"><button type="submit">บันทึก</button><button type="submit">ยกเลิก</button>
-        <a href="config.php?act=reset" title="reset" class="reset">Reset
+      </div>
+      <div class="btnset"><button type="submit">บันทึก</button><button type="submit">ยกเลิก</button><a href="admin_config.php?act=reset" title="reset" class="reset button">Reset
         </a></div>
+        </div>
     </fieldset>
   </form>
   <div id="result"><?=$json->message?></div>
-  <h3>PHP version <?=phpversion()?></h3><!-- InstanceEndEditable --></div></div>
+  <h4>PHP version 
+    <?=phpversion()?>
+  </h4>
+<!-- InstanceEndEditable --></div></div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

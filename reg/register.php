@@ -130,7 +130,7 @@ else{
   <div>
     <label>University<input name="university" type="text" required id="university" value="<?=$t->university?>" maxlength="100"></label></div>
   <div>
-    <label>Country<?=Config::country()?></label></div>
+    <label>Country<?=Team::country()?></label></div>
   <div>
   <? require 'captcha.php'; ?>
   <div>

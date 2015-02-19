@@ -9,17 +9,19 @@ elseif(!$sess->checkPMS(SesAdm::PMS_ADMIN))  Config::redirect('home.php','you do
 require_once 'class.SKAjax.php';
 $ajax=new SKAjax();
 
-require_once 'edit_admin.view.php';
+require_once 'admin_edit.view.php';
 $adm=new Admin($config->PDO());
 if(isset($_POST['del'])){ // Delete Admin
 	$ajax->msgID="adminList";
 	try{
 		$adm->beginTransaction();
 		$ajax->message='Delete '.$adm->del($_POST['del']).' administrator(s) success';
+		$ajax->result=true;
 		$adm->commit();
 	}catch(Exception $e){
 			$adm->rollBack();
 			$ajax->message=Config::e($e);
+			$ajax->result=false;
 	}
 	$ajax->message=tableAdmin($adm,$ajax->message);
 }elseif(isset($_POST['id'])){ // Add or Edit admin
@@ -42,10 +44,12 @@ if(isset($_POST['del'])){ // Delete Admin
 				$ajax->message='Edit admin ('.$adm->student_id.') '.($adm->update()?'complete':'fail');
 				if(Config::isAjax()) $ajax->setFormDefault($_POST);
 			}
+			$ajax->result=true;
 			$adm->commit();
 		}catch(Exception $e){
 			$adm->rollBack();
 			$ajax->message=Config::e($e);
+			$ajax->result=false;
 		}
 	}
 	if(!Config::isAjax()) $ajax->message=formAdmin($adm,false,$ajax->message);

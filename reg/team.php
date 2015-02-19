@@ -204,7 +204,7 @@ $r=!State::is($s->teamState,State::ST_EDITABLE,$config->REG_START_REG,$config->R
   </label>
 </div><div>
   <label class="require">Country
-    <?=Config::country($t->country,$r)?>
+    <?=Team::country($t->country,$r)?>
   </label>
 </div><div>
   <label class="require">Institution's telephone number

@@ -284,5 +284,42 @@ class Team extends SKeasySQL{
 			}
 		}
 	}
+	
+	public function getList(){
+		$stm=$this->db->prepare('SELECT '
+			.self::row(
+				self::ROW_ID, self::ROW_TEAM_NAME,
+				self::ROW_INSTITUTION, self::ROW_UNIVERSITY,
+				self::ROW_COUNTRY, self::ROW_PAY_STATE
+			)
+			.' FROM '.$this->TABLE
+			.' ORDER BY '.self::ROW_TEAM_NAME.', '.self::ROW_INSTITUTION.', '
+				.self::ROW_INSTITUTION.', '.self::ROW_UNIVERSITY.', '.self::ROW_COUNTRY
+			);
+		$stm->execute();
+		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
+	}
+	
+	// Miscellenous Function
+	public static function country(){
+		if(func_num_args()>0) $c=func_get_arg(0);
+		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['country'];
+		else $c='';
+		$d=func_num_args()>1?func_get_arg(1):false;
+			
+		ob_start();
+		?>
+<select name="country" id="country"<? if($d):?> disabled="disabled"<? endif;?>>
+       <?php
+		foreach(json_decode(file_get_contents('country.json')) as $i){
+			?>
+	<option value="<?=$i->name?>"<? if($c==$i->name):?> selected="selected"<? endif;?>><?=$i->name?></option>
+            <?php
+		}
+		?>
+</select>
+       <?php
+		return ob_get_clean();
+	}
 }
 ?>

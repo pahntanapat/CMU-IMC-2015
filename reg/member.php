@@ -223,7 +223,7 @@ if($no>0):?>
 <input name="lastname" type="text" id="lastname" value="<?=$member->lastname?>"<?=Config::readonly($r)?>>
           </label></div>
 <?php
-echo Config::gender($member->gender,$r);
+echo Member::gender($member->gender,$r);
 if($no>0):?>
            <div>
              <label class="require">Medical student year

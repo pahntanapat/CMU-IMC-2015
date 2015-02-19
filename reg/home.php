@@ -106,21 +106,36 @@ if(Config::isPost()) require_once 'home.scr.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns"><div id="profileBar"><b>Student ID: <?=$sess->student_id?><br>Nickname: <?=$sess->nickname?></b>
-</div><div id="adminMenu" class="small-12 large-9"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard">Main page</a></li>
-    <li> <a href="home.php#editProfile" title="edit profile">Edit profile</a></li>
-    <li><a href="home.php#changePassword">Chage password</a></li>
-    <li><a href="logout.php?admin" title="Log out">Log out</a></li>
-    <li class="divider"></li>
-  <li><a href="#" title="Edit team's, participants', and Observers' information">Edit team's, participants', and Observers' information</a></li>
-  <li><a href="#" title="Information confirmation">Information confirmation</a></li>
-  <li><a href="#" title="Payment confirmation">Payment confirmation</a></li>
-  <li><a href="#" title="Post-registration confirmation">Post-registration confirmation</a></li>
-  <li><a href="#" title="for General Modulator">for General Modulator</a></li>
-  <li><a href="config.php" title="System configuration">System configuration</a></li>
-  <li><a href="edit_admin.php" title="Edit administrator">Edit administrator</a></li>
+<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<ul class="accordion" data-accordion>
+    <li class="accordion-navigation">
+    	<a href="#profileBar"><i class="fa fa-user-md"></i> Admin's Profile</a>
+        <div id="profileBar" class="content active"><b>Student ID:</b> <?=$sess->student_id?><br><b>Nickname:</b> <?=$sess->nickname?></div>
+    </li>
+    <li class="accordion-navigation">
+    	<a href="#adminMenu"><i class="fa fa-bars"></i> Main menu</a>
+    	<div class="content" id="adminMenu"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard">Main page</a></li>
+    		<li><a href="home.php#editProfile" title="edit profile">Edit profile</a></li>
+    		<li><a href="home.php#changePassword">Chage password</a></li>
+    		<li><a href="logout.php?admin" title="Log out">Log out</a></li></ul></div>
+    </li>
+    <li class="accordion-navigation">
+    	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
+    	 <div class="content" id="adminTask"><ul class="side-nav">
+            <li><a href="admin_team_list.php" title="Edit team's, participants', and Observers' information">Edit teams', participants', and professors' information</a></li>
+      		<li class="divider"></li>
+      		<li><a href="admin_approve_info.php">Approve teams' information: step 1</a></li>
+      		<li><a href="admin_pay.php">Approve the transactions</a></li>
+      		<li><a href="admin_approve_post_reg.php">Approve teams' information: step 2</a></li>
+      		<li class="divider"></li>
+      		<li><a href="#" title="for General Modulator">for General Modulator</a></li>
+      		<li class="divider"></li>
+      		<li><a href="admin_edit.php" title="Edit administrator">Edit administrator</a></li>
+      		<li><a href="admin_config.php" title="System configuration">System configuration</a></li>
+		</ul></div></li>
 </ul>
-</div></div><div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
+</div>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
 <div><fieldset>
       <legend>Your roles</legend><?=SesAdm::checkbox($sess->pms)?></fieldset></div>
   <form action="home.php" method="post" name="editProfile" id="editProfile" data-action="home.scr.php" data-magellan-destination="editProfile">

@@ -34,7 +34,7 @@ $u->team_id=123456;
 </pre>
 <div class="alert-box info"><div class="alert-box alert">Test</div></div>
 <?php
-echo Config::country();
+
 ?>
 <div class="dialog"><button>Close</button><div><button>Close</button></div></div>
 </body>

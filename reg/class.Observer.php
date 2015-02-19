@@ -1,6 +1,6 @@
 <?php
 require_once 'class.SKeasySQL.php';
-class Member extends SKeasySQL{
+abstract class Member extends SKeasySQL{
 	const
 		ROW_TEAM_ID='team_id',
 		
@@ -183,17 +183,33 @@ class Member extends SKeasySQL{
 				.$tmp->TABLE.'.'.Team::ROW_COUNTRY.', '
 			.' FROM '.$this->TABLE
 			.' LEFT JOIN '.$tmp->TABLE.' ON '.$tmp->TABLE.'.'.Team::ROW_ID.'='.$this->TABLE.'.'.self::ROW_TEAM_ID
-			.' WHERE '.self::ROW_TEAM_ID.'=?'
+			.($this->team_id?' WHERE '.self::ROW_TEAM_ID.'=?':'')
 		);
-		$stm->execute(array($this->team_id));
+		if($this->team_id) $stm->bindValue(1,$this->team_id,PDO::PARAM_INT);
+		$stm->execute();
 		return $stm;
 	}
-	public function getList(){
-		return $this->getPDOStm()->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
+	
+	//Miscellenous method
+	public static function gender(){
+		if(func_num_args()>0) $c=func_get_arg(0);
+		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['gender'];
+		else $c='';
+		$d=func_num_args()>1?func_get_arg(1):false;
+		ob_start();?>
+          <div><label class="require">Gender</label>
+                <input name="gender" type="radio" id="gender_1" value="1"<? if($c==1):?> checked="CHECKED"<? endif; if($d):?> disabled="disabled"<? endif;?>><label for="gender_1">Male</label>
+               <input name="gender" type="radio" id="gender_0" value="0"<? if($c==0):?> checked="CHECKED"<? endif; if($d):?> disabled="disabled"<? endif;?>><label for="gender_0">Female</label>
+          </div>
+<?php
+        return ob_get_clean();
 	}
 }
 
 class Observer extends Member{
 	// get unique observer
+	public function getList(){
+		return $this->getPDOStm()->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
+	}
 }
 ?>

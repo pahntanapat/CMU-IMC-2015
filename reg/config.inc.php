@@ -89,6 +89,13 @@ class Config extends MyConfig{
 		return $obj;
 	}
 	
+	public static function trimArray($arr,$exceptKey=array()){
+		foreach($arr as $k=>$v){
+			if(!in_array($k,$exceptKey) && is_string($v))
+				$arr[$k]=trim($v);
+		}
+		return $arr;
+	}
 	// Protocol method & export data
 	public static function isAjax(){ //Check the request if it is from AJAX.
 		return isset($_GET['ajax']);
@@ -129,13 +136,6 @@ class Config extends MyConfig{
 	
 	
 	//Miscellenous function
-	public static function trimArray($arr,$exceptKey=array()){
-		foreach($arr as $k=>$v){
-			if(!in_array($k,$exceptKey))
-				$arr[$k]=trim($v);
-		}
-		return $arr;
-	}
 	public static function ordinal($num,$supScript=true){
 		$sup='th';
 		if(!($num>=11 && $num<=13)){
@@ -158,40 +158,6 @@ class Config extends MyConfig{
 		if(func_num_args()>0)
 			if(!func_get_arg(0)) return '';
 		return ' readonly="readonly"';				
-	}
-	
-	public static function gender(){
-		if(func_num_args()>0) $c=func_get_arg(0);
-		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['gender'];
-		else $c='';
-		$d=func_num_args()>1?func_get_arg(1):false;
-		ob_start();?>
-          <div><label class="require">Gender</label>
-                <input name="gender" type="radio" id="gender_1" value="1"<? if($c==1):?> checked="CHECKED"<? endif; if($d):?> disabled="disabled"<? endif;?>><label for="gender_1">Male</label>
-               <input name="gender" type="radio" id="gender_0" value="0"<? if($c==0):?> checked="CHECKED"<? endif; if($d):?> disabled="disabled"<? endif;?>><label for="gender_0">Female</label>
-          </div>
-<?php
-        return ob_get_clean();
-	}
-	public static function country(){
-		if(func_num_args()>0) $c=func_get_arg(0);
-		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['country'];
-		else $c='';
-		$d=func_num_args()>1?func_get_arg(1):false;
-			
-		ob_start();
-		?>
-<select name="country" id="country"<? if($d):?> disabled="disabled"<? endif;?>>
-       <?php
-		foreach(json_decode(file_get_contents('country.json')) as $i){
-			?>
-	<option value="<?=$i->name?>"<? if($c==$i->name):?> selected="selected"<? endif;?>><?=$i->name?></option>
-            <?php
-		}
-		?>
-</select>
-       <?php
-		return ob_get_clean();
 	}
 }
 $config=Config::load();

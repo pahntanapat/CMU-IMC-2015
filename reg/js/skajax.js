@@ -91,6 +91,12 @@
 			});
 		});
 	};
+	$.fn.postSKOriginal=function(url,success){
+		var me=this;
+		return $.post(url,$(this).serialize(),function(data){
+			return $(me).SKAjax(data,success);
+		});
+	};
 	
 	$.fn.loadSK=function(url,data){
 		var me=$(this).waitSK(null,null);

@@ -56,8 +56,19 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 	$minFileSize=204800, $minResolutionArray=array(1754,1240), // A4 150dpi
 	$quality=25, $algorithmFit=true // true = Fit, false = FIll
 	;
-	
-	
+	public static function getFolder($team_id){
+		return $_SERVER['DOCUMENT_ROOT'].'/'.
+			$config->UPLOAD_FOLDER.'/'.
+			implode('/',str_split(sprintf("%020d",$team_id),2)).'/';
+	}
+		
+	protected function getFile($filename=false){
+		global $config;
+		$dir=self::getFolder($this->team_id);
+		if(!is_dir($dir))
+			mkdir($dir,0777,true);
+		return $dir.$filename.'.'.self::JPG;
+	}
 	
 	public function upload($filename){
 		$file=$_FILES[$this->formName];
@@ -86,7 +97,7 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 		}
 		
 		if($move){ // Move if Small size
-			if(move_uploaded_file($file['tmp_name'], $this->getFolder($filename))){
+			if(move_uploaded_file($file['tmp_name'], $this->getFile($filename))){
 				return true;
 			}else{
 				throw new UploadImageException($file['name'], UploadImageException::CODE_UNWRITTABLE, UploadImageException::TYPE_IMG_ERROR);
@@ -134,7 +145,7 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 				imagecopyresampled($resize,$img,0,0,0,0,$w,$h,$imgW,$imgH);
 			}
 			// Export
-			if(!imagejpeg($resize,$this->getFolder($filename),$this->quality)){
+			if(!imagejpeg($resize,$this->getFile($filename),$this->quality)){
 				throw new UploadImageException($file['name'], UploadImageException::CODE_UNWRITTABLE, UploadImageException::TYPE_IMG_ERROR);
 				return false;
 			}
@@ -150,7 +161,7 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 	// return <img>
 	public function toImg($filename){
 		ob_start();
-		$filename=$this->getFolder($filename);
+		$filename=$this->getFile($filename);
 ?><div><?php
 		if(file_exists($filename)):
 			$filename=urlencode(base64_encode(base64_encode($filename).'|'.rand()));
@@ -169,7 +180,7 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 		$filename=base64_decode(substr($queryString,0,strpos($queryString,'|')));
 		$img=file_exists($filename)?file_get_contents($filename):false;
 		if($img===false){
-			echo "<br/>\n".'Unable to read file: '.$this->getFolder($filename);
+			echo "<br/>\n".'Unable to read file: '.$this->getFile($filename);
 			$img=ob_get_clean();
 		}else{
 			header('Content-Type: image/'.self::JPG);
@@ -178,26 +189,26 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 		return $img;
 	}
 	
-	protected function getFolder($filename){
-		global $config;
-		$dir=$_SERVER['DOCUMENT_ROOT'].'/'.
-			$config->UPLOAD_FOLDER.'/'.
-			implode('/',str_split(sprintf("%020d",$this->team_id),2)).'/';
-		if(!is_dir($dir))
-			mkdir($dir,0777,true);
-		return $dir.$filename.'.'.self::JPG;
-	}
-	
-	protected function toJPG($file){
-		
-	}
-	
 	// return <input type="file" />
 	public function toForm($disable=false){
 		$disable=$disable?" disabled=\"disabled\"":'';
 		return <<<HTML
 <input type="file" name="{$this->formName}" id="{$this->formName}"{$disable} required="required">
 HTML;
+	}
+	
+	public function deleteFile($filename){
+		return unlink($this->getFile($filename));
+	}
+	
+	public function deleteFolder($list){
+		$i=0;
+		foreach($list as $v){
+			$v=self::getFolder($v);
+			if(!is_dir($v)) continue;
+			if(rmdir($v)) $i++;
+		}
+		return $i;
 	}
 }
 
@@ -213,12 +224,18 @@ class UploadImage extends UploadImageOriginal{
 			?'Participant\'s number is wrong.'
 			:self::toImg(self::NAME_PREFIX_PART.$part_no);
 	}
+	public function deletePartStudentCard($part_no){
+		return self::deleteFile(self::NAME_PREFIX_PART.$part_no);
+	}
 	
 	public function uploadPay(){
 		return self::upload(self::NAME_PAY);
 	}
 	public function toImgPay(){
 		return self::toImg(self::NAME_PAY);
+	}
+	public function deletePay(){
+		return self::deleteFile(self::NAME_PAY);
 	}
 	
 	public function uploadTicket(){
@@ -227,12 +244,18 @@ class UploadImage extends UploadImageOriginal{
 	public function toImgTicket(){
 		return self::toImg(self::NAME_TICKET);
 	}
+	public function deleteTicket(){
+		return self::deleteFile(self::NAME_TICKET);
+	}
 	
 	public function uploadTeamPhoto(){
 		return self::upload(self::NAME_TEAM_PHOTO);
 	}
 	public function toImgTeamPhoto(){
 		return self::toImg(self::NAME_TEAM_PHOTO);
+	}
+	public function deleteTeamPhoto(){
+		return self::deleteFile(self::NAME_TEAM_PHOTO);
 	}
 }
 ?>

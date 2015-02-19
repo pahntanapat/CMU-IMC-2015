@@ -10,7 +10,7 @@
 	$.fn.checkDate=function(){
 		return $.checkDate($(this).val());
 	};
-	$.fn.tabs=function(){
+/*	$.fn.tabs=function(){
 		var me=this;
 		$(this).addClass('tabs').find('ul>li>a').click(function(e) {
             $(me).children('div').removeClass('active');
@@ -18,7 +18,7 @@
 			e.preventDefault();
         }).first().click();
 		return me;
-	};
+	};*/
 }(jQuery));
 $(document).ready(function(e) {
     $('input[type="date"]').fdatepicker({format:'yyyy-mm-dd',viewMode:'years'});
