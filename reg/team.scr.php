@@ -19,7 +19,10 @@ if(!Config::isPost()){
 	$ajax->message='Team\'s name must contain only 1 - 30 characters.';
 }else{
 	try{
-		$t=Config::assocToObjProp($_POST,new Team($config->PDO()));
+		$t=Config::assocToObjProp(
+			Config::trimArray($_POST),
+			new Team($config->PDO())
+		);
 		$t->id=$s->id;
 		$t->beginTransaction();
 		
@@ -39,7 +42,6 @@ if(!Config::isPost()){
 	}
 }
 
-if(Config::isAjax())
-	Config::JSON($ajax,true);
+if(Config::isAjax()) Config::JSON($ajax,true);
 
 ?>

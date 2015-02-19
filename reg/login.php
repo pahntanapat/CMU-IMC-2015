@@ -118,6 +118,7 @@ else{
     <button type="reset" name="cancel" id="cancel" value="cancel">Cancel</button></div></fieldset>
   </form>
   <?=$ajax->toMsg()?>
+  <h3><a href="register.php" title="create new account">I don't have any account. Create new account.</a></h3>
 <!-- InstanceEndEditable --></div>
 </div><!--End Body-->
 	<footer class="row">

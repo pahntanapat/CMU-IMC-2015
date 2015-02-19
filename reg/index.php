@@ -141,7 +141,9 @@ require_once 'index.scr.php';
   <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="#" title="Upload Transaction">Upload Transaction</a></li>
+  <li class="divider"> </li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transaction">Upload Transaction</a></li>
+  <li class="divider"> </li>
   <li class="<?=State::inTime($s->getObserverPostRegInfoState(), $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuObsvPostReg"><a href="#" title="Update professor's shirt size &amp; passport">Update professor's shirt size &amp; passport</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
   <li class="<?=State::inTime($s->getParticipantPostRegInfoState($i), $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPartPostReg<?=$i?>"><a href="#" title="Update <?=Config::ordinal($i, false)?> participant's shirt size &amp; passport">Update 

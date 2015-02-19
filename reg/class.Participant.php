@@ -2,7 +2,7 @@
 require_once 'config.inc.php';
 require_once 'class.SKeasySQL.php';
 require_once 'class.Observer.php';
-class Participant extends Observer{
+class Participant extends Member{
 	const ROW_PART_NO='part_no', ROW_EM_CNT='emerg_contact', ROW_STD_Y='std_y';
 	
 	public $part_no,$emerg_contact,$std_y;
@@ -27,7 +27,7 @@ class Participant extends Observer{
 			$stm->bindValue(':part_no',$this->part_no,PDO::PARAM_INT);
 		if(!$postReg){
 			$stm->bindValue(':emrg',$this->emerg_contact);
-			$stm->bindValue(':std_y',$this->std_y,PDO::PARAM_INT);
+			$stm->bindValue(':std_y',is_numeric($this->std_y)?$this->std_y:NULL,PDO::PARAM_INT);
 		}
 	}
 	

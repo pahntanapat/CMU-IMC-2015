@@ -4,7 +4,8 @@
 		return $('#'+id).prepend('<a class="close-reveal-modal" href="#">&#215;</a>').foundation('reveal', 'open');
 	};
 	$.checkDate=function(date){
-		return date.match(/^\d{4}[\-](0?[1-9]|1[012])[\-](0?[1-9]|[12][0-9]|3[01])$/)?true:false;
+		date=date.trim();
+		return date.length>0?(date.match(/^\d{4}[\-](0?[1-9]|1[012])[\-](0?[1-9]|[12][0-9]|3[01])$/)?true:false):true;
 	};
 	$.fn.checkDate=function(){
 		return $.checkDate($(this).val());

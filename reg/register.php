@@ -139,6 +139,7 @@ else{
   </div></fieldset>
   </form><? endif;?>
   <?=$ajax->toMsg()?>
+    <h3><a href="login.php" title="Log in">I have my account. Go to log in page.</a></h3>
 <!-- InstanceEndEditable --></div>
 </div><!--End Body-->
 	<footer class="row">

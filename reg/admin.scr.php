@@ -20,6 +20,7 @@ if(!Config::checkCAPTCHA()){
 	try{
 		require_once 'class.Admin.php';
 		$adm=Config::assocToObjProp($_POST,new Admin($config->PDO(true)));
+		$adm->student_id=trim($adm->student_id);
 		$ajax->result=$adm->auth();
 		if($ajax->result){
 			$sess=new SesAdm();

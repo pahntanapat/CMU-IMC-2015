@@ -24,7 +24,7 @@ class UploadImageException extends Exception{
 				default:
 			}
 		}elseif($type==self::TYPE_UPLOAD_ERROR){
-			$message.="Unable to upload file $filename because ";
+			$message="Unable to upload file $filename because ";
 			switch($code){
 				case UPLOAD_ERR_INI_SIZE:
 				case UPLOAD_ERR_FORM_SIZE:

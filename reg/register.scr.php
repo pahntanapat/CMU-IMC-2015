@@ -25,7 +25,7 @@ if(Config::isPost()){
 			$team=new Team($config->PDO());
 			$team->beginTransaction();
 			
-			$team=Config::assocToObjProp($_POST,$team);
+			$team=Config::assocToObjProp(Config::trimArray($_POST),$team);
 			if($team->add()===false){
 				$ajax->message='Error: Can not regist new team';
 				$json->addAction(SKAjax::RELOAD_CAPTCHA);

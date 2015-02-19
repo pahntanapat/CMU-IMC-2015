@@ -1,6 +1,6 @@
 <?php
 require_once 'class.SKeasySQL.php';
-class Observer extends SKeasySQL{
+class Member extends SKeasySQL{
 	const
 		ROW_TEAM_ID='team_id',
 		
@@ -191,5 +191,9 @@ class Observer extends SKeasySQL{
 	public function getList(){
 		return $this->getPDOStm()->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
 	}
+}
+
+class Observer extends Member{
+	// get unique observer
 }
 ?>

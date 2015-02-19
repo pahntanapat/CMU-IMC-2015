@@ -129,6 +129,13 @@ class Config extends MyConfig{
 	
 	
 	//Miscellenous function
+	public static function trimArray($arr,$exceptKey=array()){
+		foreach($arr as $k=>$v){
+			if(!in_array($k,$exceptKey))
+				$arr[$k]=trim($v);
+		}
+		return $arr;
+	}
 	public static function ordinal($num,$supScript=true){
 		$sup='th';
 		if(!($num>=11 && $num<=13)){

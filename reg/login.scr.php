@@ -19,6 +19,7 @@ if(Config::isPost()){
 	}else{
 		require_once 'class.Team.php';
 		$t=Config::assocToObjProp($_POST,new Team($config->PDO()));
+		$t->email=trim($t->email);
 		if($t->auth(true)){
 			$sess->id=$t->id;
 			$sess->teamName=$t->team_name;

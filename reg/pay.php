@@ -5,74 +5,17 @@ require_once 'class.SesPrt.php';
 $s=SesPrt::check(true,true);
 if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
-if(isset($_GET['step']))
-	if(is_numeric($_GET['step'])) $step=intval($_GET['step']);
+if(Config::isPost()||Config::isAjax()) require_once 'index.scr.php';
 
-if(!isset($step))
-	Config::redirect('./','You are redirected.');
-
+require_once 'class.Message.php';
 require_once 'class.State.php';
-
-$msg='';
-if(Config::isPost()||Config::isAjax()){
-	if(array_sum($_POST['cf'])==$_POST['sum']){
-		$msg='You have already confirm your information.';
-		$db=$config->PDO();
-		if($step==1){
-			try{
-				require_once 'class.Team.php';
-				require_once 'class.Observer.php';
-				require_once 'class.Participant.php';
-				$db->beginTransaction();
-				$t=new Team($db);
-			//	$t->beginTransaction();
-				$t->id=$s->id;
-				
-				$ob=new Observer($db);
-			//	$ob->beginTransaction();
-				$ob->team_id=$s->id;
-				
-				$mem=new Participant($db);
-			//	$mem->beginTransaction();
-				$mem->team_id=$s->id;
-				
-				$t->team_state=State::ST_WAIT;
-				$ob->info_state=State::ST_WAIT;
-				$mem->info_state=State::ST_WAIT;
-				
-				$t->setState(Team::ROW_TEAM_STATE);
-				$ob->setState(Observer::ROW_INFO_STATE);
-				$mem->setState(Participant::ROW_INFO_STATE);
-				
-			//	$t->commit();
-			//	$ob->commit();
-			//	$mem->commit();
-				$db->commit();
-				$s->changeID(true);
-			}catch(Exception $e){
-		//		if(isset($t) && $t->inTransaction()) $t->rollBack();
-		//		if(isset($ob) && $ob->inTransaction()) $ob->rollBack();
-		//		if(isset($mem) && $mem->inTransaction()) $mem->rollBack();
-				if($db->inTransaction()) $db->rollBack();
-				
-				$msg=Config::e($e);
-			}
-		}elseif($step==2){
-			try{
-				
-			}catch(Exception $e){
-				$msg=Config::e($e);
-			}
-		}
-	}
-}
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Confirm your Information :Chiang Mai University International Medical Challenge</title>
+<title>Upload transaction :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
@@ -212,35 +155,7 @@ if(Config::isPost()||Config::isAjax()){
         </div>
     </li>
 </ul>
-</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
-<h2><?=State::img(State::inTime($s->cfInfoState,$config->REG_START_REG,$config->REG_END_REG))?>Confirm your information</h2>
-<?php
-echo State::toHTML(State::inTime($s->cfInfoState,$config->REG_START_REG,$config->REG_END_REG));
-
-if(($step==1 && State::is($s->cfInfoState,State::ST_EDITABLE, $config->REG_START_REG, $config->REG_END_REG)) || ($step==2 && State::is($s->cfPostRegState,State::ST_EDITABLE, $config->REG_START_PAY, $config->REG_END_INFO))):
-?>
-<form action="confirm.php?step=<?=$step?>" method="post" id="confirmForm"><fieldset><legend>Confirm Registration information</legend><div>
-<? if($step==1):?>
-<input name="sum" type="hidden" id="sum" value="4">
-<input type="checkbox" name="cf[]" value="1" id="cf_0">
-      <label for="cf_0">I agree with <a href="http://cmu-imc.med.cmu.ac.th/competition.html" title="CMU-IMC Competition Rule" target="_blank">CMU-IMC Competition Rule</a>.</label><br>
-      <input type="checkbox" name="cf[]" value="1" id="cf_1">
-      <label for="cf_1">I understand <a href="http://cmu-imc.med.cmu.ac.th/registration.html" title="The Registration" target="_blank">The Registration</a>.</label><br>
-      <input type="checkbox" name="cf[]" value="1" id="cf_2">
-      <label for="cf_2">I have already completed <a href="./" title="all application forms in previous steps" target="_blank">all application forms in the previous steps</a>.</label><br>
-      <input type="checkbox" name="cf[]" value="1" id="cf_3">
-      <label for="cf_3">I confirm that all information is true.</label>
-<? elseif($step==2):?>
-<input name="sum" type="hidden" id="sum" value="3">
-<input type="checkbox" name="cf[]" value="1" id="cf_0">
-      <label for="cf_0">I have already completed <a href="./" title="all application forms in previous steps" target="_blank">all application forms in the previous steps</a>.</label><br>
-      <input type="checkbox" name="cf[]" value="1" id="cf_1">
-      <label for="cf_1">I am ready to go to <a href="http://cmu-imc.med.cmu.ac.thl" title="CMU-IMC" target="_blank">CMU-IMC</a>.</label>
-      <? endif;?>
-</div><div><button type="submit">Confirm</button><button type="reset">Cancel</button></div></fieldset>
-</form>
-<? endif; if(strlen($msg)>0):?><div class="alert-box radius warning"><b><?=$msg?></b></div><? endif;?>
-<h3>After your information is approved, we recommend you to transfer <a href="../registration.html#fee" target="_blank">the application fee</a> and upload the transaction to <a href="pay.php" target="_blank">the registration system</a> as soon as possible.</h3><!-- InstanceEndEditable --></div></div>
+</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->reg_content<!-- InstanceEndEditable --></div></div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

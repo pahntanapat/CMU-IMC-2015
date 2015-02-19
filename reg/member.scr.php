@@ -23,6 +23,17 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 		$upload->minFileSize=60000;
 		$upload->quality=50;
 		if($upload->uploadPartStudentCard($_POST['part_no'])){
+			if($_POST['id']!=''){
+				require_once 'class.Participant.php';
+				require_once 'class.State.php';
+				$p=new Participant($db);
+				$p->id=$_POST['id'];
+				$p->info_state=State::ST_EDITABLE;
+				$p->setState(Participant::ROW_INFO_STATE);
+				
+				$s->setParticipantInfoState($_POST['part_no'], $p->info_state);
+				$uploadAjax->updateMenuState($s);
+			}
 			$uploadAjax->message='Upload your image complete'."<br/><br/>".$upload->toImgPartStudentCard($_POST['part_no']);
 			$uploadAjax->result=true;
 		}else{
@@ -50,7 +61,10 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 	}else{
 		try{
 			require_once 'class.Participant.php';
-			$member=Config::assocToObjProp($_POST,$_POST['part_no']==0?new Observer($db):new Participant($db));
+			$member=Config::assocToObjProp(
+				Config::trimArray($_POST),
+				$_POST['part_no']==0?new Observer($db):new Participant($db)
+			);
 			$member->team_id=$s->id;
 			$member->beginTransaction();
 		//	require_once 'class.Observer.php';
@@ -66,7 +80,7 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 			}
 			if($ajax->result){
 				$ajax->setFormDefault((array) $member);
-				$s->setParticipantInfoState($_POST['part_no'],$member->info_state);
+				$s->setParticipantInfoState($_POST['part_no'], $member->info_state);
 				$ajax->updateMenuState($s);
 			}
 			$member->commit();

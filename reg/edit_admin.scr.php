@@ -30,7 +30,7 @@ if(isset($_POST['del'])){ // Delete Admin
 		$ajax->message=$e;
 	}else{
 		try{
-			$adm=Config::assocToObjProp($_POST,$adm);
+			$adm=Config::assocToObjProp(Config::trimArray($_POST),$adm);
 			$adm->beginTransaction();
 			if($adm->id==0){
 				$ajax->message='Add new admin '.($adm->add()?'complete, #'.$adm->id:'fail');
