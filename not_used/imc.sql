@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 22, 2015 at 05:21 PM
+-- Generation Time: Feb 19, 2015 at 08:33 PM
 -- Server version: 5.6.19-log
 -- PHP Version: 5.6.0
 
@@ -76,19 +76,17 @@ CREATE TABLE `observer_info` (
   `lastname` text COLLATE utf8_unicode_ci,
   `gender` tinyint(1) DEFAULT NULL COMMENT '1 = male, 0 = female',
   `birth` date DEFAULT NULL COMMENT 'date of birth',
-  `passport_no` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'passport No. or TH people ID',
-  `passport_exp` date DEFAULT NULL COMMENT 'Exp of passport of TH people card',
-  `religion` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'ศาสนา',
   `nationality` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'สัญชาติในปัจจุบัน',
   `phone` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'mobile phone No.',
   `email` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `fb` text COLLATE utf8_unicode_ci COMMENT 'Facebook Name, Facebook Profile''s URL',
   `tw` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'twitter name',
-  `shirt_size` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'M',
+  `religion` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'ศาสนา',
   `cuisine` text COLLATE utf8_unicode_ci COMMENT 'อาหาร เช่น Halal, Vegetarian',
   `allergy` text COLLATE utf8_unicode_ci COMMENT 'allergy',
   `disease` text COLLATE utf8_unicode_ci COMMENT 'underlying disease + other medical requirement',
   `other_req` text COLLATE utf8_unicode_ci COMMENT 'other requirement: religion, vegeterian',
+  `shirt_size` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'M',
   `info_state` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT 'สถานะการกรอกข้อมูล',
   `post_reg_state` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'สถานะข้อมูล update หลังจ่ายเงิน (หลังปิดรับสมัคร)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='ข้อมูลผู้สังเกตการณ์ประจำแต่ละทีม';
@@ -110,20 +108,18 @@ CREATE TABLE `participant_info` (
   `gender` tinyint(1) DEFAULT NULL COMMENT '1 = male, 0 = female',
   `std_y` tinyint(3) unsigned DEFAULT NULL COMMENT 'medical student year (ชั้นปี)',
   `birth` date DEFAULT NULL COMMENT 'date of birth',
-  `passport_no` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'passport No. or TH people ID',
-  `passport_exp` date DEFAULT NULL COMMENT 'Exp of passport of TH people card',
-  `religion` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'ศาสนา',
   `nationality` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'สัญชาติในปัจจุบัน',
   `phone` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'mobile phone No.',
   `email` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `fb` text COLLATE utf8_unicode_ci COMMENT 'Facebook Name, Facebook Profile''s URL',
   `tw` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'twitter name',
   `emerg_contact` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'emergency contact (เบอร์โทรผู้ปกครอง กรณีฉุกเฉิน)',
-  `shirt_size` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'M',
+  `religion` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'ศาสนา',
   `cuisine` text COLLATE utf8_unicode_ci COMMENT 'อาหาร เช่น Halal, Vegetarian',
   `allergy` text COLLATE utf8_unicode_ci COMMENT 'allergy',
   `disease` text COLLATE utf8_unicode_ci COMMENT 'underlying disease + other medical requirement',
   `other_req` text COLLATE utf8_unicode_ci COMMENT 'other requirement: religion, vegeterian',
+  `shirt_size` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'M',
   `info_state` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT 'สถานะการกรอกข้อมูล',
   `post_reg_state` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'สถานะข้อมูล update หลังจ่ายเงิน (หลังปิดรับสมัคร)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='ข้อมูลผู้สังเกตการณ์ประจำแต่ละทีม';
@@ -138,6 +134,7 @@ CREATE TABLE `team_info` (
   `id` bigint(20) unsigned NOT NULL,
   `email` varchar(127) CHARACTER SET utf8 NOT NULL,
   `password` varchar(32) CHARACTER SET utf8 NOT NULL,
+  `team_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL COMMENT 'team''s name',
   `institution` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Medical school''s name',
   `university` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT 'University''s name',
   `address` text COLLATE utf8_unicode_ci COMMENT 'Medical school''s address',
