@@ -30,6 +30,7 @@ if(isset($_GET['act'])) require_once 'admin_config.scr.php';
 
 <!-- InstanceBeginEditable name="head" -->
 <script src="js/foundation-datepicker.js"></script>
+<script src="js/jquery.maskedinput.min.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/admin_config.js"></script>
 <link rel="stylesheet" href="css/ui.css">
@@ -61,8 +62,7 @@ if(isset($_GET['act'])) require_once 'admin_config.scr.php';
 				</div>
 			</div>
 			<img class="show-for-small-only" src="../img/logo-head-mini.png"/>
-		
-			<div class="contain-to-grid sticky">
+			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
 						<li class="name">
@@ -126,7 +126,7 @@ if(isset($_GET['act'])) require_once 'admin_config.scr.php';
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="admin_team_list.php" title="Edit team's, participants', and Observers' information">Edit teams', participants', and professors' information</a></li>
+            <li><a href="admin_team_list.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
       		<li class="divider"></li>
       		<li><a href="admin_approve_info.php">Approve teams' information: step 1</a></li>
       		<li><a href="admin_pay.php">Approve the transactions</a></li>
@@ -156,22 +156,22 @@ if(isset($_GET['act'])) require_once 'admin_config.scr.php';
       <div class="alert-box secondary" data-alert><i class="fa fa-calendar"></i> วันเวลาต้องอยู่ในรูปแบบ<br>&quot;[ปี ค.ศ. 4 หลัง]-[เลขเดือน 2 หลัก เช่น 01]-[วันที่ 2 หลัก เช่น 09][เว้นวรรค 1 ครั้ง][ชั่วโมง 2 หลัก]:[นาที 2 หลัก]:[วินาที 2 หลัก]&quot;<br>เช่น<br><ul><li>2015-01-20 04:30:00</li><li>2015-12-31 23:59:59</li><li>2015-10-02 00:00:00</li></ul></div>
       <div>
         <label for="REG_START_REG">เปิดรับสมัคร: </label>
-        <input type="text" name="REG_START_REG" id="REG_START_REG" value="<?=$config->REG_START_REG?>" required>
+        <input type="datetime" name="REG_START_REG" id="REG_START_REG" value="<?=$config->REG_START_REG?>" required>
       </div>
       <div>
         <label for="REG_END_REG">ปิดรับสมัคร: </label>
-        <input type="text" name="REG_END_REG" id="REG_END_REG"  value="<?=$config->REG_END_REG?>" required>
+        <input type="datetime" name="REG_END_REG" id="REG_END_REG"  value="<?=$config->REG_END_REG?>" required>
       </div>
       <div>
         <label for="REG_START_PAY">เริ่มจ่ายเงิน: </label>
-        <input type="text" name="REG_START_PAY" id="REG_START_PAY" value="<?=$config->REG_START_PAY?>" required>
+        <input type="datetime" name="REG_START_PAY" id="REG_START_PAY" value="<?=$config->REG_START_PAY?>" required>
       </div>
       <div>
         <label for="REG_END_PAY">หมดเขตจ่ายเงิน: </label>
-        <input type="text" name="REG_END_PAY" id="REG_END_PAY"  value="<?=$config->REG_END_PAY?>" required>
+        <input type="datetime" name="REG_END_PAY" id="REG_END_PAY"  value="<?=$config->REG_END_PAY?>" required>
       </div><div>
         <label for="REG_END_PAY">หมดเขตแก้ไขข้อมูลเพิ่มเติม: </label>
-        <input type="text" name="REG_END_INFO" id="REG_END_INFO" value="<?=$config->REG_END_INFO?>" required></div>
+        <input type="datetime" name="REG_END_INFO" id="REG_END_INFO" value="<?=$config->REG_END_INFO?>" required></div>
       </div><div class="content" id="regCf">
       <div>
         <label for="REG_PARTICIPANT_NUM">จำนวนผู้แข่งขันต่อทีม: </label>

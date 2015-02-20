@@ -60,8 +60,7 @@ require_once 'class.State.php';
 				</div>
 			</div>
 			<img class="show-for-small-only" src="../img/logo-head-mini.png"/>
-		
-			<div class="contain-to-grid sticky">
+			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
 						<li class="name">
@@ -136,7 +135,7 @@ require_once 'class.State.php';
         <div id="sbStep" class="content">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="../reg/team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
-  <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="../reg/member.php?no=0" title="Professor's infomation">Professor's infomation</a></li>
+  <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="../reg/member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
   <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="../reg/member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
   <? endfor;?>
@@ -144,13 +143,8 @@ require_once 'class.State.php';
   <li class="divider"> </li>
   <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="../reg/pay.php" title="Upload Transaction">Upload Transaction</a></li>
   <li class="divider"> </li>
-  <li class="<?=State::inTime($s->getObserverPostRegInfoState(), $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuObsvPostReg"><a href="#" title="Update professor's shirt size &amp; passport">Update professor's shirt size &amp; passport</a></li>
-  <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::inTime($s->getParticipantPostRegInfoState($i), $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPartPostReg<?=$i?>"><a href="#" title="Update <?=Config::ordinal($i, false)?> participant's shirt size &amp; passport">Update 
-    <?=Config::ordinal($i)?>  participant's shirt size &amp; passport</a></li>
-  <? endfor;?>
-  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="#" title="Select route &amp; upload team's picture &amp; update arrival time">Select route &amp; upload team's picture &amp; update arrival time</a></li>
-  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="../reg/confirm.php?step=2" title="Confirmation of journey">Confirmation of journey</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="../reg/post_reg.php" title="Select route &amp; upload team's picture &amp; update arrival time">Update your journey</a></li>
+  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="../reg/confirm.php?step=2" title="Confirmation of journey">Confirmation of the journey</a></li>
 </ul>
         </div>
     </li>

@@ -53,8 +53,7 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 				</div>
 			</div>
 			<img class="show-for-small-only" src="../img/logo-head-mini.png"/>
-		
-			<div class="contain-to-grid sticky">
+			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
 						<li class="name">
@@ -118,7 +117,7 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="../reg/admin_team_list.php" title="Edit team's, participants', and Observers' information">Edit teams', participants', and professors' information</a></li>
+            <li><a href="../reg/admin_team_list.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
       		<li class="divider"></li>
       		<li><a href="../reg/admin_approve_info.php">Approve teams' information: step 1</a></li>
       		<li><a href="../reg/admin_pay.php">Approve the transactions</a></li>

@@ -31,7 +31,7 @@ class Team extends SKeasySQL{
 		$arrive_by, $arrive_time, $depart_by, $depart_time,
 		$route,
 		$team_state, $pay_state, $post_reg_state;
-	protected $memberInfoState; //, $memberPostRegState; // for authenication only
+	protected $memberInfoState; // for authenication only
 	public $TABLE='team_info',
 		$rows=array(
 			self::ROW_EMAIL=>':e',
@@ -86,10 +86,8 @@ class Team extends SKeasySQL{
 				foreach($row as $k=>$v)
 					if(property_exists($this,$k)) $this->$k=$v;
 				$this->memberInfoState[0]=($row->obsv_info===NULL?State::ST_EDITABLE:$row->obsv_info);
-		//		$this->memberPostRegState[0]=($row->obsv_prs===NULL?State::ST_LOCKED:$row->obsv_prs);
 			}
 			$this->memberInfoState[$i]=($row->part_info===NULL?State::ST_EDITABLE:$row->part_info);
-		//	$this->memberPostRegState[$i]=($row->part_prs===NULL?State::ST_LOCKED:$row->part_prs);
 		}
 		return true;
 	}
@@ -232,6 +230,28 @@ class Team extends SKeasySQL{
 		return $stm->rowCount();
 	}
 	
+	public function countRoute(){
+		$stm=$this->db->prepare('SELECT '.self::ROW_ROUTE.' AS r, COUNT('.self::ROW_ROUTE.') AS c FROM '.$this->TABLE.' GROUP BY '.self::ROW_ROUTE);
+		$stm->execute();
+		$a=array_fill(0,$this->getRoute(true),0);
+		while($row=$stm->fetch(PDO::FETCH_ASSOC))
+			$a[$row['r']]=$row['c'];
+		return $a;
+		//SELECT COUNT(DISTINCT gender) FROM 
+	}
+	public function maxRoute(){
+		global $config;
+		return ceil(($config->REG_MAX_TEAM)/($this->getRoute(true)));
+	}
+	public function getRoute($count=false){
+		global $config;
+		if($count) return 1+substr_count($config->INFO_ROUTE,"\n");
+		$a=explode("\n",$config->INFO_ROUTE);
+		foreach($a as $k=>$v)
+			$a[$k]=trim($v);
+		return $a;
+	}
+	
 	protected function rowArray($withUniv=false,$withPostReg=false,$row=array()){
 		if($withUniv)
 			$row=array_merge($row,array(
@@ -286,6 +306,22 @@ class Team extends SKeasySQL{
 	}
 	
 	// Miscellenous Function
+	public function routeForm(){
+		global $config;
+		$d=func_num_args()>0?func_get_arg(1):false;
+		
+		if(is_numeric($this->route)) $this->route=intval($this->route);
+		$cr=$this->countRoute();
+		$mx=$this->maxRoute();
+		
+		ob_start();?><div><label class="require">Route of Chiang Mai Tour</label>
+<?php
+		  foreach(explode("\n",$config->INFO_ROUTE) as $k=>$v):
+			$v=trim($v);?>
+<input name="route" type="radio" id="route_<?=$k?>" value="<?=$k?>"<? if($this->route===$k):?> checked="CHECKED"<? endif; if($d||$cr[$k]>=$mx):?> disabled="disabled"<? endif;?>><label for="shirt_size_<?=$k?>"><?=$v?> (<?=$cr[$k].'/'.$mx?>)</label>
+<? endforeach;?></div><?php
+		return ob_get_clean();
+	}
 	public static function country(){
 		if(func_num_args()>0) $c=func_get_arg(0);
 		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['country'];

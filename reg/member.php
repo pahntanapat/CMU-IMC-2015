@@ -50,7 +50,7 @@ require_once 'class.State.php';
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
 <script src="js/foundation-datepicker.js"></script>
-<script src="../js/foundation/foundation.magellan.js"></script>
+<script src="js/jquery.maskedinput.min.js"></script>
 <script src="js/jquery.form.min.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/member.js"></script>
@@ -83,8 +83,7 @@ require_once 'class.State.php';
 				</div>
 			</div>
 			<img class="show-for-small-only" src="../img/logo-head-mini.png"/>
-		
-			<div class="contain-to-grid sticky">
+			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
 						<li class="name">
@@ -159,7 +158,7 @@ require_once 'class.State.php';
         <div id="sbStep" class="content">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
-  <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="member.php?no=0" title="Professor's infomation">Professor's infomation</a></li>
+  <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
   <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
   <? endfor;?>
@@ -167,13 +166,8 @@ require_once 'class.State.php';
   <li class="divider"> </li>
   <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transaction">Upload Transaction</a></li>
   <li class="divider"> </li>
-  <li class="<?=State::inTime($s->getObserverPostRegInfoState(), $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuObsvPostReg"><a href="#" title="Update professor's shirt size &amp; passport">Update professor's shirt size &amp; passport</a></li>
-  <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::inTime($s->getParticipantPostRegInfoState($i), $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPartPostReg<?=$i?>"><a href="#" title="Update <?=Config::ordinal($i, false)?> participant's shirt size &amp; passport">Update 
-    <?=Config::ordinal($i)?>  participant's shirt size &amp; passport</a></li>
-  <? endfor;?>
-  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="#" title="Select route &amp; upload team's picture &amp; update arrival time">Select route &amp; upload team's picture &amp; update arrival time</a></li>
-  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of journey</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="post_reg.php" title="Select route &amp; upload team's picture &amp; update arrival time">Update your journey</a></li>
+  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of the journey</a></li>
 </ul>
         </div>
     </li>
@@ -185,8 +179,8 @@ echo State::toHTML(State::inTime($s->getParticipantInfoState($no),$config->REG_S
 
 $msg=new Message($db);
 $msg->team_id=$s->id;
-$msg->load(Message::PAGE_INFO_TEAM);
-echo Message::msg($msg);
+$msg->show_page=Message::PAGE_INFO_TEAM;
+echo $msg;
 unset($msg);
 
 $r=!State::is($s->getParticipantInfoState($no),State::ST_EDITABLE,$config->REG_START_REG,$config->REG_END_REG);
@@ -231,7 +225,7 @@ if($no>0):?>
           </label></div><? endif;?>
            <div>
              <label class="require">Date of Birth <small>Click on the form to show calendar, and click on title bar of calendar to change month, or double click it to select year.</small>
-               <input name="birth" type="date" id="birth" placeholder="YYYY-MM-DD" value="<?=$member->birth?>"<?=Config::readonly($r)?>>
+               <input name="birth" type="date" id="birth" value="<?=$member->birth?>"<?=Config::readonly($r)?>>
           </label></div>
            <div>
              <label class="require">Nationality
@@ -285,13 +279,14 @@ if($no>0):?>
           </label></div>
       </fieldset>
       <fieldset><legend>Shirt size</legend>
-        <a href="../pictures/shirt_size_chart.jpg" target="_blank" class="th"><img src="../pictures/shirt_size_chart.jpg" alt="Shirt size chart"></a>
-<?=Participant::shirtSize($member->shirt_size)?>
-      </fieldset>
+        <a href="../pictures/shirt_size_chart.jpg" target="_blank" class="th"><img src="../pictures/shirt_size_chart.jpg" alt="Shirt size chart"></a><br><br>
+<?=Participant::shirtSize($member->shirt_size,$r)?>
+      </fieldset><? if(!$r):?>
       <fieldset class="require"><legend>Save</legend>
       <div><button type="submit" name="submitInfo">Save</button><button type="reset" name="resetInfo">Cancel</button></div>
       </fieldset>
       <?php
+	  endif;
 if(!isset($ajax)){
 	require_once 'class.SKAjaxReg.php';
 	$ajax=new SKAjaxReg();
@@ -300,12 +295,9 @@ echo $ajax->toMsg();
 unset($ajax);
 ?>
     </form>
-    <? if($no>0):?><hr><h3 data-magellan-destination="upload" id="upload">Upload</h3>
+    <? if($no>0):?><hr><h3 data-magellan-destination="upload" id="upload">Upload <?=$who[0]?>'s copy of student ID card or certificate of student</h3>
    <form action="member.php?no=<?=$no?>" method="post" enctype="multipart/form-data" name="upload" id="uploadForm">
-   <fieldset class="require">
-        <legend>Upload <?=$who[0]?>'s copy of student ID card or certificate of student</legend>
-        <div><label class="require">Image file
-       <?php
+    <?php
 require_once 'class.UploadImage.php';
 $img=new UploadImage();
 $img->team_id=$s->id;
@@ -317,15 +309,21 @@ if(!isset($uploadAjax)){
 	$uploadAjax->msgID='uploadMsg';
 	$uploadAjax->message=$img->toImgPartStudentCard($no);
 }
-echo $img->toForm($r);
-?>
+if(!$r):?>
+   <fieldset class="require">
+        <legend>Upload <?=$who[0]?>'s copy of student ID card or certificate of student</legend>
+        <div><label class="require">Image file
+       <?=$img->toForm($r)?>
        <input name="part_no" type="hidden" id="part_no" value="<?=$no?>">
         <input name="id" type="hidden" id="id" value="<?=$member->id?>">
         </label>
         </div>
         <div><button type="submit" name="submitUpload">Upload</button><button type="reset" name="resetUpload">Cancel</button></div>
-      </fieldset><?=$uploadAjax->toMsg()?>
-    </form><? endif;?>
+      </fieldset>
+ <?php
+ endif;
+ echo $uploadAjax->toMsg();
+ ?></form><? endif;?>
 <!-- InstanceEndEditable --></div></div>
 </div><!--End Body-->
 	<footer class="row">

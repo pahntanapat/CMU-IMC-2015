@@ -5,73 +5,24 @@ require_once 'class.SesPrt.php';
 $s=SesPrt::check(true,true);
 if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
-if(isset($_GET['step']))
-	if(is_numeric($_GET['step'])) $step=intval($_GET['step']);
+if(Config::isPost()||Config::isAjax()) require_once 'post_reg.scr.php';
 
-if(!isset($step))
-	Config::redirect('./','You are redirected.');
-
-require_once 'class.State.php';
-
-$msg='';
-if(Config::isPost()||Config::isAjax()){
-	if(array_sum($_POST['cf'])==$_POST['sum']){
-		$msg='You have already confirm your information.';
-		$db=$config->PDO();
-		if($step==1){
-			try{
-				require_once 'class.Team.php';
-				require_once 'class.Member.php';
-				$db->beginTransaction();
-				$t=new Team($db);
-			//	$t->beginTransaction();
-				$t->id=$s->id;
-				
-				$ob=new Observer($db);
-			//	$ob->beginTransaction();
-				$ob->team_id=$s->id;
-				
-				$mem=new Participant($db);
-			//	$mem->beginTransaction();
-				$mem->team_id=$s->id;
-				
-				$t->team_state=State::ST_WAIT;
-				$ob->info_state=State::ST_WAIT;
-				$mem->info_state=State::ST_WAIT;
-				
-				$t->setState(Team::ROW_TEAM_STATE);
-				$ob->setState(Observer::ROW_INFO_STATE);
-				$mem->setState(Participant::ROW_INFO_STATE);
-				
-			//	$t->commit();
-			//	$ob->commit();
-			//	$mem->commit();
-				$db->commit();
-				$s->changeID(true);
-			}catch(Exception $e){
-		//		if(isset($t) && $t->inTransaction()) $t->rollBack();
-		//		if(isset($ob) && $ob->inTransaction()) $ob->rollBack();
-		//		if(isset($mem) && $mem->inTransaction()) $mem->rollBack();
-				if($db->inTransaction()) $db->rollBack();
-				
-				$msg=Config::e($e);
-			}
-		}elseif($step==2){
-			try{
-				
-			}catch(Exception $e){
-				$msg=Config::e($e);
-			}
-		}
-	}
+$db=$config->PDO();
+if(!isset($t)){
+	require_once 'class.Team.php';
+	$t=new Team($db);
+	$t->id=$s->id;
+	$t->load();
 }
+require_once 'class.Message.php';
+require_once 'class.State.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Confirm your Information :Chiang Mai University International Medical Challenge</title>
+<title>Update the journey :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
@@ -88,6 +39,12 @@ if(Config::isPost()||Config::isAjax()){
 <script src="js/updateMenuState.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/foundation-datepicker.js"></script>
+<script src="js/jquery.maskedinput.min.js"></script>
+<script src="js/jquery.form.min.js"></script>
+<script src="js/ui.js"></script>
+
+<link href="css/foundation-datepicker.css" rel="stylesheet" type="text/css">
 <!-- InstanceEndEditable -->
 
 </head>
@@ -205,39 +162,67 @@ if(Config::isPost()||Config::isAjax()){
         </div>
     </li>
 </ul>
-</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
-<h2><?=State::img(State::inTime($s->cfInfoState,$config->REG_START_REG,$config->REG_END_REG))?>Confirm your information</h2>
+</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" --><h2><?=State::img(State::inTime($s->postRegState,$config->REG_START_PAY,$config->REG_END_INFO))?>Team &amp; Institution information</h2>
 <?php
-echo State::toHTML(State::inTime($s->cfInfoState,$config->REG_START_REG,$config->REG_END_REG));
+echo State::toHTML(State::inTime($s->postRegState,$config->REG_START_PAY,$config->REG_END_INFO));
 
-if(($step==1 && State::is($s->cfInfoState,State::ST_EDITABLE, $config->REG_START_REG, $config->REG_END_REG)) || ($step==2 && State::is($s->cfPostRegState,State::ST_EDITABLE, $config->REG_START_PAY, $config->REG_END_INFO))):
+$msg=new Message($db);
+$msg->team_id=$s->id;
+$msg->show_page=Message::PAGE_POST_REG_TEAM;
+echo $msg;
+unset($msg);
+
+$r=!State::is($s->teamState,State::ST_EDITABLE,$config->REG_START_REG,$config->REG_END_REG);
 ?>
-<form action="confirm.php?step=<?=$step?>" method="post" id="confirmForm"><fieldset><legend>Confirm Registration information</legend><div>
-<? if($step==1):?>
-<input name="sum" type="hidden" id="sum" value="4">
-<input type="checkbox" name="cf[]" value="1" id="cf_0">
-      <label for="cf_0">I agree with <a href="http://cmu-imc.med.cmu.ac.th/competition.html" title="CMU-IMC Competition Rule" target="_blank">CMU-IMC Competition Rule</a>.</label><br>
-      <input type="checkbox" name="cf[]" value="1" id="cf_1">
-      <label for="cf_1">I understand <a href="http://cmu-imc.med.cmu.ac.th/registration.html" title="The Registration" target="_blank">The Registration</a>.</label><br>
-      <input type="checkbox" name="cf[]" value="1" id="cf_2">
-      <label for="cf_2">I have already completed <a href="./" title="all application forms in previous steps" target="_blank">all application forms in the previous steps</a>.</label><br>
-      <input type="checkbox" name="cf[]" value="1" id="cf_3">
-      <label for="cf_3">I confirm that all information is true.</label>
-<? elseif($step==2):?>
-<input name="sum" type="hidden" id="sum" value="3">
-<input type="checkbox" name="cf[]" value="1" id="cf_0">
-      <label for="cf_0">I have already completed <a href="./" title="all application forms in previous steps" target="_blank">all application forms in the previous steps</a>.</label><br>
-      <input type="checkbox" name="cf[]" value="1" id="cf_1">
-      <label for="cf_1">I am ready to go to <a href="http://cmu-imc.med.cmu.ac.thl" title="CMU-IMC" target="_blank">CMU-IMC</a>.</label>
-      <? endif;?>
-</div><div><button type="submit">Confirm</button><button type="reset">Cancel</button></div></fieldset>
+<div class="magellan-container" data-magellan-expedition="fixed">
+  <dl class="sub-nav">
+    <dd data-magellan-arrival="info"><a href="#info">Update your information</a></dd>
+    <dd data-magellan-arrival="photo"><a href="#photo">Upload your team's photo</a></dd>
+    <dd data-magellan-arrival="ticket"><a href="#ticket">Upload ticket</a></dd>
+  </dl>
+</div>
+<hr>
+<h3 data-magellan-destination="info" id="info">Update your information</h3>
+<form action="post_reg.php" method="post" id="infoForm">
+<fieldset><legend>Routes of Chiang Mai Tour</legend>
+<p><a href="../cm_tour.html" target="_blank"><i class="fa fa-map-marker"></i> Information of routes of Chiang Mai Tour</a></p>
+<?=$t->routeForm()?>
+</fieldset>
+<fieldset><legend>Type/Time of Arrival &amp; Departure</legend>
+
+<div>
+  <label class="require">Arrival time
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_time?>">
+  </label>
+</div>
+<div>
+  <label class="require">Expected type of arrival (to Chiang Mai) <small> Airplane, Bus, Train, Van</small>
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_by?>"></label>
+</div>
+<div>
+  <label>Departure time
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_time?>">
+  </label>
+</div>
+<div>
+  <label>Expected type of departure (from Chiang Mai) <small>Airplane, Bus, Train, Van</small>
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_by?>">
+  </label>
+</div>
+</fieldset>
+<? if(!$r):?>
+      <fieldset class="require"><legend>Save</legend>
+      <div><button type="submit" name="submitInfo">Save</button><button type="reset" name="resetInfo">Cancel</button></div>
+      </fieldset>
+<? endif;?>
 </form>
-<? endif; if(strlen($msg)>0):?><div class="alert-box radius warning"><b><?=$msg?></b></div><? endif;?>
-<div class="panel">
-  <h4>
-<? if($step==1):?><i class="fa fa-lg fa-money"></i> After your information is approved, we recommend you to transfer <a href="../registration.html#fee" target="_blank">the application fee</a> and upload the transaction to <a href="pay.php" target="_blank">the registration system</a> as soon as possible.
-<? else:?><i class="fa fa-lg fa-credit-card"></i> After your information is approved, we recommend you to send numbers, expire dates, and copies of participants' and advisor's passports.
-<? endif;?></h4></div><!-- InstanceEndEditable --></div></div>
+<hr>
+<h3 data-magellan-destination="photo" id="photo">Upload your team's photo</h3>
+<form action="post_reg.php" method="post" id="photoForm"></form>
+<hr>
+<h3 data-magellan-destination="ticket" id="ticket">Upload ticket (Arrival to Chiang Mai)</h3>
+<form action="post_reg.php" method="post" id="ticketForm"></form>
+<!-- InstanceEndEditable --></div></div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

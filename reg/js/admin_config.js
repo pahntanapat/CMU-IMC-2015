@@ -7,4 +7,5 @@ $(document).ready(function(e) {
 		e.preventDefault();
         return $(this).loadSK('admin_config.scr.php?'+$(this).act().split('?')[1]+'&'+$.SK());
     });
+	$.datetimepicker();
 });

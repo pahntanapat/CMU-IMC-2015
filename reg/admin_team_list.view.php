@@ -72,7 +72,7 @@ function teamInfo($id,$editable){
 <ul class="tabs" data-tab>
 <li class="tab-title active"><a href="#statusTab">Overall of Status</a></li>
 <li class="tab-title"><a href="#teamTab">Team</a></li>
-<li class="tab-title"><a href="#obsTab">Professor</a></li>
+<li class="tab-title"><a href="#obsTab">Advisor</a></li>
 <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
 <li class="tab-title"><a href="#partTab<?=$i?>"><?=Config::ordinal($i)?> Participant</a></li>
 <? endfor;?>
@@ -82,15 +82,11 @@ function teamInfo($id,$editable){
 <h3>Status</h3>
 <ol>
   <li><?=State::img($t->team_state)?> Team &amp; Institution information</li>
-  <li><?=State::img($o->info_state)?> Professor's infomation</li>
+  <li><?=State::img($o->info_state)?> Advisor's infomation</li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
  <li><?=State::img($p[$i]->info_state)?> <?=Config::ordinal($i)?>  participant's infomation</li>
   <? endfor;?>
   <li><?=State::img($t->pay_state)?> Upload Transaction</li>
-  <li><?=State::img($o->post_reg_state)?> Update professor's shirt size &amp; passport</li>
-  <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li><?=State::img($p[$i]->post_reg_state)?> Update <?=Config::ordinal($i)?> participant's shirt size &amp; passport</li>
-  <? endfor;?>
   <li><?=State::img($t->post_reg_state)?> Select route &amp; upload team's picture &amp; update arrival time</li>
 </ol>
 </div>

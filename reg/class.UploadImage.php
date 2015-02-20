@@ -57,13 +57,13 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 	$quality=25, $algorithmFit=true // true = Fit, false = FIll
 	;
 	public static function getFolder($team_id){
+		global $config;
 		return $_SERVER['DOCUMENT_ROOT'].'/'.
 			$config->UPLOAD_FOLDER.'/'.
 			implode('/',str_split(sprintf("%020d",$team_id),2)).'/';
 	}
 		
 	protected function getFile($filename=false){
-		global $config;
 		$dir=self::getFolder($this->team_id);
 		if(!is_dir($dir))
 			mkdir($dir,0777,true);

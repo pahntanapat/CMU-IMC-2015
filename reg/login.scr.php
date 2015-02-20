@@ -33,7 +33,6 @@ if(Config::isPost()){
 			$sess->postRegState=$t->post_reg_state;
 			
 			$sess->setInfoState($t->getInfoState());
-			$sess->setPostRegInfoState($t->getPostRegInfoState());
 			$sess->setProgression();
 			$sess->write();
 			

@@ -29,7 +29,6 @@ abstract class Member extends SKeasySQL{
 		ROW_OTHER_REQ='other_req',
 		
 		ROW_INFO_STATE='info_state'
-	//	ROW_POST_REG_STATE='post_reg_state'
 		;
 	
 	public $team_id, $title, $firstname, $middlename, $lastname,
@@ -39,7 +38,6 @@ abstract class Member extends SKeasySQL{
 		$phone, $email, $fb, $tw,
 		$shirt_size, $cuisine, $allergy, $disease, $other_req,
 		$info_state,
-	//	$post_reg_state,
 		
 		$university, $institution, $country; // for getList
 	public $TABLE='observer_info';
@@ -190,13 +188,13 @@ abstract class Member extends SKeasySQL{
 	public static function shirtSize(){
 		global $config;
 		if(func_num_args()>0) $c=func_get_arg(0);
-		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['gender'];
+		elseif(isset($_REQUEST['shirt_size'])) $c=$_REQUEST['shirt_size'];
 		else $c='';
 		$d=func_num_args()>1?func_get_arg(1):false;
 		ob_start();?><div><label class="require">Shirt size</label>
 <?php
 		  foreach(explode("\n",$config->INFO_SHIRT_SIZE) as $v):
-		  	$v=trime($v);?>
+		  	$v=trim($v);?>
 <input name="shirt_size" type="radio" id="shirt_size_<?=$v?>" value="<?=$v?>"<? if($c==$v):?> checked="CHECKED"<? endif; if($d):?> disabled="disabled"<? endif;?>><label for="shirt_size_<?=$v?>"><?=$v?></label>
 <? endforeach;?></div>
 <?php
@@ -227,7 +225,7 @@ class Participant extends Member{
 		if($this->part_no>0 && $this->part_no<=$config->REG_PARTICIPANT_NUM)
 			$merge[self::ROW_PART_NO]=':part_no';
 		
-		return array_merge($merge,parent::rowArray($postReg));
+		return array_merge($merge,parent::rowArray());
 	}
 	
 	protected function bindValue(PDOStatement $stm){

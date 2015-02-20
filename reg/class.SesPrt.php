@@ -9,7 +9,7 @@ class SesPrt extends Session{
 		$teamState, $payState, $postRegState,
 		$cfInfoState, $cfPostRegState;
 		
-	protected $memberInfoState=array(), $memberPostRegState=array(), $progress=0; // Status of Infomation of Members
+	protected $memberInfoState=array(), $progress=0; // Status of Infomation of Members
 
 	public function changeID($force=false){
 		global $config;
@@ -29,7 +29,6 @@ class SesPrt extends Session{
 				$this->postRegState=$t->post_reg_state;
 				
 				$this->memberInfoState=$t->getInfoState();
-				$this->memberPostRegState=$t->getPostRegInfoState();
 			}
 			$this->setProgression();
 		}
@@ -38,9 +37,7 @@ class SesPrt extends Session{
 	public function setInfoState($s){
 		$this->memberInfoState=$s;
 	}
-	public function setPostRegInfoState($s){
-		$this->memberPostRegState=$s;
-	}
+
 	public function setParticipantInfoState($i,$state){
 		global $config;
 		if($i>$config->REG_PARTICIPANT_NUM || $i<0) return false;
@@ -62,42 +59,20 @@ class SesPrt extends Session{
 		return $this->getParticipantInfoState(0);
 	}
 	
-	public function setParticipantPostRegInfoState($i,$state){
-		global $config;
-		if($i>$config->REG_PARTICIPANT_NUM || $i<0) return false;
-		$this->memberPostRegState[$i]=$state;
-		return true;
-	}
-	
-	public function getParticipantPostRegInfoState($i){
-		global $config;
-		if($i>$config->REG_PARTICIPANT_NUM || $i<0) return false;
-		return isset($this->memberPostRegState[$i])?$this->memberPostRegState[$i]:$this->memberPostRegState[1];
-	}
-	
-	public function setObserverPostRegInfoState($state){
-		return $this->setParticipantPostRegInfoState(0,$state);
-	}
-	
-	public function getObserverPostRegInfoState(){
-		return $this->getParticipantPostRegInfoState(0);
-	}
-	
 	public function setProgression(){
 		global $config;
 		require_once 'class.State.php';
 		$this->cfInfoState=$this->teamState;
-		$this->cfPostRegState=State::ST_EDITABLE|State::ST_B_PASS|State::ST_CONFIRM;
+		$this->cfPostRegState=$this->postRegState;
 		
 		$score=$this->payState + $this->postRegState + $this->teamState;
 		$full=State::ST_PASS+State::ST_OK+State::ST_PASS;
 		
-		for($i=0;$i<=$config->REG_PARTICIPANT_NUM && $i<count($this->memberInfoState) && $i<count($this->memberPostRegState);$i++){
-			$score+=$this->memberInfoState[$i]+$this->memberPostRegState[$i];
-			$full+=State::ST_PASS+State::ST_OK;
+		for($i=0;$i<=$config->REG_PARTICIPANT_NUM && $i<count($this->memberInfoState);$i++){
+			$score+=$this->memberInfoState[$i];
+			$full+=State::ST_PASS;
 			
 			$this->cfInfoState&=$this->memberInfoState[$i];
-			$this->cfPostRegState&=$this->memberPostRegState[$i];
 		}
 		$this->progress=(100*$score)/$full;
 		if($this->cfInfoState==State::ST_LOCKED) $this->cfInfoState=State::ST_PASS;

@@ -120,11 +120,20 @@
 				.addClass((r==true?'success':(r==false?'alert':'info')))
 				.append('<br/><small>Time: '+Date()+'</small>');
 		}else{
-			$(this).data('waitsk','1').append(
-				'<div id="waitsk" class="alert-box radius warning">'
-				+'<i class="fa fa-spinner fa-pulse"></i>'
-				+' Please wait. The registration system is processing.</div>'
-			);
+			if($(this).data('waitsk','1').prop("tagName")=='FORM'){
+				$(this).append(
+					'<div id="waitsk" class="alert-box radius warning">'
+					+'<i class="fa fa-spinner fa-pulse"></i>'
+					+' Please wait. The registration system is processing.</div>'
+				);
+			}else{
+				$(this).after(
+					'<div id="waitsk" class="alert-box radius warning">'
+					+'<i class="fa fa-spinner fa-pulse"></i>'
+					+' Please wait. The registration system is processing.</div>'
+				);
+			}
+			
 		}
 		return this;
 	};

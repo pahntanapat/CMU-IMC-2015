@@ -18,14 +18,11 @@ class SKAjaxReg extends SKAjax{
 		$param[1]["menuCfInfo"]=State::toClass($s->cfInfoState);
 		$param[1]["menuPay"]=State::toClass($s->payState);
 		
-		$param[1]["menuObsvPostReg"]=State::toClass($s->getObserverPostRegInfoState());
 		$param[1]["menuPostReg"]=State::toClass($s->postRegState);
 		$param[1]["cfPostReg"]=State::toClass($s->cfPostRegState);
 		
-		for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++){
+		for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++)
 			$param[1]["menuPartInfo".$i]=State::toClass($s->getParticipantInfoState($i));
-			$param[1]["menuPartPostReg".$i]=State::toClass($s->getParticipantPostRegInfoState($i));
-		}
 		
 		$param[2]=$s->getProgression();
 		return $this->addAction(self::EVALUTE,'$.updateMenuState('.json_encode($param).');');

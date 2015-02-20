@@ -58,8 +58,7 @@ else{
 				</div>
 			</div>
 			<img class="show-for-small-only" src="../img/logo-head-mini.png"/>
-		
-			<div class="contain-to-grid sticky">
+			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
 						<li class="name">

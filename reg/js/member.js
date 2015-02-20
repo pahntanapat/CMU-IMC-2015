@@ -1,4 +1,5 @@
 $(document).ready(function(e) {
+	$.datetimepicker();
 	$('#infoForm').submit(function(e) {
         e.preventDefault();
 		if(!$('#birth').checkDate()){
