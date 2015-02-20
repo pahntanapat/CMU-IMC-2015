@@ -230,6 +230,63 @@ class Team extends SKeasySQL{
 		return $stm->rowCount();
 	}
 	
+	public function getList($type=''){
+		global $config;
+		if($type==self::ROW_TEAM_STATE){
+			require_once 'class.Member.php';
+			$t=array(new Observer($this->db), new Participant($this->db));
+			$sql='SELECT '.self::row(array(
+					$this->TABLE.'.'.self::ROW_ID=>self::ROW_ID,
+					$this->TABLE.'.'.self::ROW_TEAM_NAME=>self::ROW_TEAM_NAME,
+					$this->TABLE.'.'.self::ROW_INSTITUTION=>self::ROW_INSTITUTION,
+					$this->TABLE.'.'.self::ROW_UNIVERSITY=>self::ROW_UNIVERSITY,
+					$this->TABLE.'.'.self::ROW_COUNTRY=>self::ROW_COUNTRY,
+					'COUNT(*)'=>'c'
+				))
+				.' FROM '.$this->TABLE
+				.' INNER JOIN '.$t[0]->TABLE.' ON '.$t[0]->TABLE.'.'.Observer::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
+				.' INNER JOIN '.$t[1]->TABLE.' ON '.$t[1]->TABLE.'.'.Participant::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
+				.' WHERE '.$this->TABLE.'.'.self::ROW_TEAM_STATE.'=:s AND '
+					.$t[0]->TABLE.'.'.Observer::ROW_INFO_STATE.'=:s AND '
+					.$t[1]->TABLE.'.'.Participant::ROW_INFO_STATE.'=:s'
+				.' GROUP BY '.$this->TABLE.'.'.self::ROW_ID
+				.' HAVING c=:c'
+				.' ORDER BY '.$this->TABLE.'.'.self::ROW_TEAM_NAME.', '.$this->TABLE.'.'.self::ROW_INSTITUTION.', '
+					.$this->TABLE.'.'.self::ROW_INSTITUTION.', '.$this->TABLE.'.'.self::ROW_UNIVERSITY.', '
+					.$this->TABLE.'.'.self::ROW_COUNTRY
+			;
+			unset($t);
+		}else{
+			$sql=$type;
+			switch($type){
+				case self::ROW_ARRIVE_TIME: // All data approved
+					$sql=self::ROW_POST_REG_STATE;
+				case self::ROW_PAY_STATE:
+				case self::ROW_POST_REG_STATE:break;
+				default: $type=''; $sql='';
+			}
+			$sql='SELECT '
+				.self::row(
+					self::ROW_ID, self::ROW_TEAM_NAME,
+					self::ROW_INSTITUTION, self::ROW_UNIVERSITY,
+					self::ROW_COUNTRY
+				)
+				.' FROM '.$this->TABLE
+				.($type!=''?' WHERE '.$type.'=:s':'')
+				.' ORDER BY '.self::ROW_TEAM_NAME.', '.self::ROW_INSTITUTION.', '
+					.self::ROW_INSTITUTION.', '.self::ROW_UNIVERSITY.', '.self::ROW_COUNTRY
+			;
+		}
+		$stm=$this->db->prepare($sql);
+		if($type!='') $stm->bindValue(':s',
+			$type=self::ROW_ARRIVE_TIME?State::ST_OK:State::ST_WAIT,
+			PDO::PARAM_INT);
+		if($type==self::ROW_TEAM_STATE) $stm->bindValue(':c',$config->REG_PARTICIPANT_NUM,PDO::PARAM_INT);
+		$stm->execute();
+		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
+	}
+	
+	// Route methods
 	public function countRoute(){
 		$stm=$this->db->prepare('SELECT '.self::ROW_ROUTE.' AS r, COUNT('.self::ROW_ROUTE.') AS c FROM '.$this->TABLE.' GROUP BY '.self::ROW_ROUTE);
 		$stm->execute();
@@ -289,22 +346,6 @@ class Team extends SKeasySQL{
 			}
 		}
 	}
-	
-	public function getList(){
-		$stm=$this->db->prepare('SELECT '
-			.self::row(
-				self::ROW_ID, self::ROW_TEAM_NAME,
-				self::ROW_INSTITUTION, self::ROW_UNIVERSITY,
-				self::ROW_COUNTRY, self::ROW_PAY_STATE
-			)
-			.' FROM '.$this->TABLE
-			.' ORDER BY '.self::ROW_TEAM_NAME.', '.self::ROW_INSTITUTION.', '
-				.self::ROW_INSTITUTION.', '.self::ROW_UNIVERSITY.', '.self::ROW_COUNTRY
-			);
-		$stm->execute();
-		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
-	}
-	
 	// Miscellenous Function
 	public function routeForm(){
 		global $config;

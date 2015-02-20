@@ -159,6 +159,42 @@ class Config extends MyConfig{
 			if(!func_get_arg(0)) return '';
 		return ' readonly="readonly"';				
 	}
+	
+	/**
+	 *$data is array of objects or arrays that contains data
+	 *$keyPair=array('head row'=>'key of $data', ...);
+	 *$withDel=add delete row
+	 */
+	public static function toTable($data, $keyPair, $withDel=false, $msg=false){
+		ob_start();
+		if($msg!==false):?>
+<div id="msgTable" class="alert-box info"><?=$msg?><br/><small>Last update: <?=date('Y-m-d H:i:s e')?></small></div>
+<? endif;?>
+<table width="100%" border="0">
+  <tr>
+<? if($withDel):?><th scope="col">Delete</th>
+<?php
+		endif;
+		foreach(array_keys($keyPair) as $k):?>
+<th scope="col"><?=$k?></th>
+<?		endforeach;?>
+	</tr>
+<?php
+		foreach($data as $i):
+			$i=(array) $i;
+?>
+	<tr>
+ 		<? if($withDel):?><td><input name="del[]" type="checkbox" class="del" value="<?=$i['id']?>" title="delete"></td><? endif;?>
+		<? foreach($keyPair as $v):?>
+    	<td><?=isset($i[$v])?$i[$v]:''?></td>
+		<? endforeach;?>
+    </tr>
+<? endforeach;?>
+</table>
+<?php
+		return ob_get_clean();
+	}
+	
 }
 $config=Config::load();
 ?>

@@ -2,15 +2,47 @@
 require_once 'config.inc.php';
 require_once 'class.SesAdm.php';
 require_once 'class.Team.php';
+require_once 'class.State.php';
 
 $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
 
+function fullList(PDO $db, $msg=''){
+	require_once 'class.Member.php';
+	$arr=array(
+		'title'=>Participant::ROW_TITLE,
+		'firstname'=>Participant::ROW_FIRSTNAME,
+		'middlename'=>Participant::ROW_MIDDLENAME,
+		'lastname'=>Participant::ROW_LASTNAME,
+		'gender (0 = female, 1 = male)'=>Participant::ROW_GENDER,
+		'team\'s name'=>Team::ROW_TEAM_NAME,
+		'medical school'=>Team::ROW_INSTITUTION,
+		'university'=>Team::ROW_UNIVERSITY,
+		'country'=>Team::ROW_COUNTRY
+	);
+	ob_start();?>
+<ul class="tabs" data-tab>
+ <li class="tab-title active"><a href="#panel1">Teams</a></li>
+ <li class="tab-title"><a href="#panel2">Advisors</a></li>
+ <li class="tab-title"><a href="#panel3">Participants</a></li>
+</ul>
+<div class="tabs-content">
+ <div class="content active" id="panel1"><?php $tmp=new Team($db); echo teamList($tmp);?></div>
+ <div class="content" id="panel2"><?php $tmp=new Observer($db); echo Config::toTable($tmp->getList(),$arr);?></div>
+ <div class="content" id="panel3"><?php $tmp=new Participant($db); echo Config::toTable($tmp->getList(),$arr);?></div>
+</div>
+    <?php
+	return ob_get_clean();
+	
+	/*require_once 'config.inc.php';
+	return Config::toTable($adm->getList(), array('Student ID'=>'student_id', 'Nickname'=>'nickname'));*/
+}
+
 function teamList(Team $t, $type='', $msg=''){
-	require_once 'class.State.php';
 	ob_start();
-	?>
+	if($msg!==false):?>
 <div id="msgTable" class="alert-box info"><?=$msg?><br/><small>Last update: <?=date('Y-m-d H:i:s e')?></small></div>
+<? endif;?>
 <table width="100%" border="0">
   <tr>
     <? if($type==''):?><th scope="col">Delete</th><? endif;?>
@@ -18,7 +50,6 @@ function teamList(Team $t, $type='', $msg=''){
     <th scope="col">Medical school</th>
     <th scope="col">University/College</th>
     <th scope="col">Country</th>
-    <th scope="col">Status of payment</th>
   </tr>
   <? foreach($t->getList($type) as $row):?><tr>
     <? if($type==''):?><td><input name="del[]" type="checkbox" class="del" value="<?=$row->id?>" title="delete"></td><? endif;?>
@@ -26,7 +57,6 @@ function teamList(Team $t, $type='', $msg=''){
     <td><?=$row->institution?></td>
     <td><?=$row->university?></td>
     <td><?=$row->country?></td>
-    <td><?=State::img($row->pay_state)?></td>
   </tr><? endforeach;?>
 </table>
 <?php
@@ -128,29 +158,29 @@ function teamInfo($id,$editable){
     <input name="phone" type="phone" id="phone" value="<?=$t->phone?>" placeholder="(with country code) +XXxxxxxx"<?=Config::readonly($r)?>>
   </label>
 </div>
-</fieldset><fieldset><legend>Arrival time &amp; Chiang Mai Tour</legend>
+</fieldset><fieldset><legend>Routes of Chiang Mai Tour</legend>
+<p><a href="../cm_tour.html" target="_blank"><i class="fa fa-map-marker"></i> Information of routes of Chiang Mai Tour</a></p>
+<?=$t->routeForm()?>
+</fieldset>
+<fieldset><legend>Type/Time of Arrival &amp; Departure</legend>
 <div>
-  <label>Arrival time
-    <input type="text" name="arrive_time" id="arrive_time" value="<?=$t->arrive_time?>" />
+  <label class="require">Arrival time
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_time?>">
   </label>
 </div>
 <div>
-  <label>Arrival by
-    <input type="text" name="arrive_by" id="arrive_by" value="<?=$t->arrive_by?>" />
-  </label>
+  <label class="require">Expected type of arrival (to Chiang Mai) <small> Airplane, Bus, Train, Van</small>
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_by?>"></label>
 </div>
 <div>
   <label>Departure time
-    <input type="text" name="depart_time" id="depart_time" value="<?=$t->depart_time?>" />
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_time?>">
   </label>
 </div>
 <div>
-  <label>Departure by
-    <input type="text" name="depart_by" id="depart_by" value="<?=$t->depart_by?>" />
+  <label>Expected type of departure (from Chiang Mai) <small>Airplane, Bus, Train, Van</small>
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_by?>">
   </label>
-</div>
-<div>
-<label>Route of Chiang Mai Tour</label>
 </div>
 </fieldset>
 <? if(!$r):?><fieldset><legend>Save</legend><div>

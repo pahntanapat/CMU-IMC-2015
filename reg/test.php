@@ -16,23 +16,25 @@ require_once 'class.SesAdm.php';
 <script src="../js/foundation.min.js"></script>
 <script src="../js/vendor/modernizr.js"></script>
 <script src="../slick/slick.min.js"></script>
-<script src="../reg/js/skajax.js"></script>
+<script src="js/skajax.js"></script>
 <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="../slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="../css/foundation.min.css"/>
+<link href="../css/imc_main.css" rel="stylesheet" type="text/css">
+<link href="../css/prime.css" rel="stylesheet" type="text/css" />
 <script>
 </script>
 </head>
 
 <body>
-<pre>
+<pre></pre>
+<div>
 <?php
-require_once 'class.UploadImage.php';
-$u=new UploadImage();
-$u->team_id=123456;
+require_once 'admin_team_list.view.php';
+require_once 'class.Team.php';
+echo  fullList($config->PDO(), 'EDSFF');
 ?>
-</pre>
-<div class="alert-box info"><div class="alert-box alert">Test</div></div>
+</div>
 <?php
 
 ?>

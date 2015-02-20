@@ -11,9 +11,9 @@ require_once 'class.SKAjax.php';
 $ajax=new SKAjax();
 
 $db=$config->PDO();
-$t=new Team($db);
 
 if(Config::isPost()){
+	$t=new Team($db);
 	$ajax->result=false;
 	
 	if($sess->checkPMS(SesAdm::PMS_PARTC)){
@@ -50,6 +50,6 @@ if(Config::isPost()){
 	$ajax->message='';
 }else{
 	$ajax->msgID='divTeamList';
-	$ajax->message=teamList($t);
+	$ajax->message=fullList($db);
 }
 ?>

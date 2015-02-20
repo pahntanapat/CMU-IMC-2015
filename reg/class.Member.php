@@ -159,8 +159,10 @@ abstract class Member extends SKeasySQL{
 		$tmp=new Team(NULL);
 		$stm=$this->db->prepare(
 			'SELECT '.$this->TABLE.'.*, '
+				.$tmp->TABLE.'.'.Team::ROW_TEAM_NAME.', '
 				.$tmp->TABLE.'.'.Team::ROW_INSTITUTION.', '
-				.$tmp->TABLE.'.'.Team::ROW_COUNTRY.', '
+				.$tmp->TABLE.'.'.Team::ROW_UNIVERSITY.', '
+				.$tmp->TABLE.'.'.Team::ROW_COUNTRY
 			.' FROM '.$this->TABLE
 			.' LEFT JOIN '.$tmp->TABLE.' ON '.$tmp->TABLE.'.'.Team::ROW_ID.'='.$this->TABLE.'.'.self::ROW_TEAM_ID
 			.($this->team_id?' WHERE '.self::ROW_TEAM_ID.'=?':'')
