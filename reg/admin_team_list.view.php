@@ -39,7 +39,7 @@ function teamInfo($id,$editable){
 	$r=!$editable;
 	unset($editable);
 	
-	require_once 'class.Participant.php';
+	require_once 'class.Member.php';
 	require_once 'class.UploadImage.php';
 	
 	$t=new Team($db);

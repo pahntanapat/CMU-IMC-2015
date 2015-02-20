@@ -31,7 +31,7 @@ class Team extends SKeasySQL{
 		$arrive_by, $arrive_time, $depart_by, $depart_time,
 		$route,
 		$team_state, $pay_state, $post_reg_state;
-	protected $memberInfoState, $memberPostRegState; // for authenication only
+	protected $memberInfoState; //, $memberPostRegState; // for authenication only
 	public $TABLE='team_info',
 		$rows=array(
 			self::ROW_EMAIL=>':e',
@@ -56,8 +56,7 @@ class Team extends SKeasySQL{
 	* Prepare SQL command for function that select data for session
 	*/
 	private function SQLforSession($withID=false){
-		require_once 'class.Participant.php';
-		require_once 'class.Observer.php';
+		require_once 'class.Member.php';
 		$tmp=array(new Observer(NULL),new Participant(NULL));
 		$rows=array(
 			$this->TABLE.'.'.self::ROW_ID=>self::ROW_ID,
@@ -69,9 +68,9 @@ class Team extends SKeasySQL{
 			$this->TABLE.'.'.self::ROW_PAY_STATE=>self::ROW_PAY_STATE,
 			$this->TABLE.'.'.self::ROW_POST_REG_STATE=>self::ROW_POST_REG_STATE,
 			$tmp[0]->TABLE.'.'.Observer::ROW_INFO_STATE=>'obsv_info',
-			$tmp[0]->TABLE.'.'.Observer::ROW_POST_REG_STATE=>'obsv_prs',
+		//	$tmp[0]->TABLE.'.'.Observer::ROW_POST_REG_STATE=>'obsv_prs',
 			$tmp[1]->TABLE.'.'.Participant::ROW_INFO_STATE=>'part_info',
-			$tmp[1]->TABLE.'.'.Participant::ROW_POST_REG_STATE=>'part_prs',
+		//	$tmp[1]->TABLE.'.'.Participant::ROW_POST_REG_STATE=>'part_prs',
 		);
 		if($withID) $rows[$this->TABLE.'.'.self::ROW_ID]=self::ROW_ID;
 		return self::row($rows);
@@ -87,18 +86,15 @@ class Team extends SKeasySQL{
 				foreach($row as $k=>$v)
 					if(property_exists($this,$k)) $this->$k=$v;
 				$this->memberInfoState[0]=($row->obsv_info===NULL?State::ST_EDITABLE:$row->obsv_info);
-				$this->memberPostRegState[0]=($row->obsv_prs===NULL?State::ST_LOCKED:$row->obsv_prs);
+		//		$this->memberPostRegState[0]=($row->obsv_prs===NULL?State::ST_LOCKED:$row->obsv_prs);
 			}
 			$this->memberInfoState[$i]=($row->part_info===NULL?State::ST_EDITABLE:$row->part_info);
-			$this->memberPostRegState[$i]=($row->part_prs===NULL?State::ST_LOCKED:$row->part_prs);
+		//	$this->memberPostRegState[$i]=($row->part_prs===NULL?State::ST_LOCKED:$row->part_prs);
 		}
 		return true;
 	}
 	public function getInfoState(){
 		return $this->memberInfoState;
-	}
-	public function getPostRegInfoState(){
-		return $this->memberPostRegState;
 	}
 	// Get Participant's or Observer's (if $i=0) Info State after auth()
 	public function getParticipantInfoState($i){
@@ -110,20 +106,9 @@ class Team extends SKeasySQL{
 	public function getObserverInfoState(){
 		return $this->memberInfoState[0];
 	}
-	// Get Participant's or Observer's (if $i=0) Post-Registration-phase Info State after auth()
-	public function getParticipantPostRegInfoState($i){
-		global $config;
-		if($i<0 || $i>$config->REG_PARTICIPANT_NUM) return false;
-		return $this->memberPostRegState[$i];
-	}
-	// Get Observer's Post-Registration-phase Info State after auth()
-	public function getObserverPostRegInfoState(){
-		return $this->memberPostRegState[0];
-	}
 	
 	public function auth($checkPW=false){
-		require_once 'class.Participant.php';
-		require_once 'class.Observer.php';
+		require_once 'class.Member.php';
 		$tmp=array(new Observer(NULL),new Participant(NULL));
 		
 		$stm=($this->db->prepare(

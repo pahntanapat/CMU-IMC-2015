@@ -19,10 +19,10 @@ class Config extends MyConfig{
 		REG_PAY_PER_PART_US=100,
 		REG_PAY_PER_PART_TH=3200,
 		
-		OBSRV_OPEN='2014-12-29 00:00:00',
-		OBSRV_CLOSED='2014-12-30 23:59:59',
-		OBSRV_PAY_PER_OBSRVR=200
+		INFO_ROUTE="Doi Suthep\nMae Hia\nMae Rim",
+		INFO_SHIRT_SIZE="SS\nS\nM\nL\nXL\nXXL"
 		;
+	
 	public function PDO($returnNullIfError=false){
 		$dbh=new PDO(
 			"mysql:host=".$this->DB_HOST.";dbname=".$this->DB_NAME.";", // DSN

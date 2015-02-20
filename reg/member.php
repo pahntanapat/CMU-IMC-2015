@@ -16,7 +16,7 @@ $who=array(
 
 $db=$config->PDO();
 if(!isset($member)){
-	require_once 'class.Participant.php';
+	require_once 'class.Member.php';
 	$member=$no==0?new Observer($db):new Participant($db);
 	$member->id=false;
 	$member->team_id=$s->id;
@@ -283,6 +283,10 @@ if($no>0):?>
             <label>Other requirements
               <textarea name="other_req" rows="5" id="other_req"><?=$member->other_req?></textarea>
           </label></div>
+      </fieldset>
+      <fieldset><legend>Shirt size</legend>
+        <a href="../pictures/shirt_size_chart.jpg" target="_blank" class="th"><img src="../pictures/shirt_size_chart.jpg" alt="Shirt size chart"></a>
+<?=Participant::shirtSize($member->shirt_size)?>
       </fieldset>
       <fieldset class="require"><legend>Save</legend>
       <div><button type="submit" name="submitInfo">Save</button><button type="reset" name="resetInfo">Cancel</button></div>

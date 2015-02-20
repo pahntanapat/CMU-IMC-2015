@@ -153,6 +153,7 @@ if(isset($_GET['act'])) require_once 'admin_config.scr.php';
       <div class="tabs-content">
       <div id="cpr" class="content active">&copy; 2015 By Sinkanok Labs, Sinkanok Groups</div>
       <div id="sch" class="content">
+      <div class="alert-box secondary" data-alert><i class="fa fa-calendar"></i> วันเวลาต้องอยู่ในรูปแบบ<br>&quot;[ปี ค.ศ. 4 หลัง]-[เลขเดือน 2 หลัก เช่น 01]-[วันที่ 2 หลัก เช่น 09][เว้นวรรค 1 ครั้ง][ชั่วโมง 2 หลัก]:[นาที 2 หลัก]:[วินาที 2 หลัก]&quot;<br>เช่น<br><ul><li>2015-01-20 04:30:00</li><li>2015-12-31 23:59:59</li><li>2015-10-02 00:00:00</li></ul></div>
       <div>
         <label for="REG_START_REG">เปิดรับสมัคร: </label>
         <input type="text" name="REG_START_REG" id="REG_START_REG" value="<?=$config->REG_START_REG?>" required>
@@ -178,11 +179,30 @@ if(isset($_GET['act'])) require_once 'admin_config.scr.php';
       </div>
       <div>
       <label for="REG_MAX_TEAM">จำนวนทีมสูงสุด: </label>
-        <input type="number" step="1" min="0" name="REG_MAX_TEAM" id="REG_MAX_TEAM" value="<?=$config->REG_MAX_TEAM?>" required></div><div>
-        <label for="REG_PAY_PER_PART_US">ค่าสมัครต่อคน (USD): $</label>
-        <input type="number" step="0.01" min="0" name="REG_PAY_PER_PART_US" id="REG_PAY_PER_PART_US" value="<?=$config->REG_PAY_PER_PART_US?>" required></div><div>
-        <label for="REG_PAY_PER_PART_TH">ค่าสมัครต่อคน (THB): ฿</label>
-        <input type="number" min="0" step="0.01" name="REG_PAY_PER_PART_TH" id="REG_PAY_PER_PART_TH" value="<?=$config->REG_PAY_PER_PART_TH?>" required></div></div><div class="content" id="db">
+        <input type="number" step="1" min="0" name="REG_MAX_TEAM" id="REG_MAX_TEAM" value="<?=$config->REG_MAX_TEAM?>" required></div>
+        <div><div class="row collapse">
+        <label for="REG_PAY_PER_PART_US">ค่าสมัครต่อคน (USD): </label><div class="small-2 large-1 columns"><span class="prefix">$</span></div>
+        <div class="small-10 large-11 columns"><input type="number" step="0.01" min="0" name="REG_PAY_PER_PART_US" id="REG_PAY_PER_PART_US" value="<?=$config->REG_PAY_PER_PART_US?>" required></div>
+        </div></div>
+        <div><div class="row collapse">
+        <label for="REG_PAY_PER_PART_TH">ค่าสมัครต่อคน (THB): </label><div class="small-2 large-1 columns"><span class="prefix">฿</span></div>
+        <div class="small-10 large-11 columns"><input type="number" min="0" step="0.01" name="REG_PAY_PER_PART_TH" id="REG_PAY_PER_PART_TH" value="<?=$config->REG_PAY_PER_PART_TH?>" required></div>
+        </div></div>
+        <div>
+          <label>Shirt size: <small>One Size One Line; พิมพ์ 1 ขนาดต่อ 1 บรรทัด</small>
+            <textarea name="INFO_SHIRT_SIZE" rows="5" id="INFO_SHIRT_SIZE"><?=$config->INFO_SHIRT_SIZE?></textarea>
+            <div data-alert class="alert-box info radius"><i class="fa fa-lg pull-left fa-info-circle"></i>ถ้าเปลี่ยนแปลงขนาดเสื้อ (ตารางขนาดเสื้อ) อย่าลืมไปแก้ไฟล์ member.php</div>
+          </label>
+        </div>
+        <div>
+          <label>
+          Routes of Chiang Mai Tour: <small>One Route One Line; พิมพ์ 1 เส้นทางต่อ 1 บรรทัด</small>
+            <textarea name="INFO_ROUTE" rows="5" id="INFO_ROUTE" wrap="off"><?=$config->INFO_ROUTE?></textarea>
+            <div data-alert class="alert-box alert radius"><i class="fa fa-2x pull-left fa-exclamation-triangle"></i>ถ้าสลับที่ route อาจจะทำให้ข้อมูลผู้แข่งขันเปลี่ยนได้ เพราะระบบจะจดจำ route ตามลำดับบรรทัด ไม่ใช่ตามชื่อ route และถ้ามีการเปลี่ยนแปลง ควรแจ้งผู้แข่งขันทุกครั้ง</div>
+          </label>
+        </div>
+        </div>
+        <div class="content" id="db">
       <div>
         <label for="DB_HOST">DB Host: </label>
         <input type="text" name="DB_HOST" id="DB_HOST" value="<?=$config->DB_HOST?>" required>
@@ -197,9 +217,11 @@ if(isset($_GET['act'])) require_once 'admin_config.scr.php';
       <div><label for="DB_PW">Password: </label>
         <input type="text" name="DB_PW" id="DB_PW" value="<?=$config->DB_PW?>" required></div>
         <div><label for="DB_PW">Upload folder: </label>
-        <input type="text" name="UPLOAD_FOLDER" id="UPLOAD_FOLDER" value="<?=$config->UPLOAD_FOLDER?>" required></div>
+        <input type="text" name="UPLOAD_FOLDER" id="UPLOAD_FOLDER" value="<?=$config->UPLOAD_FOLDER?>" required>
+        <div data-alert class="alert-box alert radius"><i class="fa fa-2x pull-left fa-exclamation-triangle"></i>ถ้าเปลี่ยน upload folder เมื่อมีคน upload ไฟล์ขึ้นไปแล้ว จำทำให้ระบบไม่สามารถหาไฟล์ได้ แม้ว่าจะมีไฟล์อยู่บน host ดังนั้น ผู้ที่แก้ไขต้องไปย้ายไฟล์บน host ด้วย FTP เองด้วย</div>
+        </div>
       </div>
-      <div class="btnset"><button type="submit">บันทึก</button><button type="submit">ยกเลิก</button><a href="admin_config.php?act=reset" title="reset" class="reset button">Reset
+      <div class="btnset"><button type="submit">บันทึก</button><button type="reset">ยกเลิก</button><a href="admin_config.php?act=reset" title="reset" class="reset button">Reset
         </a></div>
         </div>
     </fieldset>

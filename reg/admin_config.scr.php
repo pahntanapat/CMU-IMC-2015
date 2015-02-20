@@ -18,10 +18,13 @@ try{
 			$json->message=$json->result?'Reset system configuration complete; filesize = '.$json->message.' B':'Unable to reset system configuration';
 			break;
 		case 'save':
-			foreach($_POST as $k=>$v)
-				if(defined(get_class($config).'::'.$k))
-					if(constant('Config::'.$k)!=$v) $config->$k=$v;
+			foreach($_POST as $k=>$v){
+				$v=trim($v);
+				if(defined(get_class($config).'::'.$k)){
+					if(constant(get_class($config).'::'.$k)!=$v) $config->$k=$v;
 					else unset($config->$k);
+				}
+			}
 
 			$json->message=$config->save();
 			$json->result=$json->message!==false;

@@ -24,7 +24,7 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 		$upload->quality=50;
 		if($upload->uploadPartStudentCard($_POST['part_no'])){
 			if($_POST['id']!=''){
-				require_once 'class.Participant.php';
+				require_once 'class.Member.php';
 				require_once 'class.State.php';
 				$p=new Participant($db);
 				$p->id=$_POST['id'];
@@ -60,14 +60,14 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 		$ajax->message='Please fill out "Medical student year" in numeric format.';
 	}else{
 		try{
-			require_once 'class.Participant.php';
+			require_once 'class.Member.php';
 			$member=Config::assocToObjProp(
 				Config::trimArray($_POST),
 				$_POST['part_no']==0?new Observer($db):new Participant($db)
 			);
 			$member->team_id=$s->id;
 			$member->beginTransaction();
-		//	require_once 'class.Observer.php';
+		//	require_once 'class.Member.php';
 		//	$member=new Observer();
 			
 			if($member->id==0){

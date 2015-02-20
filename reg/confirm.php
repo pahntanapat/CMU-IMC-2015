@@ -21,8 +21,7 @@ if(Config::isPost()||Config::isAjax()){
 		if($step==1){
 			try{
 				require_once 'class.Team.php';
-				require_once 'class.Observer.php';
-				require_once 'class.Participant.php';
+				require_once 'class.Member.php';
 				$db->beginTransaction();
 				$t=new Team($db);
 			//	$t->beginTransaction();

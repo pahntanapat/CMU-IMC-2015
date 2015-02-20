@@ -20,7 +20,7 @@ if(Config::isPost()){
 		try{
 			$db->beginTransaction();
 			
-			require_once 'class.Participant.php';
+			require_once 'class.Member.php';
 			require_once 'class.UploadImage.php';
 			
 			$p=new Participant($db);
