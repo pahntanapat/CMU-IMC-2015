@@ -27,6 +27,12 @@ require_once 'admin_team_list.scr.php';
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/foundation-datepicker.js"></script>
+<script src="js/jquery.maskedinput.min.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/admin_team_list.js"></script>
+
+<link href="css/foundation-datepicker.css" rel="stylesheet" type="text/css">
 <!-- InstanceEndEditable -->
 
 </head>
@@ -133,16 +139,20 @@ require_once 'admin_team_list.scr.php';
 </ul>
 </div>
 <div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
-<? if(isset($_GET['id'])):?>
-  <h2>View Team's/Participants' information</h2>
-  <?=$ajax->toMsg()?>
-<? else:?>
+<?php
+if(isset($_GET['id'])):?>
+<h2>Edit Team's info</h2>
+<?php
+echo $ajax->toMsg();
+else:?>
   <h2>Edit Teams' &amp; Participants' information</h2>
-  <form action="admin_team_list.scr.php" method="post">
+  <form action="admin_team_list.php" method="post">
   <div>
     <button type="button" id="selectAll">Select All</button>
     <a href="admin_team_list.php#reloadAdminList" title="reload" class="button" id="reloadAdminList">Reload</a>
     <button type="submit" name="remove" id="remove" value="remove">Remove</button>
+    <a href="admin_team_list.php?id=0" title="add" target="_blank" class="button edit" id="reloadAdminList">Add</a>
+    <input name="act" type="hidden" id="act" value="del">
   </div>
   <?=$ajax->toMsg()?>
   </form>

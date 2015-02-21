@@ -92,9 +92,13 @@
 		});
 	};
 	$.fn.postSKOriginal=function(url,success){
-		var me=this;
+		var me=$(this).waitSK(null,null);
 		return $.post(url,$(this).serialize(),function(data){
-			return $(me).SKAjax(data,success);
+			return $(me).SKAjax(data, function(r, m){
+				$(me).waitSK(null,null);
+				if($.isFunction(success)) return success(r, m);
+				else return r;
+			});
 		});
 	};
 	
@@ -107,18 +111,24 @@
 		});
 	};
 	$.fn.loadSKOriginal=function(url,data,success){
-		var me=this;
+		var me=$(this).waitSK(null,null);
 		return $.get(url,data,function(data){
-			return $(me).SKAjax(data,success);
+			return $(me).SKAjax(data, function(r, m){
+				$(me).waitSK(null,null);
+				if($.isFunction(success)) return success(r, m);
+				else return r;
+			});
 		});
 	};
 	$.fn.waitSK=function(r, m){
 		if($(this).data('waitsk')=='1'){
-			$(this).removeData('waitsk').find('#waitsk').remove();
-			$('#'+m).removeClass('alert-box radius round warning success alert info secondary')
-				.addClass('alert-box radius')
-				.addClass((r==true?'success':(r==false?'alert':'info')))
-				.append('<br/><small>Time: '+Date()+'</small>');
+			$(this).removeData('waitsk');
+			$('#waitsk').remove();
+			if(m!=null)
+				$('#'+m).removeClass('alert-box radius round warning success alert info secondary')
+					.addClass('alert-box radius')
+					.addClass((r==true?'success':(r==false?'alert':'info')))
+					.append('<br/><small>Time: '+Date()+'</small>');
 		}else{
 			if($(this).data('waitsk','1').prop("tagName")=='FORM'){
 				$(this).append(

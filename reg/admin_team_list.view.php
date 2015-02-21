@@ -24,12 +24,14 @@ function fullList(PDO $db, $msg=''){
 <ul class="tabs" data-tab>
  <li class="tab-title active"><a href="#panel1">Teams</a></li>
  <li class="tab-title"><a href="#panel2">Advisors</a></li>
- <li class="tab-title"><a href="#panel3">Participants</a></li>
+  <li class="tab-title"><a href="#panel3">Distinct Advisors</a></li>
+ <li class="tab-title"><a href="#panel4">Participants</a></li>
 </ul>
 <div class="tabs-content">
  <div class="content active" id="panel1"><?php $tmp=new Team($db); echo teamList($tmp);?></div>
  <div class="content" id="panel2"><?php $tmp=new Observer($db); echo Config::toTable($tmp->getList(),$arr);?></div>
- <div class="content" id="panel3"><?php $tmp=new Participant($db); echo Config::toTable($tmp->getList(),$arr);?></div>
+  <div class="content" id="panel3"><?=Config::toTable($tmp->getDistinctList(),$arr);?></div>
+ <div class="content" id="panel4"><?php $tmp=new Participant($db); echo Config::toTable($tmp->getList(),$arr);?></div>
 </div>
     <?php
 	return ob_get_clean();
@@ -53,7 +55,7 @@ function teamList(Team $t, $type='', $msg=''){
   </tr>
   <? foreach($t->getList($type) as $row):?><tr>
     <? if($type==''):?><td><input name="del[]" type="checkbox" class="del" value="<?=$row->id?>" title="delete"></td><? endif;?>
-    <td><a href="<?=$_SERVER['PHP_SELF']?>?id=<?=$row->id?>" target="_blank" class="teamDialog"><?=$row->team_name?></a></td>
+    <td><a href="<?=$_SERVER['PHP_SELF']?>?id=<?=$row->id?>" target="_blank" class="edit"><?=$row->team_name?></a></td>
     <td><?=$row->institution?></td>
     <td><?=$row->university?></td>
     <td><?=$row->country?></td>
@@ -63,7 +65,7 @@ function teamList(Team $t, $type='', $msg=''){
 	return ob_get_clean();
 }
 
-function teamInfo($id,$editable){
+function teamInfo($id,$editable, $msg=''){
 	global $config;
 	$db=$config->PDO();
 	$r=!$editable;
@@ -120,16 +122,18 @@ function teamInfo($id,$editable){
 </ol>
 </div>
 <div class="content" id="teamTab">
-<form action="admin_team_list.php" class="updateInfoForm"><fieldset>
+<form action="admin_team_list.php?id=<?=$_GET['id']?>" class="updateInfoForm"><fieldset>
   <legend>Team's information</legend>
   <div>
-  <label class="require">Email for overall contact
+    <label class="require">Email for overall contact
     <input name="email" type="email" required id="email" value="<?=$t->email?>"<?=Config::readonly($r)?>>
   </label>
-</div>
+    <input name="act" type="hidden" id="act" value="team" />
+    <input name="id" type="hidden" id="id" value="<?=$t->id?>" />
+  </div>
   <div>
   <label class="require">Password
-    <input name="password" type="text" required id="password" value="<?=$t->password?>"<?=Config::readonly($r)?>>
+    <input name="pw" type="text" required id="pw" value="<?=$t->pw?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
@@ -194,13 +198,15 @@ function teamInfo($id,$editable){
 		$member=$m[$no];
 ?>
 <div class="content" id="partTab<?=$no?>">
-   <form action="member.php?no=<?=$no?>" method="post" name="infoForm" id="infoForm">
+   <form action="admin_team_list.php?id=<?=$_GET['id']?>" method="post" name="infoForm" id="infoForm">
       <fieldset>
         <legend>General Information</legend>
         <div>
           <label class="require">Title
+            <input name="act" type="hidden" id="act" value="part" />
             <input name="id" type="hidden" id="id" value="<?=$member->id?>">
             <input name="part_no" type="hidden" id="part_no" value="<?=$no?>">
+			<input name="team_id" type="hidden" id="team_id" value="<?=$member->team_id?>">
             <input name="title" type="text" id="title" value="<?=$member->title?>"<?=Config::readonly($r)?>>
           </label>
         </div>
@@ -280,11 +286,6 @@ function teamInfo($id,$editable){
 <?=Participant::shirtSize($member->shirt_size,$r)?>
       </fieldset>
 <?php
-		if(!isset($ajax)){
-			require_once 'class.SKAjaxReg.php';
-			$ajax=new SKAjaxReg();
-		}
-		echo $ajax->toMsg();
 		unset($ajax);
 		if($no>0 && !$r):
 ?>
@@ -299,9 +300,10 @@ function teamInfo($id,$editable){
 ?>      <fieldset class="require"><legend>Save</legend>
       <div><button type="submit" name="submitInfo">Save</button><button type="reset" name="resetInfo">Cancel</button></div>
       </fieldset><? endif;?>
-    </form></div>
+  </form></div>
 <? endfor;?>
 </div>
+<div class="alert-box alert radius" id="teamInfoMsg"><?=$msg?></div>
 <?php
 	return ob_get_clean();
 }

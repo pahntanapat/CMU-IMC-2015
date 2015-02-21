@@ -209,6 +209,21 @@ class Observer extends Member{
 	public function getList(){
 		return $this->getPDOStm()->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
 	}
+	public function getDistinctList(){
+		$tmp=new Team(NULL);
+		$stm=$this->db->prepare(
+			'SELECT '.$this->TABLE.'.*, '
+				.'GROUP_CONCAT('.$tmp->TABLE.'.'.Team::ROW_TEAM_NAME.' SEPARATOR \', \') AS '.Team::ROW_TEAM_NAME.', '
+				.$tmp->TABLE.'.'.Team::ROW_INSTITUTION.', '
+				.$tmp->TABLE.'.'.Team::ROW_UNIVERSITY.', '
+				.$tmp->TABLE.'.'.Team::ROW_COUNTRY
+			.' FROM '.$this->TABLE
+			.' LEFT JOIN '.$tmp->TABLE.' ON '.$tmp->TABLE.'.'.Team::ROW_ID.'='.$this->TABLE.'.'.self::ROW_TEAM_ID
+			.' GROUP BY '.$this->TABLE.'.'.self::ROW_FIRSTNAME.' ,'.$this->TABLE.'.'.self::ROW_MIDDLENAME.' ,'.$this->TABLE.'.'.self::ROW_LASTNAME
+		);
+		$stm->execute();
+		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
+	}
 }
 
 class Participant extends Member{

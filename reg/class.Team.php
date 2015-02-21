@@ -4,7 +4,7 @@ require_once 'config.inc.php';
 class Team extends SKeasySQL{
 	const
 		ROW_EMAIL='email',
-		ROW_PW='password',
+		ROW_PW='pw',
 		
 		ROW_TEAM_NAME='team_name',
 		ROW_INSTITUTION='institution',
@@ -335,8 +335,9 @@ class Team extends SKeasySQL{
 	protected function bindValue(PDOStatement $stm,$row){
 		foreach($row as $k=>$v){
 			switch($k){
-				case self::ROW_PW:
-					$stm->bindValue($v,$this->pw);
+				case self::ROW_ARRIVE_TIME:
+				case self::ROW_DEPART_TIME:
+					$stm->bindValue($v,$this->$k?$this->$k:NULL);
 					break;
 				case self::ROW_ROUTE:
 					$stm->bindValue($v,$this->$k,PDO::PARAM_INT);
