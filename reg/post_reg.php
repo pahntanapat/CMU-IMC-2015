@@ -172,7 +172,7 @@ $msg->show_page=Message::PAGE_POST_REG_TEAM;
 echo $msg;
 unset($msg);
 
-$r=!State::is($s->teamState,State::ST_EDITABLE,$config->REG_START_REG,$config->REG_END_REG);
+$r=!State::is($s->postRegState,State::ST_EDITABLE,$config->REG_START_PAY,$config->REG_END_INFO);
 ?>
 <div class="magellan-container" data-magellan-expedition="fixed">
   <dl class="sub-nav">
@@ -186,27 +186,27 @@ $r=!State::is($s->teamState,State::ST_EDITABLE,$config->REG_START_REG,$config->R
 <form action="post_reg.php" method="post" id="infoForm">
 <fieldset><legend>Routes of Chiang Mai Tour</legend>
 <p><a href="../cm_tour.html" target="_blank"><i class="fa fa-map-marker"></i> Information of routes of Chiang Mai Tour</a></p>
-<?=$t->routeForm()?>
+<?=$t->routeForm($r)?>
 </fieldset>
 <fieldset><legend>Type/Time of Arrival &amp; Departure</legend>
 
 <div>
   <label class="require">Arrival time
-    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_time?>">
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_time?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
   <label class="require">Expected type of arrival (to Chiang Mai) <small> Airplane, Bus, Train, Van</small>
-    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_by?>"></label>
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_by?>"<?=Config::readonly($r)?>></label>
 </div>
 <div>
   <label>Departure time
-    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_time?>">
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_time?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
   <label>Expected type of departure (from Chiang Mai) <small>Airplane, Bus, Train, Van</small>
-    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_by?>">
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_by?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 </fieldset>

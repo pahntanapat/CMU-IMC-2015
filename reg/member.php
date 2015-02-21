@@ -259,23 +259,23 @@ if($no>0):?>
         <legend>Lifestyle</legend>
          <div>
            <label class="require">Religion
-             <input name="religion" type="text" id="religion" value="<?=$member->religion?>">
+             <input name="religion" type="text" id="religion" value="<?=$member->religion?>"<?=Config::readonly($r)?>>
           </label></div>
           <div>
             <label>Preferred specific cuisine
-              <textarea name="cuisine" rows="5" id="cuisine"><?=$member->cuisine?></textarea>
+              <textarea name="cuisine" rows="5" id="cuisine"<?=Config::readonly($r)?>><?=$member->cuisine?></textarea>
           </label></div>
           <div>
             <label>Food/Drug allergy
-              <textarea name="allergy" rows="5" id="allergy"><?=$member->allergy?></textarea>
+              <textarea name="allergy" rows="5" id="allergy"<?=Config::readonly($r)?>><?=$member->allergy?></textarea>
           </label></div>
           <div>
             <label>Underlying disease
-              <textarea name="disease" rows="5" id="disease"><?=$member->disease?></textarea>
+              <textarea name="disease" rows="5" id="disease"<?=Config::readonly($r)?>><?=$member->disease?></textarea>
           </label></div>
           <div>
             <label>Other requirements
-              <textarea name="other_req" rows="5" id="other_req"><?=$member->other_req?></textarea>
+              <textarea name="other_req" rows="5" id="other_req"<?=Config::readonly($r)?>><?=$member->other_req?></textarea>
           </label></div>
       </fieldset>
       <fieldset><legend>Shirt size</legend>

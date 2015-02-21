@@ -76,35 +76,35 @@ function teamInfo($id,$editable){
 	$t->id=$id;
 	$t->load();
 	
-	$p=array();
+	$m=array();
+	
+	$m[0]=new Observer($db);
+	$m[0]->team_id=$id;
+	$m[0]->load();
+	
 	for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++){
-		$p[$i]=new Participant($db);
-		$p[$i]->team_id=$id;
-		$p[$i]->part_no=$i;
-		$p[$i]->load();
+		$m[$i]=new Participant($db);
+		$m[$i]->team_id=$id;
+		$m[$i]->part_no=$i;
+		$m[$i]->load();
 	}
 	
-	$o=new Observer($db);
-	$o->team_id=$id;
-	$o->load();
-	
-	$i=new UploadImage();
-	$i->team_id=$id;
+	$img=new UploadImage();
+	$img->team_id=$id;
 	
 	ob_start();
 	?>
-<h3>Tn</h3>
+<h3>Team's name: <?=$t->team_name?></h3>
 <ul class="inline-list">
-  <li><a href="admin_approve_info.php" target="_blank">Approve Infomation in step 1</a></li>
-  <li><a href="admin_pay.php" target="_blank">Approce Transactions</a></li>
-  <li><a href="admin_approve_post_reg.php" target="_blank">Approve Infomation in step 2</a></li>
+  <li><a href="admin_approve_info.php?id=<?=$t->id?>" target="_blank">Approve Infomation in step 1</a></li>
+  <li><a href="admin_pay.php?id=<?=$t->id?>" target="_blank">Approce Transactions</a></li>
+  <li><a href="admin_approve_post_reg.php?id=<?=$t->id?>" target="_blank">Approve Infomation in step 2</a></li>
 </ul>
 <ul class="tabs" data-tab>
 <li class="tab-title active"><a href="#statusTab">Overall of Status</a></li>
 <li class="tab-title"><a href="#teamTab">Team</a></li>
-<li class="tab-title"><a href="#obsTab">Advisor</a></li>
-<? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-<li class="tab-title"><a href="#partTab<?=$i?>"><?=Config::ordinal($i)?> Participant</a></li>
+<? for($no=0;$no<=$config->REG_PARTICIPANT_NUM;$no++):?>
+<li class="tab-title"><a href="#partTab<?=$no?>"><? if($no==0):?>Advisor<? else: echo Config::ordinal($no)?> Participant<? endif;?></a></li>
 <? endfor;?>
 </ul>
 <div class="tabs-content">
@@ -112,15 +112,15 @@ function teamInfo($id,$editable){
 <h3>Status</h3>
 <ol>
   <li><?=State::img($t->team_state)?> Team &amp; Institution information</li>
-  <li><?=State::img($o->info_state)?> Advisor's infomation</li>
-  <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
- <li><?=State::img($p[$i]->info_state)?> <?=Config::ordinal($i)?>  participant's infomation</li>
+  <? for($i=0;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
+ <li><?php echo State::img($m[$i]->info_state).' '; if($i>0): echo Config::ordinal($i);?> participant<? else:?>Advisor<? endif;?>'s infomation</li>
   <? endfor;?>
   <li><?=State::img($t->pay_state)?> Upload Transaction</li>
   <li><?=State::img($t->post_reg_state)?> Select route &amp; upload team's picture &amp; update arrival time</li>
 </ol>
 </div>
-<div class="content" id="teamTab"><form action="admin_team_list.php" class="updateInfoForm"><fieldset class="require">
+<div class="content" id="teamTab">
+<form action="admin_team_list.php" class="updateInfoForm"><fieldset>
   <legend>Team's information</legend>
   <div>
   <label class="require">Email for overall contact
@@ -129,7 +129,7 @@ function teamInfo($id,$editable){
 </div>
   <div>
   <label class="require">Password
-    <input name="pw" type="text" required id="pw" value="<?=$t->pw?>"<?=Config::readonly($r)?>>
+    <input name="password" type="text" required id="password" value="<?=$t->password?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
@@ -158,37 +158,148 @@ function teamInfo($id,$editable){
     <input name="phone" type="phone" id="phone" value="<?=$t->phone?>" placeholder="(with country code) +XXxxxxxx"<?=Config::readonly($r)?>>
   </label>
 </div>
-</fieldset><fieldset><legend>Routes of Chiang Mai Tour</legend>
+</fieldset>
+<fieldset><legend>Routes of Chiang Mai Tour</legend>
 <p><a href="../cm_tour.html" target="_blank"><i class="fa fa-map-marker"></i> Information of routes of Chiang Mai Tour</a></p>
-<?=$t->routeForm()?>
+<?=$t->routeForm($r)?>
 </fieldset>
 <fieldset><legend>Type/Time of Arrival &amp; Departure</legend>
 <div>
   <label class="require">Arrival time
-    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_time?>">
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_time?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
   <label class="require">Expected type of arrival (to Chiang Mai) <small> Airplane, Bus, Train, Van</small>
-    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_by?>"></label>
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_by?>"<?=Config::readonly($r)?>></label>
 </div>
 <div>
   <label>Departure time
-    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_time?>">
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_time?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
   <label>Expected type of departure (from Chiang Mai) <small>Airplane, Bus, Train, Van</small>
-    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_by?>">
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_by?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 </fieldset>
-<? if(!$r):?><fieldset><legend>Save</legend><div>
+<? if(!$r):?><fieldset class="require"><legend>Save</legend><div>
   <button type="submit" name="save" id="save" value="save">save</button>
-  <button type="reset" name="cancel" id="button" value="cancel">cancel</button></div></fieldset><? endif;?></form></div>
-<div class="content" id="obsTab"><form action="admin_team_list.php" class="updateInfoForm"></form></div> 
-<? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-<div class="content" id="partTab<?=$i?>"><form action="admin_team_list.php" class="updateInfoForm"></form></div>
+  <button type="reset" name="cancel" id="button" value="cancel">cancel</button></div></fieldset><? endif;?>
+  </form>
+  </div>
+<?php
+		for($no=0;$no<=$config->REG_PARTICIPANT_NUM;$no++):
+		$member=$m[$no];
+?>
+<div class="content" id="partTab<?=$no?>">
+   <form action="member.php?no=<?=$no?>" method="post" name="infoForm" id="infoForm">
+      <fieldset>
+        <legend>General Information</legend>
+        <div>
+          <label class="require">Title
+            <input name="id" type="hidden" id="id" value="<?=$member->id?>">
+            <input name="part_no" type="hidden" id="part_no" value="<?=$no?>">
+            <input name="title" type="text" id="title" value="<?=$member->title?>"<?=Config::readonly($r)?>>
+          </label>
+        </div>
+         <div><label class="require">Firstname
+            <input name="firstname" type="text" id="firstname" value="<?=$member->firstname?>"<?=Config::readonly($r)?>>
+          </label></div>
+        <div>
+          <label>Middlename
+<input name="middlename" type="text" id="middlename" value="<?=$member->middlename?>"<?=Config::readonly($r)?>>
+          </label></div>
+           <div>
+             <label class="require">Lastname
+<input name="lastname" type="text" id="lastname" value="<?=$member->lastname?>"<?=Config::readonly($r)?>>
+          </label></div>
+<?php
+		echo Member::gender($member->gender,$r);
+		if($no>0):
+?>           <div>
+             <label class="require">Medical student year
+               <input name="std_y" type="text" id="std_y" value="<?=$member->std_y?>">
+          </label></div><? endif;?>
+           <div>
+             <label class="require">Date of Birth <small>Click on the form to show calendar, and click on title bar of calendar to change month, or double click it to select year.</small>
+               <input name="birth" type="date" id="birth" value="<?=$member->birth?>"<?=Config::readonly($r)?>>
+          </label></div>
+           <div>
+             <label class="require">Nationality
+               <input name="nationality" type="text" id="nationality" value="<?=$member->nationality?>"<?=Config::readonly($r)?>>
+          </label></div>
+      </fieldset>
+      <fieldset>
+        <legend>Contact</legend>
+        <div>
+          <label>Mobile phone number <small>with country code</small>
+            <input name="phone" type="tel" id="phone" placeholder="+xx xxx xxx xxx ..." value="<?=$member->phone?>"<?=Config::readonly($r)?>>
+          </label></div>
+         <div>
+           <label>Email address <small>You can fill out same email as log-in email.</small>
+           <input name="email" type="email" id="email" value="<?=$member->email?>"<?=Config::readonly($r)?>>
+          </label></div>
+        <div>
+           <label>Facebook Profile name/URL
+            <input name="fb" type="text" id="fb" placeholder="Mark Zuckerberg or https://www.facebook.com/zuck" value="<?=$member->fb?>"<?=Config::readonly($r)?>></label></div>
+        <div>
+           <label>Twitter
+            <input name="tw" type="text" id="tw" placeholder="@twitter" value="<?=$member->tw?>"<?=Config::readonly($r)?>>
+          </label></div>
+<? if($no>0):?>         <div>
+           <label class="require">Emergency contact <small>with country code</small>
+             <input name="emerg_contact" type="tel" id="emerg_contact" placeholder="+xx xxx xxx xxx ..." value="<?=$member->emerg_contact?>"<?=Config::readonly($r)?>></label></div><? endif;?>
+      </fieldset>
+      <fieldset>
+        <legend>Lifestyle</legend>
+         <div>
+           <label class="require">Religion
+             <input name="religion" type="text" id="religion" value="<?=$member->religion?>"<?=Config::readonly($r)?>>
+          </label></div>
+          <div>
+            <label>Preferred specific cuisine
+              <textarea name="cuisine" rows="5" id="cuisine"<?=Config::readonly($r)?>><?=$member->cuisine?></textarea>
+          </label></div>
+          <div>
+            <label>Food/Drug allergy
+              <textarea name="allergy" rows="5" id="allergy"<?=Config::readonly($r)?>><?=$member->allergy?></textarea>
+          </label></div>
+          <div>
+            <label>Underlying disease
+              <textarea name="disease" rows="5" id="disease"<?=Config::readonly($r)?>><?=$member->disease?></textarea>
+          </label></div>
+          <div>
+            <label>Other requirements
+              <textarea name="other_req" rows="5" id="other_req"<?=Config::readonly($r)?>><?=$member->other_req?></textarea>
+          </label></div>
+      </fieldset>
+      <fieldset><legend>Shirt size</legend>
+        <a href="../pictures/shirt_size_chart.jpg" target="_blank" class="th"><img src="../pictures/shirt_size_chart.jpg" alt="Shirt size chart"></a><br><br>
+<?=Participant::shirtSize($member->shirt_size,$r)?>
+      </fieldset>
+<?php
+		if(!isset($ajax)){
+			require_once 'class.SKAjaxReg.php';
+			$ajax=new SKAjaxReg();
+		}
+		echo $ajax->toMsg();
+		unset($ajax);
+		if($no>0 && !$r):
+?>
+	<hr><fieldset><legend>A copy of student ID card or certificate of student</legend><div><label>Delete the document <small>If you remove file, the file is permanently romoved.</small></label>
+    <input name="delete" type="radio" id="delete_0<?=$no?>" value="0" checked="checked" /><label for="delete_0<?=$no?>">Keep it</label><input name="delete" type="radio" id="delete_1<?=$no?>" value="1" /><label for="delete_1<?=$no?>">Delete it</label></div></fieldset>
+<?php
+			echo $img->toImgPartStudentCard($no);
+		elseif($no>0):
+			echo "<h4>You don't have permission to see the document</h4>";
+		endif;
+		if(!$r):
+?>      <fieldset class="require"><legend>Save</legend>
+      <div><button type="submit" name="submitInfo">Save</button><button type="reset" name="resetInfo">Cancel</button></div>
+      </fieldset><? endif;?>
+    </form></div>
 <? endfor;?>
 </div>
 <?php

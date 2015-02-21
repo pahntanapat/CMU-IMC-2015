@@ -47,7 +47,7 @@ if(Config::isPost()){
 	$ajax->message=teamList($t,'',$ajax->message);
 }elseif(isset($_GET['id'])){
 	$ajax->msgID='divTeamInfo';
-	$ajax->message='';
+	$ajax->message=teamInfo($_GET['id'], $sess->checkPMS(SesAdm::PMS_ADMIN));
 }else{
 	$ajax->msgID='divTeamList';
 	$ajax->message=fullList($db);

@@ -135,7 +135,7 @@ require_once 'admin_team_list.scr.php';
 <div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
 <? if(isset($_GET['id'])):?>
   <h2>View Team's/Participants' information</h2>
-  <div></div>
+  <?=$ajax->toMsg()?>
 <? else:?>
   <h2>Edit Teams' &amp; Participants' information</h2>
   <form action="admin_team_list.scr.php" method="post">

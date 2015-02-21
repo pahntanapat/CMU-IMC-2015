@@ -349,7 +349,7 @@ class Team extends SKeasySQL{
 	// Miscellenous Function
 	public function routeForm(){
 		global $config;
-		$d=func_num_args()>0?func_get_arg(1):false;
+		$d=func_num_args()>0?func_get_arg(0):false;
 		
 		if(is_numeric($this->route)) $this->route=intval($this->route);
 		$cr=$this->countRoute();
