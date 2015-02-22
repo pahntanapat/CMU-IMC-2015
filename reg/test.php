@@ -30,9 +30,16 @@ require_once 'class.SesAdm.php';
 <pre></pre>
 <div>
 <?php
-require_once 'admin_team_list.view.php';
-require_once 'class.Team.php';
-echo  fullList($config->PDO(), 'EDSFF');
+$db=$config->PDO();
+
+$stm=$db->prepare('SELECT * FROM participant_info WHERE gender=:i OR team_id=:i');
+$stm->bindValue(':i', 1, PDO::PARAM_INT);
+$stm->execute();
+while($r=$stm->fetch(PDO::FETCH_ASSOC)){
+	foreach($r as $k=>$v)
+		echo "<br/>$k = $v";
+	echo "<hr/>";
+}
 ?>
 </div>
 <?php

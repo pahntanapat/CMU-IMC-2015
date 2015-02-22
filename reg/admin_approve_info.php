@@ -4,6 +4,10 @@ require_once 'class.SesAdm.php';
 
 $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
+if(!$sess->checkPMS(SesAdm::PMS_PARTC)) Config::redirect('home.php','you don\'t have permission here.');
+
+require_once 'admin_approve_info.scr.php';
+
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_admin.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -130,7 +134,13 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 		</ul></div></li>
 </ul>
 </div>
-<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->adminContent<!-- InstanceEndEditable --></div></div>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Approve Participants' information: Step 1</h2><br>
+<? if(isset($_GET['id'])):?>
+<? else:?>
+<a href="admin_approve_info.php" class="edit button">Reload</a>
+<?php
+echo $ajax->toMsg();
+endif;?><!-- InstanceEndEditable --></div></div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

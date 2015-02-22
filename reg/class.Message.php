@@ -100,6 +100,17 @@ class Message extends SKeasySQL{
 		<?php
 		return ob_get_clean();
 	}
-
+	
+	public function toForm($action,$approveArray,$approveState){
+		ob_start();?>
+<form action="<?=$action?>" method="post">
+  <fieldset>
+    <legend>Approval</legend>
+    <div>\</div>
+  </fieldset>
+</form>
+        <?php
+		return ob_get_clean();
+	}
 }
 ?>

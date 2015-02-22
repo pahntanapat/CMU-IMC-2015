@@ -244,13 +244,15 @@ class Team extends SKeasySQL{
 					'COUNT(*)'=>'c'
 				))
 				.' FROM '.$this->TABLE
-				.' INNER JOIN '.$t[0]->TABLE.' ON '.$t[0]->TABLE.'.'.Observer::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
-				.' INNER JOIN '.$t[1]->TABLE.' ON '.$t[1]->TABLE.'.'.Participant::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
-				.' WHERE '.$this->TABLE.'.'.self::ROW_TEAM_STATE.'=:s AND '
-					.$t[0]->TABLE.'.'.Observer::ROW_INFO_STATE.'=:s AND '
+				.' INNER JOIN '.$t[0]->TABLE
+					.' ON '.$t[0]->TABLE.'.'.Observer::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
+				.' INNER JOIN '.$t[1]->TABLE
+					.' ON '.$t[1]->TABLE.'.'.Participant::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
+				.' WHERE '.$this->TABLE.'.'.self::ROW_TEAM_STATE.'=:s OR '
+					.$t[0]->TABLE.'.'.Observer::ROW_INFO_STATE.'=:s OR '
 					.$t[1]->TABLE.'.'.Participant::ROW_INFO_STATE.'=:s'
 				.' GROUP BY '.$this->TABLE.'.'.self::ROW_ID
-				.' HAVING c=:c'
+				.' HAVING c='.$config->REG_PARTICIPANT_NUM
 				.' ORDER BY '.$this->TABLE.'.'.self::ROW_TEAM_NAME.', '.$this->TABLE.'.'.self::ROW_INSTITUTION.', '
 					.$this->TABLE.'.'.self::ROW_INSTITUTION.', '.$this->TABLE.'.'.self::ROW_UNIVERSITY.', '
 					.$this->TABLE.'.'.self::ROW_COUNTRY
@@ -279,9 +281,8 @@ class Team extends SKeasySQL{
 		}
 		$stm=$this->db->prepare($sql);
 		if($type!='') $stm->bindValue(':s',
-			$type=self::ROW_ARRIVE_TIME?State::ST_OK:State::ST_WAIT,
+			$type==self::ROW_ARRIVE_TIME?State::ST_OK:State::ST_WAIT,
 			PDO::PARAM_INT);
-		if($type==self::ROW_TEAM_STATE) $stm->bindValue(':c',$config->REG_PARTICIPANT_NUM,PDO::PARAM_INT);
 		$stm->execute();
 		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
 	}
