@@ -2,6 +2,7 @@
 require_once 'config.inc.php';
 require_once 'class.Admin.php';
 require_once 'class.SesAdm.php';
+require_once 'class.Message.php';
 
 ?>
 <!doctype html>
@@ -27,20 +28,12 @@ require_once 'class.SesAdm.php';
 </head>
 
 <body>
-<pre></pre>
+<pre><?php
+session_start();
+var_dump($_SESSION);
+?></pre>
 <div>
-<?php
-$db=$config->PDO();
 
-$stm=$db->prepare('SELECT * FROM participant_info WHERE gender=:i OR team_id=:i');
-$stm->bindValue(':i', 1, PDO::PARAM_INT);
-$stm->execute();
-while($r=$stm->fetch(PDO::FETCH_ASSOC)){
-	foreach($r as $k=>$v)
-		echo "<br/>$k = $v";
-	echo "<hr/>";
-}
-?>
 </div>
 <?php
 

@@ -9,4 +9,5 @@ XXL',
    'INFO_ROUTE' => 'Doi Suthep
 Mae Hia
 Mae Rim',
+   'REG_END_PAY' => '2015-02-28 00:00:00',
 )) ; ?>

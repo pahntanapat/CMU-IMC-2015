@@ -42,7 +42,7 @@ if(Config::isPost()) require_once 'home.scr.php';
   js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-	
+<div class="withbg-index">
 	<div class="row">
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
@@ -178,6 +178,7 @@ if(Config::isPost()) require_once 'home.scr.php';
     <div id="msgCP"><?=isset($elem->msgCP)?$elem->msgCP:''?></div>
   </form>
 <!-- InstanceEndEditable --></div></div>
+</div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

@@ -39,9 +39,9 @@ if(Config::isPost()||Config::isAjax()){
 				$ob->info_state=State::ST_WAIT;
 				$mem->info_state=State::ST_WAIT;
 				
-				$t->setState(Team::ROW_TEAM_STATE);
-				$ob->setState(Observer::ROW_INFO_STATE);
-				$mem->setState(Participant::ROW_INFO_STATE);
+				if($s->teamState==State::ST_EDITABLE) $t->setState(Team::ROW_TEAM_STATE);
+				$ob->setState(State::ST_EDITABLE);
+				$mem->setState(State::ST_EDITABLE);
 				
 			//	$t->commit();
 			//	$ob->commit();
@@ -101,7 +101,7 @@ if(Config::isPost()||Config::isAjax()){
   js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-	
+<div class="withbg-index">
 	<div class="row">
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
@@ -238,6 +238,7 @@ if(($step==1 && State::is($s->cfInfoState,State::ST_EDITABLE, $config->REG_START
 <? if($step==1):?><i class="fa fa-lg fa-money"></i> After your information is approved, we recommend you to transfer <a href="../registration.html#fee" target="_blank">the application fee</a> and upload the transaction to <a href="pay.php" target="_blank">the registration system</a> as soon as possible.
 <? else:?><i class="fa fa-lg fa-credit-card"></i> After your information is approved, we recommend you to send numbers, expire dates, and copies of participants' and advisor's passports.
 <? endif;?></h4></div><!-- InstanceEndEditable --></div></div>
+</div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

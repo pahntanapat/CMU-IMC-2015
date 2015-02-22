@@ -10,6 +10,11 @@
 		else if($(this).is('a')) return $(this).attr('href');
 		else	return this;
 	};
+	$.fn.addSK=function(){
+		var act=$(this).act();
+		act+=act.indexOf('?')==-1?'?':'&';
+		return act+$.SK();
+	};
 	$.fn.SKAjax=function(data,callback){
 		if(typeof data =="string"){
 			try{

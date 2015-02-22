@@ -198,7 +198,8 @@ HTML;
 	}
 	
 	public function deleteFile($filename){
-		return unlink($this->getFile($filename));
+		$f=$this->getFile($filename);
+		return is_file($f)?unlink($f):NULL;
 	}
 	
 	public function deleteFolder($list){

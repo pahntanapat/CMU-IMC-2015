@@ -29,6 +29,11 @@ require_once 'admin_approve_info.scr.php';
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/jquery.maskedinput.min.js"></script>
+<script src="js/foundation-datepicker.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/admin_approve_info.js"></script>
+
 <!-- InstanceEndEditable -->
 
 </head>
@@ -42,7 +47,7 @@ require_once 'admin_approve_info.scr.php';
   js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-	
+<div class="withbg-index">
 	<div class="row">
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
@@ -135,12 +140,15 @@ require_once 'admin_approve_info.scr.php';
 </ul>
 </div>
 <div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Approve Participants' information: Step 1</h2><br>
-<? if(isset($_GET['id'])):?>
-<? else:?>
-<a href="admin_approve_info.php" class="edit button">Reload</a>
+<?php
+if(isset($_GET['id'])):
+	echo $ajax->toMsg();
+else:?>
+<a href="admin_approve_info.php#reload" class="button" id="reload">Reload</a>
 <?php
 echo $ajax->toMsg();
 endif;?><!-- InstanceEndEditable --></div></div>
+</div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

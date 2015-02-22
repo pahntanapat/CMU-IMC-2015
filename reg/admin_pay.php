@@ -38,7 +38,7 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
   js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-	
+<div class="withbg-index">
 	<div class="row">
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
@@ -131,6 +131,7 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 </ul>
 </div>
 <div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->adminContent<!-- InstanceEndEditable --></div></div>
+</div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

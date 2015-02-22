@@ -45,7 +45,7 @@ require_once 'class.State.php';
   js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-	
+<div class="withbg-index">
 	<div class="row">
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
@@ -150,6 +150,7 @@ require_once 'class.State.php';
     </li>
 </ul>
 </div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->reg_content<!-- InstanceEndEditable --></div></div>
+</div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

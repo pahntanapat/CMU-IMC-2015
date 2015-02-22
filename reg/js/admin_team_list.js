@@ -4,12 +4,14 @@ $(document).ready(function(e) {
 		e.preventDefault();
         return $(this).loadSKOriginal('admin_team_list.scr.php',$.SK(),loadScript);
     });
-	$(document).on('submit','form',function(e){
+	$(document).on('submit','form.updateInfoForm',function(e){
 		e.preventDefault();
-		var act=$(this).act();
-		act+=act.indexOf('?')==-1?'?':'&';
-		return $(this).postSKOriginal(act+$.SK(),loadScript);
+		return $(this).postSK($(this).addSK());
 	});
+	$('#teamListForm').submit(function(e) {
+        e.preventDefault();
+		return $(this).postSKOriginal('admin_team_list.scr.php?'+$.SK(),loadScript);
+    });
 	$(document).on('click','a.edit',function(e){
 		e.preventDefault();
 		$.addDialog('divTeamInfo');
@@ -17,7 +19,3 @@ $(document).ready(function(e) {
 		
 	});
 });
-function loadScript(){
-	$(document).foundation();
-	$.datetimepicker();
-}

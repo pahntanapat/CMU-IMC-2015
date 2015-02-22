@@ -43,7 +43,7 @@ else{
   js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-	
+<div class="withbg-index">
 	<div class="row">
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
@@ -140,6 +140,7 @@ else{
   <?=$ajax->toMsg()?>
     <h3><a href="login.php" title="Log in">I have my account. Go to log in page.</a></h3>
 <!-- InstanceEndEditable --></div>
+</div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

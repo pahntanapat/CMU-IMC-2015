@@ -58,7 +58,7 @@ require_once 'class.State.php';
   js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-	
+<div class="withbg-index">
 	<div class="row">
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
@@ -223,6 +223,7 @@ $r=!State::is($s->postRegState,State::ST_EDITABLE,$config->REG_START_PAY,$config
 <h3 data-magellan-destination="ticket" id="ticket">Upload ticket (Arrival to Chiang Mai)</h3>
 <form action="post_reg.php" method="post" id="ticketForm"></form>
 <!-- InstanceEndEditable --></div></div>
+</div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

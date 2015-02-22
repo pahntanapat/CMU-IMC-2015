@@ -72,7 +72,7 @@ class SesPrt extends Session{
 			$score+=$this->memberInfoState[$i];
 			$full+=State::ST_PASS;
 			
-			$this->cfInfoState&=$this->memberInfoState[$i];
+			if($this->memberInfoState[$i]<$this->cfInfoState) $this->cfInfoState=$this->memberInfoState[$i];
 		}
 		$this->progress=(100*$score)/$full;
 		if($this->cfInfoState==State::ST_LOCKED) $this->cfInfoState=State::ST_PASS;

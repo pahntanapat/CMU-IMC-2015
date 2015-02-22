@@ -68,7 +68,7 @@ require_once 'class.State.php';
   js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-	
+<div class="withbg-index">
 	<div class="row">
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
@@ -194,6 +194,8 @@ if($no>0):?>
 </div>
 <hr>
 <h3 data-magellan-destination="info" id="info">Application form</h3>
+<? else:?>
+<div class="alert-box warning radius" data-alert><i class="fa fa-2x  pull-left fa-exclamation-circle"></i> Complete this section if your team have an advisor. If your team don't have an advisor, please skip this section. <a href="#" class="close">&times;</a></div>
 <? endif;?>
    <form action="member.php?no=<?=$no?>" method="post" name="infoForm" id="infoForm">
       <fieldset>
@@ -325,6 +327,7 @@ if(!$r):?>
  echo $uploadAjax->toMsg();
  ?></form><? endif;?>
 <!-- InstanceEndEditable --></div></div>
+</div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

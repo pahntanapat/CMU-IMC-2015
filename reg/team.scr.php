@@ -29,7 +29,10 @@ if(!Config::isPost()){
 		if($t->updateInfo()){
 			$ajax->message='Update Team\'s information sucess.';
 			$ajax->result=true;
-			$ajax->updateMenuState($s->changeID(true));
+
+			$s->teamState=$t->team_state;
+			$s->setProgression();
+			$ajax->updateMenuState($s);
 			$ajax->setFormDefault();
 		}else{
 			$ajax->message='No information changed.';

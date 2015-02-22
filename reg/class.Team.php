@@ -57,7 +57,7 @@ class Team extends SKeasySQL{
 	*/
 	private function SQLforSession($withID=false){
 		require_once 'class.Member.php';
-		$tmp=array(new Observer(NULL),new Participant(NULL));
+		$tmp=array(new Observer(NULL), new Participant(NULL));
 		$rows=array(
 			$this->TABLE.'.'.self::ROW_ID=>self::ROW_ID,
 			$this->TABLE.'.'.self::ROW_TEAM_NAME=>self::ROW_TEAM_NAME,
@@ -156,7 +156,6 @@ class Team extends SKeasySQL{
 	}
 	
 	public function add(){
-//		$this->db=new PDO();
 		$row=$this->rowArray(false,false,array(
 			self::ROW_EMAIL,self::ROW_PW,self::ROW_TEAM_NAME,
 			self::ROW_INSTITUTION,self::ROW_UNIVERSITY,self::ROW_COUNTRY
@@ -172,6 +171,7 @@ class Team extends SKeasySQL{
 
 	public function updateInfo(){ // For Participant
 		require_once 'class.State.php';
+		$this->team_state=State::ST_EDITABLE;
 		
 		$row=array_merge($this->rowArray(true,false,array(self::ROW_EMAIL)),array(self::ROW_TEAM_STATE=>':s'));
 		$stm=$this->db->prepare('UPDATE '.$this->TABLE
@@ -180,10 +180,9 @@ class Team extends SKeasySQL{
 		
 		$stm->bindValue(':i',$this->id,PDO::PARAM_INT);
 		$this->bindValue($stm,$row);
-		$stm->bindValue(':s',State::ST_EDITABLE,PDO::PARAM_INT);
+		$stm->bindValue(':s',$this->team_state,PDO::PARAM_INT);
 		
 		$stm->execute();
-		$this->team_state=State::ST_EDITABLE;
 		return $stm->rowCount();
 	}
 	
@@ -252,7 +251,7 @@ class Team extends SKeasySQL{
 					.$t[0]->TABLE.'.'.Observer::ROW_INFO_STATE.'=:s OR '
 					.$t[1]->TABLE.'.'.Participant::ROW_INFO_STATE.'=:s'
 				.' GROUP BY '.$this->TABLE.'.'.self::ROW_ID
-				.' HAVING c='.$config->REG_PARTICIPANT_NUM
+				//.' HAVING c='.$config->REG_PARTICIPANT_NUM
 				.' ORDER BY '.$this->TABLE.'.'.self::ROW_TEAM_NAME.', '.$this->TABLE.'.'.self::ROW_INSTITUTION.', '
 					.$this->TABLE.'.'.self::ROW_INSTITUTION.', '.$this->TABLE.'.'.self::ROW_UNIVERSITY.', '
 					.$this->TABLE.'.'.self::ROW_COUNTRY

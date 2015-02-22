@@ -218,7 +218,7 @@ if(SesAdm::isPMS($pms, SesAdm::PMS_AUDIT)):
 		$member=$m[$no];
 ?>
 <div class="content" id="partTab<?=$no?>">
-   <form action="admin_team_list.php?id=<?=$_GET['id']?>" method="post" name="infoForm" id="infoForm">
+   <form action="admin_team_list.php?id=<?=$_GET['id']?>" method="post" name="infoForm" class="updateInfoForm">
       <fieldset>
         <legend>General Information</legend>
         <div>

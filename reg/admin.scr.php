@@ -4,9 +4,8 @@ require_once 'class.SesAdm.php';
 
 // Processing section
 $sess=SesAdm::check();
-if($sess){ //Have already logged in
+if($sess)
 	Config::redirect('home.php','You have already logged in.');
-}
 
 require_once 'class.SKAjax.php';
 $ajax=new SKAjax();

@@ -45,7 +45,7 @@ require_once 'index.scr.php';
   js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-	
+<div class="withbg-index">
 	<div class="row">
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
@@ -184,6 +184,7 @@ require_once 'index.scr.php';
 <li class="accordion-navigation"><a href="#sponsor2">Booking form 2</a><div id="sponsor2" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+4%2C000+THB"/></div></li>
 <li class="accordion-navigation"><a href="#sponsor3">Booking form 3</a><div id="sponsor3" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+3%2C000+THB"/></div></li>
 </ul><!-- InstanceEndEditable --></div></div>
+</div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

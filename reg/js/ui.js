@@ -25,3 +25,8 @@
 			.fdatepicker({format:'yyyy-mm-dd',viewMode:'years'});
 	};
 }(jQuery));
+
+function loadScript(){
+	$(document).foundation();
+	$.datetimepicker();
+}

@@ -127,13 +127,15 @@ abstract class Member extends SKeasySQL{
 		return $stm->rowCount();
 	}
 	
-	public function setState(){ // for Admin or Confirmation
+	public function setState($stateCondition=false){ // for Admin or Confirmation
 		$stm=$this->db->prepare('UPDATE '.$this->TABLE
 			.' SET '.self::ROW_INFO_STATE.'=:state'
 			.' WHERE '.($this->id?self::ROW_ID:self::ROW_TEAM_ID).'=:i'
+			.($stateCondition===false?'':' AND '.self::ROW_INFO_STATE.'=:e')
 		);
-		$stm->bindValue(':state',$v,PDO::PARAM_INT); // Team ID for comfirmation
+		$stm->bindValue(':state',$this->info_state,PDO::PARAM_INT); // Team ID for comfirmation
 		$stm->bindValue(':i',$this->id?$this->id:$this->team_id,PDO::PARAM_INT);
+		if($stateCondition!==false) $stm->bindValue(':e',$stateCondition,PDO::PARAM_INT);
 		$stm->execute();
 		return $stm->rowCount();
 	}
