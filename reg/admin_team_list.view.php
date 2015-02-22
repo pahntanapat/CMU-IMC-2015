@@ -28,7 +28,7 @@ function fullList(PDO $db, $msg=''){
  <li class="tab-title"><a href="#panel4">Participants</a></li>
 </ul>
 <div class="tabs-content">
- <div class="content active" id="panel1"><?php $tmp=new Team($db); echo teamList($tmp);?></div>
+ <div class="content active" id="panel1"><?php $tmp=new Team($db); echo teamList($tmp, 'admin_team_list.php');?></div>
  <div class="content" id="panel2"><?php $tmp=new Observer($db); echo Config::toTable($tmp->getList(),$arr);?></div>
   <div class="content" id="panel3"><?=Config::toTable($tmp->getDistinctList(),$arr);?></div>
  <div class="content" id="panel4"><?php $tmp=new Participant($db); echo Config::toTable($tmp->getList(),$arr);?></div>
@@ -40,7 +40,7 @@ function fullList(PDO $db, $msg=''){
 	return Config::toTable($adm->getList(), array('Student ID'=>'student_id', 'Nickname'=>'nickname'));*/
 }
 
-function teamList(Team $t, $type='', $msg=''){
+function teamList(Team $t, $link, $type='', $msg=''){
 	ob_start();
 	if($msg!==false):?>
 <div id="msgTable" class="alert-box info"><?=$msg?><br/><small>Last update: <?=date('Y-m-d H:i:s e')?></small></div>
@@ -55,7 +55,7 @@ function teamList(Team $t, $type='', $msg=''){
   </tr>
   <? foreach($t->getList($type) as $row):?><tr>
     <? if($type==''):?><td><input name="del[]" type="checkbox" class="del" value="<?=$row->id?>" title="delete"></td><? endif;?>
-    <td><a href="<?=$_SERVER['PHP_SELF']?>?id=<?=$row->id?>" target="_blank" class="edit"><?=$row->team_name?></a></td>
+    <td><a href="<?=$link?>?id=<?=$row->id?>" target="_blank" class="edit"><?=$row->team_name?></a></td>
     <td><?=$row->institution?></td>
     <td><?=$row->university?></td>
     <td><?=$row->country?></td>
@@ -65,11 +65,12 @@ function teamList(Team $t, $type='', $msg=''){
 	return ob_get_clean();
 }
 
-function teamInfo($id,$editable, $msg=''){
+function teamInfo($id,$pms, $msg=''){
 	global $config;
 	$db=$config->PDO();
-	$r=!$editable;
-	unset($editable);
+	require_once 'class.SesAdm.php';
+	
+	$r=!SesAdm::isPMS($pms, SesAdm::PMS_PARTC);
 	
 	require_once 'class.Member.php';
 	require_once 'class.UploadImage.php';
@@ -187,6 +188,25 @@ function teamInfo($id,$editable, $msg=''){
     <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_by?>"<?=Config::readonly($r)?>>
   </label>
 </div>
+</fieldset>
+<fieldset><legend>Transaction, Photo &amp; Ticket</legend>
+<?php
+if(SesAdm::isPMS($pms, SesAdm::PMS_AUDIT)):
+	echo $img->toImgPay();
+?>
+<div><label>Delete the transaction <small>If you remove file, the file is permanently romoved.</small></label>
+    <input name="del_tsc" type="radio" id="del_tsc_0" value="0" checked="checked" /><label for="del_tsc_0">Keep it</label><input name="del_tsc" type="radio" id="del_tsc_1" value="1" /><label for="del_tsc_1">Delete it</label></div><hr />
+<?php
+else: echo "<h4>You don't have permission to view the transaction.</h4>";
+endif;
+echo $img->toImgTeamPhoto().$img->toImgTicket();
+if(SesAdm::isPMS($pms, SesAdm::PMS_AUDIT)):
+?>
+<div><label>Delete TEAM's PHOTO <small>If you remove file, the file is permanently romoved.</small></label>
+    <input name="del_p" type="radio" id="del_p_0" value="0" checked="CHECKED" /><label for="del_p_0">Keep it</label><input name="del_p" type="radio" id="del_p_1" value="1" /><label for="del_p_1">Delete it</label></div>
+<div><label>Delete TICKET <small>If you remove file, the file is permanently romoved.</small></label>
+    <input name="del_tk" type="radio" id="del_tk_0" value="0" checked="checked" /><label for="del_tk_0">Keep it</label><input name="del_tk" type="radio" id="del_tk_1" value="1" /><label for="del_tk_1">Delete it</label></div>
+<? endif;?>
 </fieldset>
 <? if(!$r):?><fieldset class="require"><legend>Save</legend><div>
   <button type="submit" name="save" id="save" value="save">save</button>

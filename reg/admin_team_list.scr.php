@@ -45,7 +45,10 @@ if(Config::isPost()){
 					
 					$i=new UploadImage();
 					$i->id=$t->id;
-				//	if($_POST['delete']) $i->deletePartStudentCard(;
+					if(@$_POST['del_tsc']) $i->deletePay();
+					if(@$_POST['del_p']) $i->deleteTeamPhoto();
+					if(@$_POST['del_tk']) $i->deleteTicket();
+					
 					$ajax->result=true;
 					$ajax->message='Update team\'s info success';
 					break;
@@ -57,7 +60,7 @@ if(Config::isPost()){
 					
 					$i=new UploadImage();
 					$i->id=$m->team_id;
-					if($_POST['delete']) $i->deletePartStudentCard($m->part_no);
+					if(@$_POST['delete']) $i->deletePartStudentCard($m->part_no);
 					
 					$ajax->result=true;
 					$ajax->message='Update participant/observer\'s info success';
@@ -83,13 +86,13 @@ if(Config::isPost()){
 				$ajax->msgID='teamInfoMsg';
 			}else{
 				$ajax->msgID='divTeamInfo';
-				$ajax->message=teamInfo($db, $sess->checkPMS(SesAdm::PMS_ADMIN), $ajax->message);
+				$ajax->message=teamInfo($_GET['id'], $sess->pms, $ajax->message);
 			}
 			break;
 	}
 }elseif(isset($_GET['id'])){
 	$ajax->msgID='divTeamInfo';
-	$ajax->message=teamInfo($_GET['id'], $sess->checkPMS(SesAdm::PMS_ADMIN));
+	$ajax->message=teamInfo($_GET['id'], $sess->pms);
 }else{
 	$ajax->msgID='divTeamList';
 	$ajax->message=fullList($db);
