@@ -16,8 +16,10 @@ class State{
 			&&($endTime?strtotime($endTime,time())>time():true);
 	}
 	public static function inTime($state,$startTime,$endTime,$toClass=false){
-		if(strtotime($startTime,time())>=time()) $state=self::ST_NOT_START;
-		elseif(strtotime($endTime,time())<time()) $state=self::ST_TIME_UP;
+		if(self::is($state, self::ST_EDITABLE)){
+			if(strtotime($startTime,time())>=time()) $state=self::ST_NOT_START;
+			elseif(strtotime($endTime,time())<time()) $state=self::ST_TIME_UP;
+		}
 		return $toClass?self::toClass($state):$state;
 	}
 	public static function toClass($state){

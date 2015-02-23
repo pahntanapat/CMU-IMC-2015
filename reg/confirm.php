@@ -106,24 +106,22 @@ if(Config::isPost()||Config::isAjax()){
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
 				<div class="clearfix columns">
-					<img class="left" src="../img/logo-head_old.png"/>
-					<img class="right" src="../img/logo-head_cr.png"/>
+					<img class="left" src="../img/logo-head_old_trans.png"/>
+					<img class="right" src="../img/logo-head_cr3.png"/>
 				</div>
 			</div>
 		  <div class="row show-for-medium-only">
 				<div class="clearfix columns">
-					<img class="left" src="../img/logo-head.png"/>
+					<img class="left" src="../img/logo-head_trans.png"/>
 				</div>
 			</div>
-			<img class="show-for-small-only" src="../img/logo-head-mini.png"/>
+			<img class="show-for-small-only" src="../img/logo-head-mini_trans.png"/>
 			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
 						<li class="name">
 							<h1>
-								<a href="/">
-									HOME
-								</a>
+								<a href="/">HOME</a>
 						  </h1>
 						</li>
 						<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a>
