@@ -312,7 +312,13 @@ if(!isset($uploadAjax)){
 if(!$r):?>
    <fieldset class="require">
         <legend>Upload <?=$who[0]?>'s copy of student ID card or certificate of student</legend>
-        <div><label class="require">Image file
+        <div class="panel"><h3>Recommended image properties</h3>
+    <ul>
+      <li>Resolution: &ge;200 dpi (dot per inch)</li>
+      <li>Filetype (file extension): JPEG (*.jpg, *.jpeg), PNG (*.png), or GIF (*.gif)</li>
+      <li>Size: &lt;50 KB (recommended), &le; 8 MB (the maximum size)</li>
+    </ul></div>
+         <div><label class="require">Image file
        <?=$img->toForm($r)?>
        <input name="part_no" type="hidden" id="part_no" value="<?=$no?>">
         <input name="id" type="hidden" id="id" value="<?=$member->id?>">

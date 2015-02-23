@@ -5,10 +5,12 @@ require_once 'class.SesPrt.php';
 $s=SesPrt::check(true,true);
 if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
-if(Config::isPost()||Config::isAjax()) require_once 'index.scr.php';
+if(Config::isPost()||Config::isAjax()) require_once 'pay.scr.php';
 
 require_once 'class.Message.php';
 require_once 'class.State.php';
+
+
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -147,7 +149,58 @@ require_once 'class.State.php';
         </div>
     </li>
 </ul>
-</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->reg_content<!-- InstanceEndEditable --></div></div>
+</div>
+<div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
+  <h2><?=State::img(State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY))?> Upload your Transaction</h2>
+<?php
+echo State::toHTML(State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY));
+
+$db=$config->PDO();
+
+$msg=new Message($db);
+$msg->team_id=$s->id;
+$msg->show_page=Message::PAGE_INFO_TEAM;
+echo $msg;
+unset($msg);
+
+require_once 'class.Team.php';
+$t=new Team($db);
+$t->id=$s->id;
+$t->load();
+$num=$t->countPay();
+
+require_once 'class.UploadImage.php';
+$img=new UploadImage();
+$img->team_id=$s->id;
+if(!isset($ajax)){
+	require_once 'class.SKAjaxReg.php';
+	
+	$ajax=new SKAjaxReg();
+	$ajax->msgID='uploadMsg';
+	$ajax->message=$img->toImgPay();
+}
+$r=!State::is($s->payState, State::ST_EDITABLE, $config->REG_START_PAY, $config->REG_END_PAY);
+
+if($num[1]>=$config->REG_MAX_TEAM):?>
+<div class="alert-box alert"><h5><i class="fa fa-exclamation-circle"></i> Sorry! The teams uploading their transaction are full (limit: <?=$num[0]?>/<?=$config->REG_MAX_TEAM?>).</h5></div>
+<? elseif(!$r):?>
+  <div class="panel round">
+  <h3>Application Fee</h3><p><b><?=$t->fee()?> per person</b> (<?=$t->fee(1+$config->REG_PARTICIPANT_NUM)?> per team including one advisor and <?=$config->REG_PARTICIPANT_NUM?> medical students or <?=$t->fee($config->REG_PARTICIPANT_NUM)?> per team with <?=$config->REG_PARTICIPANT_NUM?> medical students only)<br><small>* All transaction fees are NOT included.</small></p>
+    <h3>Recommended image properties</h3>
+    <ul>
+      <li>Resolution: &ge;200 dpi (dot per inch)</li>
+      <li>Filetype (file extension): JPEG (*.jpg, *.jpeg), PNG (*.png), or GIF (*.gif)</li>
+      <li>Size: &lt;50 KB (recommended size), &le; 8 MB (maximum limit for system)</li>
+    </ul>
+  </div>
+  <form action="pay.php" method="post" enctype="multipart/form-data" name="uploadForm" id="uploadForm"><fieldset class="require"><legend>Upload the transaction</legend><div><label class="require">Image file <?=$img->toForm($r)?></label>
+  </div><div><button type="submit" name="submitUpload">Upload</button><button type="reset" name="resetUpload">Cancel</button></div></fieldset></form>
+<div class="alert-box info"><h5><i class="fa fa-info-circle"></i> <?=$num[0]?> of <?=$config->REG_MAX_TEAM?> teams that have already uploaded their transactions.</h5></div>
+<?php
+endif;
+echo $ajax->toMsg();
+?>
+<!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

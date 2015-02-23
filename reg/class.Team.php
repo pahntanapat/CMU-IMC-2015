@@ -82,12 +82,12 @@ class Team extends SKeasySQL{
 		$i=0;
 		while($row=$stm->fetch(PDO::FETCH_OBJ)){
 			$i++;
+			$this->memberInfoState[$i]=($row->part_info===NULL?State::ST_EDITABLE:$row->part_info);
 			if($i==1){
 				foreach($row as $k=>$v)
 					if(property_exists($this,$k)) $this->$k=$v;
-				$this->memberInfoState[0]=($row->obsv_info===NULL?State::ST_EDITABLE:$row->obsv_info);
+				$this->memberInfoState[0]=($row->obsv_info===NULL?$this->memberInfoState[$i]:$row->obsv_info);
 			}
-			$this->memberInfoState[$i]=($row->part_info===NULL?State::ST_EDITABLE:$row->part_info);
 		}
 		return true;
 	}
@@ -309,6 +309,7 @@ class Team extends SKeasySQL{
 		return $a;
 	}
 	
+	// functional method
 	protected function rowArray($withUniv=false,$withPostReg=false,$row=array()){
 		if($withUniv)
 			$row=array_merge($row,array(
@@ -347,7 +348,27 @@ class Team extends SKeasySQL{
 			}
 		}
 	}
-	// Miscellenous Function
+	
+	// Miscellenous method
+	public function countPay(){
+		require_once 'class.State.php';
+		$stm=$this->db->prepare('SELECT '
+			.'(SELECT COUNT(*) FROM '.$this->TABLE.' WHERE '.self::ROW_PAY_STATE.' NOT IN (:l, :e)), '
+			.'(SELECT COUNT(*) FROM '.$this->TABLE.' WHERE '.self::ROW_PAY_STATE.' NOT IN (:l, :e) AND '.self::ROW_ID.' != :i)'
+		);
+		$stm->bindValue(':l', State::ST_LOCKED, PDO::PARAM_INT);
+		$stm->bindValue(':e', State::ST_EDITABLE, PDO::PARAM_INT);
+		$stm->bindValue(':i', $this->id, PDO::PARAM_INT);
+		$stm->execute();
+		return $stm->fetch(PDO::FETCH_NUM);
+	}
+	public function fee($multiply=1){
+		global $config;
+		return ($this->country=='Thailand'?'THB':'USD').' '
+			.number_format($multiply*(
+				$this->country=='Thailand'?$config->REG_PAY_PER_PART_TH:$config->REG_PAY_PER_PART_US
+			), 2);
+	}
 	public function routeForm(){
 		global $config;
 		$d=func_num_args()>0?func_get_arg(0):false;
