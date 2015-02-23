@@ -80,13 +80,24 @@ class State{
 		return "<div data-alert class=\"alert-box ".self::toDivClass($state)." radius\">".$html."<a href=\"#\" class=\"close\">&times;</a></div>";
 	}
 	public static function img($state){
-		$state=self::toClass($state);
-		return $state?"<img src=\"/reg/image/$state.png\" alt=\"$state\" />":NULL;
+		switch($state){
+			case self::ST_TIME_UP:
+			case self::ST_NOT_START:
+			case self::ST_LOCKED: $state='lock';break;
+			case self::ST_EDITABLE: $state='pencil';break;
+			case self::ST_WAIT: $state='refresh';break;
+			case self::ST_NOT_PASS: $state='times';break;
+			case self::ST_PASS: $state='check';break;
+			case self::ST_OK: $state='check-square-o';break;
+			default: return '';
+		}
+		return $state?"<i class=\"fa fa-".$state." pull-left fa-border fa-lg\"></i>":NULL;
 	}
 	public static function css($withHeader=false,$withTag=false){
 		if($withHeader) header("Content-type: text/css;charset=utf-8");
 		ob_start();
 		if(!$withTag) echo '@charset "utf-8";'.PHP_EOL;
+		/*
 		$r=new ReflectionClass(__CLASS__);
 		foreach($r->getConstants() as $state=>$v):
 			if(strpos($state,'ST_')===false) continue;
@@ -96,6 +107,20 @@ class State{
 	content:url(/reg/image/<?=$state?>.png);
 }
         	<?php
+		endforeach;*/
+		$mainCSS=<<<CSS
+font-family: FontAwesome;display: inline-block;padding-right: 0.25em;
+CSS;
+		$list=array(
+			self::ST_LOCKED=>array("f023",'#999'),
+			self::ST_EDITABLE=>array("f040",'#39F'),
+			self::ST_WAIT=>array("f021",'#F60'),
+			self::ST_NOT_PASS=>array("f00d",'#F00'),
+			self::ST_PASS=>array("f00c",'#0F0'),
+			self::ST_OK=>array("f046",'#C0F')
+		);
+		foreach($list as $k=>$v):
+?>.<?=self::toClass($k)?>>a::before{content:"\<?=$v[0]?>";color:<?=$v[1]?>;<?=$mainCSS?>}<?php
 		endforeach;
 		return $withTag&&!$withHeader?"<style>".ob_get_clean()."</style>":ob_get_clean();
 	}

@@ -1,9 +1,16 @@
+<?php
+require_once 'config.inc.php';
+require_once 'class.SesAdm.php';
+
+$sess=SesAdm::check();
+if(!$sess) Config::redirect('admin.php','you are not log in.');
+?>
 <!doctype html>
-<html><!-- InstanceBegin template="/Templates/IMC_Main.dwt" codeOutsideHTMLIsLocked="false" -->
+<html><!-- InstanceBegin template="/Templates/IMC_admin.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Chiang Mai University International Medical Challenge</title>
+<title>Approve Information in Step 2 :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
@@ -16,8 +23,10 @@
 <link rel="stylesheet" type="text/css" href="../css/foundation.min.css"/>
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
+
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
+
 </head>
 
 <body>
@@ -92,7 +101,36 @@
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><!-- InstanceBeginEditable name="Content" -->Content<!-- InstanceEndEditable --></div>
+<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<ul class="accordion" data-accordion>
+    <li class="accordion-navigation">
+    	<a href="#profileBar"><i class="fa fa-user-md"></i> Admin's Profile</a>
+        <div id="profileBar" class="content active"><b>Student ID:</b> <?=$sess->student_id?><br><b>Nickname:</b> <?=$sess->nickname?></div>
+    </li>
+    <li class="accordion-navigation">
+    	<a href="#adminMenu"><i class="fa fa-bars"></i> Main menu</a>
+    	<div class="content" id="adminMenu"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard">Main page</a></li>
+    		<li><a href="home.php#editProfile" title="edit profile">Edit profile</a></li>
+    		<li><a href="home.php#changePassword">Chage password</a></li>
+    		<li><a href="logout.php?admin" title="Log out">Log out</a></li></ul></div>
+    </li>
+    <li class="accordion-navigation">
+    	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
+    	 <div class="content" id="adminTask"><ul class="side-nav">
+            <li><a href="admin_team_list.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+      		<li class="divider"></li>
+      		<li><a href="admin_approve_info.php">Approve teams' information: step 1</a></li>
+      		<li><a href="admin_pay.php">Approve the transactions</a></li>
+      		<li><a href="admin_approve_post_reg.php">Approve teams' information: step 2</a></li>
+      		<li class="divider"></li>
+      		<li><a href="#" title="for General Modulator">for General Modulator</a></li>
+      		<li class="divider"></li>
+      		<li><a href="admin_edit.php" title="Edit administrator">Edit administrator</a></li>
+      		<li><a href="admin_config.php" title="System configuration">System configuration</a></li>
+		</ul></div></li>
+</ul>
+</div>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->adminContent<!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

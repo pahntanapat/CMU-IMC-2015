@@ -8,8 +8,7 @@ class SesAdm extends Session{
 		PMS_WEB=2, // Can Edit web properties
 		PMS_PARTC=4, // Can Add Delete Edit Check Participant
 		PMS_AUDIT=8, // Can Check Payment
-		PMS_OBSRV=16, // Can Add Delete Edit Observer
-		PMS_GM=32 // Can view participant info
+		PMS_GM=16 // Can view participant info
 		;
 		
 	public $id,$nickname, $student_id, $pms;
@@ -42,7 +41,7 @@ class SesAdm extends Session{
 		switch($pms){
 			case self::PMS_ADMIN: return 'จัดการ Admin (กรรมการการแข่งขัน)';
 			case self::PMS_AUDIT: return 'ตรวจสอบหลักฐานการโอนเงิน';
-			case self::PMS_OBSRV: return 'แก้ไข, ตรวจสอบหลักฐานผู้สังเกตการ';
+		//	case self::PMS_OBSRV: return 'แก้ไข, ตรวจสอบหลักฐานผู้สังเกตการ';
 			case self::PMS_GM: return 'ฝ่าย GM สามารถเข้าถึงข้อมูลผู้เข้าร่วมได้';
 			case self::PMS_PARTC: return 'แก้ไข, ตรวจสอบหลักฐานการสมัคร';
 			case self::PMS_WEB: return "ตั้งค่าระบบ แก้ไขข้อมูลเว็บ ฐานข้อมูล และระบบรับสมัคร";

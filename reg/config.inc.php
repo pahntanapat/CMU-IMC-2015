@@ -19,10 +19,10 @@ class Config extends MyConfig{
 		REG_PAY_PER_PART_US=100,
 		REG_PAY_PER_PART_TH=3200,
 		
-		OBSRV_OPEN='2014-12-29 00:00:00',
-		OBSRV_CLOSED='2014-12-30 23:59:59',
-		OBSRV_PAY_PER_OBSRVR=200
+		INFO_ROUTE="Doi Suthep\nMae Hia\nMae Rim",
+		INFO_SHIRT_SIZE="SS\nS\nM\nL\nXL\nXXL"
 		;
+	
 	public function PDO($returnNullIfError=false){
 		$dbh=new PDO(
 			"mysql:host=".$this->DB_HOST.";dbname=".$this->DB_NAME.";", // DSN
@@ -89,6 +89,13 @@ class Config extends MyConfig{
 		return $obj;
 	}
 	
+	public static function trimArray($arr,$exceptKey=array()){
+		foreach($arr as $k=>$v){
+			if(!in_array($k,$exceptKey) && is_string($v))
+				$arr[$k]=trim($v);
+		}
+		return $arr;
+	}
 	// Protocol method & export data
 	public static function isAjax(){ //Check the request if it is from AJAX.
 		return isset($_GET['ajax']);
@@ -153,39 +160,41 @@ class Config extends MyConfig{
 		return ' readonly="readonly"';				
 	}
 	
-	public static function gender(){
-		if(func_num_args()>0) $c=func_get_arg(0);
-		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['gender'];
-		else $c='';
-		$d=func_num_args()>1?func_get_arg(1):false;
-		ob_start();?>
-          <div><label class="require">Gender</label>
-                <input name="gender" type="radio" id="gender_1" value="1"<? if($c==1):?> checked="CHECKED"<? endif; if($d):?> disabled="disabled"<? endif;?>><label for="gender_1">Male</label>
-               <input name="gender" type="radio" id="gender_0" value="0"<? if($c==0):?> checked="CHECKED"<? endif; if($d):?> disabled="disabled"<? endif;?>><label for="gender_0">Female</label>
-          </div>
-<?php
-        return ob_get_clean();
-	}
-	public static function country(){
-		if(func_num_args()>0) $c=func_get_arg(0);
-		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['country'];
-		else $c='';
-		$d=func_num_args()>1?func_get_arg(1):false;
-			
+	/**
+	 *$data is array of objects or arrays that contains data
+	 *$keyPair=array('head row'=>'key of $data', ...);
+	 *$withDel=add delete row
+	 */
+	public static function toTable($data, $keyPair, $withDel=false, $msg=false){
 		ob_start();
-		?>
-<select name="country" id="country"<? if($d):?> disabled="disabled"<? endif;?>>
-       <?php
-		foreach(json_decode(file_get_contents('country.json')) as $i){
-			?>
-	<option value="<?=$i->name?>"<? if($c==$i->name):?> selected="selected"<? endif;?>><?=$i->name?></option>
-            <?php
-		}
-		?>
-</select>
-       <?php
+		if($msg!==false):?>
+<div id="msgTable" class="alert-box info"><?=$msg?><br/><small>Last update: <?=date('Y-m-d H:i:s e')?></small></div>
+<? endif;?>
+<table width="100%" border="0">
+  <tr>
+<? if($withDel):?><th scope="col">Delete</th>
+<?php
+		endif;
+		foreach(array_keys($keyPair) as $k):?>
+<th scope="col"><?=$k?></th>
+<?		endforeach;?>
+	</tr>
+<?php
+		foreach($data as $i):
+			$i=(array) $i;
+?>
+	<tr>
+ 		<? if($withDel):?><td><input name="del[]" type="checkbox" class="del" value="<?=$i['id']?>" title="delete"></td><? endif;?>
+		<? foreach($keyPair as $v):?>
+    	<td><?=isset($i[$v])?$i[$v]:''?></td>
+		<? endforeach;?>
+    </tr>
+<? endforeach;?>
+</table>
+<?php
 		return ob_get_clean();
 	}
+	
 }
 $config=Config::load();
 ?>

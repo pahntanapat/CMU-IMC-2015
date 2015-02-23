@@ -55,6 +55,8 @@ abstract class SKeasySQL{
 	}
 	
 	abstract public function load();
+	
+	abstract public function getList();
 	/**
 	  * Load object from $_POST if the page was submit
 	  * In other way, Load from DB

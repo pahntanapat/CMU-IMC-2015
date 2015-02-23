@@ -2,19 +2,27 @@
 require_once 'config.inc.php';
 require_once 'class.SesPrt.php';
 
-$s=SesPrt::check();
+$s=SesPrt::check(true,true);
 if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
-require_once 'class.State.php';
-require_once 'index.scr.php';
+if(Config::isPost()||Config::isAjax()) require_once 'post_reg.scr.php';
 
+$db=$config->PDO();
+if(!isset($t)){
+	require_once 'class.Team.php';
+	$t=new Team($db);
+	$t->id=$s->id;
+	$t->load();
+}
+require_once 'class.Message.php';
+require_once 'class.State.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Chiang Mai University International Medical Challenge</title>
+<title>Update the journey :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
@@ -31,7 +39,12 @@ require_once 'index.scr.php';
 <script src="js/updateMenuState.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
-<script src="js/change_pw.js"></script>
+<script src="js/foundation-datepicker.js"></script>
+<script src="js/jquery.maskedinput.min.js"></script>
+<script src="js/jquery.form.min.js"></script>
+<script src="js/ui.js"></script>
+
+<link href="css/foundation-datepicker.css" rel="stylesheet" type="text/css">
 <!-- InstanceEndEditable -->
 
 </head>
@@ -149,41 +162,67 @@ require_once 'index.scr.php';
         </div>
     </li>
 </ul>
-</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
-    <h2>CMU-IMC Registration system</h2><div class="panel radius callout" id="teamMsg"><?=$msg?></div><div>
-  <form action="index.php" method="post" name="changePassword" id="changePassword" data-action="index.scr.php"> <fieldset>
-      <legend>Change password</legend>
-      <div>
-        <label for="oldPassword">old password</label>
-        <input type="password" name="oldPassword" id="oldPassword">
-      </div>
-      <div>
-        <label for="pw">new password</label>
-        <input type="password" name="pw" id="pw">
-      </div>
-      <div>
-        <label for="cfPW">confirm password</label>
-        <input type="password" name="cfPW" id="cfPW">
-      </div>
-      <div>
-       <button name="savePW" type="submit" id="savePW" value="Save">Save</button>
-     <button type="reset" name="resetPW" id="resetPW" value="Cancel">Cancel</button></div>
-    </fieldset>
-    <?php 
-	if(!isset($ajax)){
-		require_once 'class.SKAjax.php';
-		$ajax=new SKAjax();
-		$ajax->msgID="msgCP";
-	}
-	echo $ajax->toMsg();
+</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" --><h2><?=State::img(State::inTime($s->postRegState,$config->REG_START_PAY,$config->REG_END_INFO))?>Team &amp; Institution information</h2>
+<?php
+echo State::toHTML(State::inTime($s->postRegState,$config->REG_START_PAY,$config->REG_END_INFO));
+
+$msg=new Message($db);
+$msg->team_id=$s->id;
+$msg->show_page=Message::PAGE_POST_REG_TEAM;
+echo $msg;
+unset($msg);
+
+$r=!State::is($s->postRegState,State::ST_EDITABLE,$config->REG_START_PAY,$config->REG_END_INFO);
 ?>
-  </form>
+<div class="magellan-container" data-magellan-expedition="fixed">
+  <dl class="sub-nav">
+    <dd data-magellan-arrival="info"><a href="#info">Update your information</a></dd>
+    <dd data-magellan-arrival="photo"><a href="#photo">Upload your team's photo</a></dd>
+    <dd data-magellan-arrival="ticket"><a href="#ticket">Upload ticket</a></dd>
+  </dl>
 </div>
-<ul class="accordion" data-accordion>
-<li class="accordion-navigation"><a href="#sponsor1">Booking form 1</a><div id="sponsor1" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+5%2C000+THB"/></div></li>
-<li class="accordion-navigation"><a href="#sponsor2">Booking form 2</a><div id="sponsor2" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+4%2C000+THB"/></div></li>
-<li class="accordion-navigation"><a href="#sponsor3">Booking form 3</a><div id="sponsor3" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+3%2C000+THB"/></div></li>
-</ul><!-- InstanceEndEditable --></div></div>
+<hr>
+<h3 data-magellan-destination="info" id="info">Update your information</h3>
+<form action="post_reg.php" method="post" id="infoForm">
+<fieldset><legend>Routes of Chiang Mai Tour</legend>
+<p><a href="../cm_tour.html" target="_blank"><i class="fa fa-map-marker"></i> Information of routes of Chiang Mai Tour</a></p>
+<?=$t->routeForm($r)?>
+</fieldset>
+<fieldset><legend>Type/Time of Arrival &amp; Departure</legend>
+
+<div>
+  <label class="require">Arrival time
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_time?>"<?=Config::readonly($r)?>>
+  </label>
+</div>
+<div>
+  <label class="require">Expected type of arrival (to Chiang Mai) <small> Airplane, Bus, Train, Van</small>
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_by?>"<?=Config::readonly($r)?>></label>
+</div>
+<div>
+  <label>Departure time
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_time?>"<?=Config::readonly($r)?>>
+  </label>
+</div>
+<div>
+  <label>Expected type of departure (from Chiang Mai) <small>Airplane, Bus, Train, Van</small>
+    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_by?>"<?=Config::readonly($r)?>>
+  </label>
+</div>
+</fieldset>
+<? if(!$r):?>
+      <fieldset class="require"><legend>Save</legend>
+      <div><button type="submit" name="submitInfo">Save</button><button type="reset" name="resetInfo">Cancel</button></div>
+      </fieldset>
+<? endif;?>
+</form>
+<hr>
+<h3 data-magellan-destination="photo" id="photo">Upload your team's photo</h3>
+<form action="post_reg.php" method="post" id="photoForm"></form>
+<hr>
+<h3 data-magellan-destination="ticket" id="ticket">Upload ticket (Arrival to Chiang Mai)</h3>
+<form action="post_reg.php" method="post" id="ticketForm"></form>
+<!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

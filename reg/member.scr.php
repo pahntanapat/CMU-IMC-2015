@@ -23,6 +23,19 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 		$upload->minFileSize=60000;
 		$upload->quality=50;
 		if($upload->uploadPartStudentCard($_POST['part_no'])){
+			if($_POST['id']!=''){
+				require_once 'class.Member.php';
+				require_once 'class.State.php';
+				
+				$p=new Participant($db);
+				$p->id=$_POST['id'];
+				$p->info_state=State::ST_EDITABLE;
+				$p->setState();
+				
+				$s->setParticipantInfoState($_POST['part_no'], $p->info_state);
+				$s->setProgression();
+				$uploadAjax->updateMenuState($s);
+			}
 			$uploadAjax->message='Upload your image complete'."<br/><br/>".$upload->toImgPartStudentCard($_POST['part_no']);
 			$uploadAjax->result=true;
 		}else{
@@ -37,7 +50,7 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 	}
 	unset($upload);
 }elseif(Config::isPost()){
-	if(!State::is($s->teamState,State::ST_EDITABLE) || time()>strtotime($config->REG_END_REG) || time()<strtotime($config->REG_START_REG)){
+	if(!State::is($s->getParticipantInfoState($_POST['part_no']),State::ST_EDITABLE,$config->REG_START_REG,$config->REG_END_REG)){
 		$ajax->message='You are not allowed to change the information. Please contact administrators.';
 	}elseif(!(Config::isBlank($_POST,'email') || Config::checkEmail($_POST['email'],$e))){
 		$ajax->message=$e;
@@ -49,11 +62,16 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 		$ajax->message='Please fill out "Medical student year" in numeric format.';
 	}else{
 		try{
-			require_once 'class.Participant.php';
-			$member=Config::assocToObjProp($_POST,$_POST['part_no']==0?new Observer($db):new Participant($db));
+			require_once 'class.Member.php';
+			require_once 'class.State.php';
+			
+			$member=Config::assocToObjProp(
+				Config::trimArray($_POST),
+				$_POST['part_no']==0?new Observer($db):new Participant($db)
+			);
 			$member->team_id=$s->id;
 			$member->beginTransaction();
-		//	require_once 'class.Observer.php';
+		//	require_once 'class.Member.php';
 		//	$member=new Observer();
 			
 			if($member->id==0){
@@ -66,7 +84,8 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 			}
 			if($ajax->result){
 				$ajax->setFormDefault((array) $member);
-				$s->setParticipantInfoState($_POST['part_no'],$member->info_state);
+				$s->setParticipantInfoState($_POST['part_no'], $member->info_state);
+				$s->setProgression();
 				$ajax->updateMenuState($s);
 			}
 			$member->commit();

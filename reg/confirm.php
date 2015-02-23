@@ -21,8 +21,7 @@ if(Config::isPost()||Config::isAjax()){
 		if($step==1){
 			try{
 				require_once 'class.Team.php';
-				require_once 'class.Observer.php';
-				require_once 'class.Participant.php';
+				require_once 'class.Member.php';
 				$db->beginTransaction();
 				$t=new Team($db);
 			//	$t->beginTransaction();
@@ -40,9 +39,9 @@ if(Config::isPost()||Config::isAjax()){
 				$ob->info_state=State::ST_WAIT;
 				$mem->info_state=State::ST_WAIT;
 				
-				$t->setState(Team::ROW_TEAM_STATE);
-				$ob->setState(Observer::ROW_INFO_STATE);
-				$mem->setState(Participant::ROW_INFO_STATE);
+				if($s->teamState==State::ST_EDITABLE) $t->setState(Team::ROW_TEAM_STATE);
+				$ob->setState(State::ST_EDITABLE);
+				$mem->setState(State::ST_EDITABLE);
 				
 			//	$t->commit();
 			//	$ob->commit();
@@ -94,38 +93,69 @@ if(Config::isPost()||Config::isAjax()){
 </head>
 
 <body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div class="withbg-index">
 	<div class="row">
 		<div class="large-12 columns">
-			<img class="hide-for-small" src="../img/logo-head.png"/>
-			<img class="show-for-small" src="../img/logo-head-mini.png"/>
-			<div class="contain-to-grid sticky">
+			<div class="row show-for-large-up">
+				<div class="clearfix columns">
+					<img class="left" src="../img/logo-head_old.png"/>
+					<img class="right" src="../img/logo-head_cr.png"/>
+				</div>
+			</div>
+		  <div class="row show-for-medium-only">
+				<div class="clearfix columns">
+					<img class="left" src="../img/logo-head.png"/>
+				</div>
+			</div>
+			<img class="show-for-small-only" src="../img/logo-head-mini.png"/>
+			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
 						<li class="name">
-							<h1><a href="/">HOME</a></h1>
+							<h1>
+								<a href="/">
+									HOME
+								</a>
+						  </h1>
 						</li>
 						<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a>
 						</li>
 					</ul>
 					<section class="top-bar-section">
 						<ul class="left">
-							<li><a href="#">NEWS</a></li>
+							<li><a href="../news.html">NEWS</a></li>
 							<li class="has-dropdown"><a>DETAILS</a>
 								<ul class="dropdown">
-									<li><a href="#">CMU-IMC?</a></li>
+									<li><a href="../about_IMC.html">CMU-IMC</a></li>
+									<li><a href="../competition.html">Competition</a></li>
+									<li><a href="../registration.html">Registration</a></li>
+									<li><a href="../mini_gallery.html">Gallery</a></li>
 									<li class="divider"></li>
-									<li><label>CMU-IMC 2015</label></li>
-									<li><a href="#">Competition</a></li>
-									<li><a href="#">Activities</a></li>
+									<li><a href="../accommodation.html">Accommodation</a></li>
+									<li><a href="../activities.html">Recreational activities</a></li>
+									<li><a href="../cm_tour.html">Chiang Mai Tour</a></li>
 									<li class="divider"></li>
-									<li><a href="#">Miscellaneous</a></li>
+									<li><a href="../local_information.html">Local Information</a></li>
+									<li><a href="../faq.html">FAQ</a></li>
+									<li class="divider"></li>
+									<li><a href="../invite_package.html">Invitation Package</a></li>
 								</ul>
 							</li>
-							<li><a href="#">REGISTER</a></li>
-						</ul>
+							<li><a href="../reg/">REGISTER</a></li>
+							
+					  </ul>
 						<ul class="right">
-							<li><a href="#">FACEBOOK</a></li>
-							<li><a href="#">CONTACT</a></li>
+							<li><a href="https://www.facebook.com/CMU.IMC" target="_blank">FACEBOOK</a></li>
+							<li><a href="https://twitter.com/cmu_imc" target="_blank">TWITTER</a></li>
+							<li><a href="contact.html">CONTACT US</a></li>
 						</ul>
 					</section>
 				</nav>
@@ -135,32 +165,45 @@ if(Config::isPost()||Config::isAjax()){
 
 <div class="row"> <!--Whole Body -->
 <div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
-  <div><b>Team's name:</b> <?=$s->teamName?><br>
-    <b>Institution:</b> <?=$s->institution?><br>
-    <b>University:</b> <?=$s->university?><br>
-    <b>Country:</b> <?=$s->country?><br><br>
-    <b>Progression</b>
-  </div>
-<div id="progression" class="progress round"><span class="meter" style="width:<?=$s->getProgression()?>%"></span></div>
-<ul class="side-nav">
+<ul class="accordion" data-accordion>
+    <li class="accordion-navigation">
+        <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
+        <div id="sbTeamInfo" class="content active">
+            <b>Team's name:</b> <?=$s->teamName?><br>
+            <b>Institution:</b> <?=$s->institution?><br>
+            <b>University:</b> <?=$s->university?><br>
+            <b>Country:</b> <?=$s->country?><br><br>
+            <b>Progression</b>
+            <div id="progression" class="progress round"><span class="meter" style="width:<?=$s->getProgression()?>%"></span></div>
+        </div>
+    </li>
+    <li class="accordion-navigation">
+        <a href="#sbMenu"><i class="fa fa-bars"></i> Main menu</a>
+        <div id="sbMenu" class="content"><ul class="side-nav">
+        <li class="divider"></li>
+  <li><a href="index.php" title="Main page">Main page</a></li>
+  <li><a href="index.php#changePW">Change password</a></li>
+  <li><a href="logout.php" title="Log out">Log out</a></li></ul>
+        </div>
+    </li>
+    <li class="accordion-navigation">
+        <a href="#sbStep"><i class="fa fa-check-square"></i> Steps of Registration</a>
+        <div id="sbStep" class="content">
+        <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
-  <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="member.php?no=0" title="Professor's infomation">Professor's infomation</a></li>
+  <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
   <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="#" title="Upload Transaction">Upload Transaction</a></li>
-  <li class="<?=State::inTime($s->getObserverPostRegInfoState(), $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuObsvPostReg"><a href="#" title="Update professor's shirt size &amp; passport">Update professor's shirt size &amp; passport</a></li>
-  <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::inTime($s->getParticipantPostRegInfoState($i), $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPartPostReg<?=$i?>"><a href="#" title="Update <?=Config::ordinal($i, false)?> participant's shirt size &amp; passport">Update 
-    <?=Config::ordinal($i)?>  participant's shirt size &amp; passport</a></li>
-  <? endfor;?>
-  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="#" title="Select route &amp; upload team's picture &amp; update arrival time">Select route &amp; upload team's picture &amp; update arrival time</a></li>
-  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of journey</a></li>
-<li class="divider"></li>
-  <li><a href="index.php" title="Main page">Main page</a></li>
-  <li><a href="index.php#changePW">Change password</a></li>
-  <li><a href="logout.php" title="Log out">Log out</a></li>
+  <li class="divider"> </li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transaction">Upload Transaction</a></li>
+  <li class="divider"> </li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="post_reg.php" title="Select route &amp; upload team's picture &amp; update arrival time">Update your journey</a></li>
+  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of the journey</a></li>
+</ul>
+        </div>
+    </li>
 </ul>
 </div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
 <h2><?=State::img(State::inTime($s->cfInfoState,$config->REG_START_REG,$config->REG_END_REG))?>Confirm your information</h2>
@@ -189,7 +232,13 @@ if(($step==1 && State::is($s->cfInfoState,State::ST_EDITABLE, $config->REG_START
       <? endif;?>
 </div><div><button type="submit">Confirm</button><button type="reset">Cancel</button></div></fieldset>
 </form>
-<? endif; if(strlen($msg)>0):?><div class="alert-box radius warning"><b><?=$msg?></b></div><? endif;?><!-- InstanceEndEditable --></div></div>
+<? endif; if(strlen($msg)>0):?><div class="alert-box radius warning"><b><?=$msg?></b></div><? endif;?>
+<div class="panel">
+  <h4>
+<? if($step==1):?><i class="fa fa-lg fa-money"></i> After your information is approved, we recommend you to transfer <a href="../registration.html#fee" target="_blank">the application fee</a> and upload the transaction to <a href="pay.php" target="_blank">the registration system</a> as soon as possible.
+<? else:?><i class="fa fa-lg fa-credit-card"></i> After your information is approved, we recommend you to send numbers, expire dates, and copies of participants' and advisor's passports.
+<? endif;?></h4></div><!-- InstanceEndEditable --></div></div>
+</div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">

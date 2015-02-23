@@ -2,6 +2,7 @@
 require_once 'config.inc.php';
 require_once 'class.Admin.php';
 require_once 'class.SesAdm.php';
+require_once 'class.Message.php';
 
 ?>
 <!doctype html>
@@ -9,27 +10,33 @@ require_once 'class.SesAdm.php';
 <head>
 <meta charset="utf-8">
 <title>Test</title>
+
 <link rel="stylesheet" href="css/ui.css">
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
+<script src="../js/foundation.min.js"></script>
+<script src="../js/vendor/modernizr.js"></script>
+<script src="../slick/slick.min.js"></script>
 <script src="js/skajax.js"></script>
+<link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="../slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="../css/foundation.min.css"/>
+<link href="../css/imc_main.css" rel="stylesheet" type="text/css">
+<link href="../css/prime.css" rel="stylesheet" type="text/css" />
 <script>
-$(function(e){
-	$.addDialog('asdkldakdlkldas<br>asdjklasdf');
-});
 </script>
 </head>
 
 <body>
-<pre>
+<pre><?php
+session_start();
+var_dump($_SESSION);
+?></pre>
+<div>
+
+</div>
 <?php
-require_once 'class.UploadImage.php';
-$u=new UploadImage();
-$u->team_id=123456;
-?>
-</pre>
-<?php
-echo Config::country();
+
 ?>
 <div class="dialog"><button>Close</button><div><button>Close</button></div></div>
 </body>

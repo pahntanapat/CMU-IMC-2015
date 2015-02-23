@@ -10,6 +10,11 @@
 		else if($(this).is('a')) return $(this).attr('href');
 		else	return this;
 	};
+	$.fn.addSK=function(){
+		var act=$(this).act();
+		act+=act.indexOf('?')==-1?'?':'&';
+		return act+$.SK();
+	};
 	$.fn.SKAjax=function(data,callback){
 		if(typeof data =="string"){
 			try{
@@ -58,6 +63,7 @@
 			return data.result;
 		return callback;
 	};
+	/**
 	$.fn.ajaxSK=function(setting){
 		var me=this;
 		return $.ajax($.extend({},setting,{
@@ -81,6 +87,94 @@
 	$.fn.getSK=function(url,success){
 		return $(this).loadSK(url,$(this).serialize(),success);
 	};
+	**/
+	$.fn.postSK=function(url){
+		var me=$(this).waitSK(null,null);
+		return $.post(url,$(this).serialize(), function(data){
+			return $(me).SKAjax(data, function(r, m){
+				$(me).waitSK(r, m);
+			});
+		});
+	};
+	$.fn.postSKOriginal=function(url,success){
+		var me=$(this).waitSK(null,null);
+		return $.post(url,$(this).serialize(),function(data){
+			return $(me).SKAjax(data, function(r, m){
+				$(me).waitSK(null,null);
+				if($.isFunction(success)) return success(r, m);
+				else return r;
+			});
+		});
+	};
+	
+	$.fn.loadSK=function(url,data){
+		var me=$(this).waitSK(null,null);
+		return $.get(url,data,function(data){
+			return $(me).SKAjax(data, function(r, m){
+				$(me).waitSK(r, m);
+			});
+		});
+	};
+	$.fn.loadSKOriginal=function(url,data,success){
+		var me=$(this).waitSK(null,null);
+		return $.get(url,data,function(data){
+			return $(me).SKAjax(data, function(r, m){
+				$(me).waitSK(null,null);
+				if($.isFunction(success)) return success(r, m);
+				else return r;
+			});
+		});
+	};
+	$.fn.waitSK=function(r, m){
+		if($(this).data('waitsk')=='1'){
+			$(this).removeData('waitsk');
+			$('#waitsk').remove();
+			if(m!=null)
+				$('#'+m).removeClass('alert-box radius round warning success alert info secondary')
+					.addClass('alert-box radius')
+					.addClass((r==true?'success':(r==false?'alert':'info')))
+					.append('<br/><small>Time: '+Date()+'</small>');
+		}else{
+			if($(this).data('waitsk','1').prop("tagName")=='FORM'){
+				$(this).append(
+					'<div id="waitsk" class="alert-box radius warning">'
+					+'<i class="fa fa-spinner fa-pulse"></i>'
+					+' Please wait. The registration system is processing.</div>'
+				);
+			}else{
+				$(this).after(
+					'<div id="waitsk" class="alert-box radius warning">'
+					+'<i class="fa fa-spinner fa-pulse"></i>'
+					+' Please wait. The registration system is processing.</div>'
+				);
+			}
+			
+		}
+		return this;
+	};
+	/*
+	$.fn.waitSK=function(result, msg){
+		//if(typeof $(this).data('waitsk')=='undefined') 
+		alert($(this).length);
+		if($(this).removeClass('warning success alert info secondary').data('waitsk')==true){ // Remove Waiting message
+			$(this).html(msg).data('waitsk',false)
+				.addClass('alert-box radius')
+				.addClass((result==true?'success':(result==false?'alert':'info')));
+		}else{
+			$(this).html('<i class="fa fa-spinner fa-pulse"></i> Please wait. The registration system is processing.')
+				.addClass('alert-box warning radius').data('waitsk',true);
+		}
+		return function(result,msg){
+			return $(this).waitSK(result,msg);
+		};
+	};
+	$.fn.formWaitSK=function(result, msg){
+		alert($(this).prop("tagName"));
+		$('#'+$(this).data('waitsk')).waitSK(result, msg);return this;
+	};
+	*/
+	
+	
 	$.fn.checkAll=function(checkbox){
 		return $(this).click(function(e) {
             if($(this).data("checked")===1){

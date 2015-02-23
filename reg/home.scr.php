@@ -10,6 +10,7 @@ $elem->result=false;
 require_once 'class.Admin.php';
 
 if(isset($_POST['oldPassword'])){ //Change password
+	$_POST=Config::trimArray($_POST);
 	if(Config::isBlank($_POST,'password','cfPW','oldPassword')){
 		$elem->msgCP='Password must not leave blank.';
 	}else	if($_POST['password']!=$_POST['cfPW']){

@@ -2,19 +2,20 @@
 require_once 'config.inc.php';
 require_once 'class.SesPrt.php';
 
-$s=SesPrt::check();
+$s=SesPrt::check(true,true);
 if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
-require_once 'class.State.php';
-require_once 'index.scr.php';
+if(Config::isPost()||Config::isAjax()) require_once 'index.scr.php';
 
+require_once 'class.Message.php';
+require_once 'class.State.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Chiang Mai University International Medical Challenge</title>
+<title>Upload transaction :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
@@ -31,7 +32,6 @@ require_once 'index.scr.php';
 <script src="js/updateMenuState.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
-<script src="js/change_pw.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -149,41 +149,7 @@ require_once 'index.scr.php';
         </div>
     </li>
 </ul>
-</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
-    <h2>CMU-IMC Registration system</h2><div class="panel radius callout" id="teamMsg"><?=$msg?></div><div>
-  <form action="index.php" method="post" name="changePassword" id="changePassword" data-action="index.scr.php"> <fieldset>
-      <legend>Change password</legend>
-      <div>
-        <label for="oldPassword">old password</label>
-        <input type="password" name="oldPassword" id="oldPassword">
-      </div>
-      <div>
-        <label for="pw">new password</label>
-        <input type="password" name="pw" id="pw">
-      </div>
-      <div>
-        <label for="cfPW">confirm password</label>
-        <input type="password" name="cfPW" id="cfPW">
-      </div>
-      <div>
-       <button name="savePW" type="submit" id="savePW" value="Save">Save</button>
-     <button type="reset" name="resetPW" id="resetPW" value="Cancel">Cancel</button></div>
-    </fieldset>
-    <?php 
-	if(!isset($ajax)){
-		require_once 'class.SKAjax.php';
-		$ajax=new SKAjax();
-		$ajax->msgID="msgCP";
-	}
-	echo $ajax->toMsg();
-?>
-  </form>
-</div>
-<ul class="accordion" data-accordion>
-<li class="accordion-navigation"><a href="#sponsor1">Booking form 1</a><div id="sponsor1" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+5%2C000+THB"/></div></li>
-<li class="accordion-navigation"><a href="#sponsor2">Booking form 2</a><div id="sponsor2" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+4%2C000+THB"/></div></li>
-<li class="accordion-navigation"><a href="#sponsor3">Booking form 3</a><div id="sponsor3" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+3%2C000+THB"/></div></li>
-</ul><!-- InstanceEndEditable --></div></div>
+</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->reg_content<!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

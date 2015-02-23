@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 22, 2015 at 05:21 PM
+-- Generation Time: Feb 20, 2015 at 02:06 PM
 -- Server version: 5.6.19-log
 -- PHP Version: 5.6.0
 
@@ -41,29 +41,6 @@ CREATE TABLE `admin` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `indy_observer_info`
---
-
-CREATE TABLE `indy_observer_info` (
-  `id` bigint(20) unsigned NOT NULL,
-  `team_id` bigint(20) unsigned NOT NULL COMMENT 'รหัสทีม (id จาก team_info)',
-  `title` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'คำนำหน้าชื่อ',
-  `firstname` text COLLATE utf8_unicode_ci NOT NULL,
-  `lastname` text COLLATE utf8_unicode_ci NOT NULL,
-  `gender` tinyint(1) NOT NULL COMMENT '1 = male, 0 = female',
-  `phone` varchar(10) CHARACTER SET utf8 NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `school` text COLLATE utf8_unicode_ci NOT NULL,
-  `sci_grade` decimal(3,2) NOT NULL COMMENT 'เกรดวิทย์',
-  `is_pass` tinyint(4) NOT NULL DEFAULT '2' COMMENT 'สถานะการกรอกข้อมูล',
-  `is_upload` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'สถานะของปพ.1',
-  `sorted_id` varchar(9) CHARACTER SET utf8 DEFAULT NULL COMMENT 'รหัสผู้แข่งขัน',
-  `exam_room` text COLLATE utf8_unicode_ci COMMENT 'ห้องสอบ ที่นั่งสอบ'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='ข้อมูลผู้สังเกตการณ์อิสระ';
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `observer_info`
 --
 
@@ -76,21 +53,18 @@ CREATE TABLE `observer_info` (
   `lastname` text COLLATE utf8_unicode_ci,
   `gender` tinyint(1) DEFAULT NULL COMMENT '1 = male, 0 = female',
   `birth` date DEFAULT NULL COMMENT 'date of birth',
-  `passport_no` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'passport No. or TH people ID',
-  `passport_exp` date DEFAULT NULL COMMENT 'Exp of passport of TH people card',
-  `religion` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'ศาสนา',
   `nationality` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'สัญชาติในปัจจุบัน',
   `phone` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'mobile phone No.',
   `email` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `fb` text COLLATE utf8_unicode_ci COMMENT 'Facebook Name, Facebook Profile''s URL',
   `tw` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'twitter name',
-  `shirt_size` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'M',
+  `religion` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'ศาสนา',
   `cuisine` text COLLATE utf8_unicode_ci COMMENT 'อาหาร เช่น Halal, Vegetarian',
   `allergy` text COLLATE utf8_unicode_ci COMMENT 'allergy',
   `disease` text COLLATE utf8_unicode_ci COMMENT 'underlying disease + other medical requirement',
   `other_req` text COLLATE utf8_unicode_ci COMMENT 'other requirement: religion, vegeterian',
-  `info_state` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT 'สถานะการกรอกข้อมูล',
-  `post_reg_state` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'สถานะข้อมูล update หลังจ่ายเงิน (หลังปิดรับสมัคร)'
+  `shirt_size` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'M',
+  `info_state` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT 'สถานะการกรอกข้อมูล'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='ข้อมูลผู้สังเกตการณ์ประจำแต่ละทีม';
 
 -- --------------------------------------------------------
@@ -110,22 +84,19 @@ CREATE TABLE `participant_info` (
   `gender` tinyint(1) DEFAULT NULL COMMENT '1 = male, 0 = female',
   `std_y` tinyint(3) unsigned DEFAULT NULL COMMENT 'medical student year (ชั้นปี)',
   `birth` date DEFAULT NULL COMMENT 'date of birth',
-  `passport_no` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'passport No. or TH people ID',
-  `passport_exp` date DEFAULT NULL COMMENT 'Exp of passport of TH people card',
-  `religion` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'ศาสนา',
   `nationality` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'สัญชาติในปัจจุบัน',
   `phone` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'mobile phone No.',
   `email` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `fb` text COLLATE utf8_unicode_ci COMMENT 'Facebook Name, Facebook Profile''s URL',
   `tw` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'twitter name',
   `emerg_contact` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'emergency contact (เบอร์โทรผู้ปกครอง กรณีฉุกเฉิน)',
-  `shirt_size` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'M',
+  `religion` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'ศาสนา',
   `cuisine` text COLLATE utf8_unicode_ci COMMENT 'อาหาร เช่น Halal, Vegetarian',
   `allergy` text COLLATE utf8_unicode_ci COMMENT 'allergy',
   `disease` text COLLATE utf8_unicode_ci COMMENT 'underlying disease + other medical requirement',
   `other_req` text COLLATE utf8_unicode_ci COMMENT 'other requirement: religion, vegeterian',
-  `info_state` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT 'สถานะการกรอกข้อมูล',
-  `post_reg_state` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'สถานะข้อมูล update หลังจ่ายเงิน (หลังปิดรับสมัคร)'
+  `shirt_size` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'M',
+  `info_state` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT 'สถานะการกรอกข้อมูล'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='ข้อมูลผู้สังเกตการณ์ประจำแต่ละทีม';
 
 -- --------------------------------------------------------
@@ -138,6 +109,7 @@ CREATE TABLE `team_info` (
   `id` bigint(20) unsigned NOT NULL,
   `email` varchar(127) CHARACTER SET utf8 NOT NULL,
   `password` varchar(32) CHARACTER SET utf8 NOT NULL,
+  `team_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL COMMENT 'team''s name',
   `institution` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Medical school''s name',
   `university` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT 'University''s name',
   `address` text COLLATE utf8_unicode_ci COMMENT 'Medical school''s address',
@@ -147,7 +119,7 @@ CREATE TABLE `team_info` (
   `arrive_time` datetime DEFAULT NULL COMMENT 'เวลามาถึง',
   `depart_by` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'การเดินทางกลับ',
   `depart_time` datetime DEFAULT NULL COMMENT 'เวลากลับ',
-  `route` tinyint(3) unsigned DEFAULT NULL COMMENT 'route วันเที่ยว',
+  `route` tinyint(3) unsigned DEFAULT NULL COMMENT 'Routes of Chiang Mai Tour',
   `team_state` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT 'สถานะข้อมูลทีม ตาม status มาตรฐาน',
   `pay_state` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT 'สถานะการจ่ายเงิน ตาม status มาตรฐาน',
   `post_reg_state` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT 'สถานะข้อมูล update หลังจ่ายเงิน (หลังปิดรับสมัคร)'
@@ -177,12 +149,6 @@ CREATE TABLE `team_message` (
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `indy_observer_info`
---
-ALTER TABLE `indy_observer_info`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -217,11 +183,6 @@ ALTER TABLE `team_message`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `indy_observer_info`
---
-ALTER TABLE `indy_observer_info`
   MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `observer_info`

@@ -37,6 +37,8 @@ if(Config::isPost()){ //Change Password
 	$msg=new Message($config->PDO());
 	$msg->team_id=$sess->id;
 	
+	$sess->changeID(true);
+	
 	if(Config::isAjax()){
 		require_once 'class.SKAjax.php';
 		$ajax=new SKAjax();

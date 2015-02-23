@@ -125,6 +125,7 @@ HTML;
 	public function toJSON($option=0,$depth=512){
 		if(strlen($this->message)>0)
 			$this->addHtmlTextVal(self::SET_HTML,'#'.$this->msgID,$this->message);
+		$this->message=$this->msgID;
 		return parent::toJSON($option,$depth);
 	}
 

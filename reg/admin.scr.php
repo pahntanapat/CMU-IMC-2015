@@ -4,9 +4,8 @@ require_once 'class.SesAdm.php';
 
 // Processing section
 $sess=SesAdm::check();
-if($sess){ //Have already logged in
+if($sess)
 	Config::redirect('home.php','You have already logged in.');
-}
 
 require_once 'class.SKAjax.php';
 $ajax=new SKAjax();
@@ -20,6 +19,7 @@ if(!Config::checkCAPTCHA()){
 	try{
 		require_once 'class.Admin.php';
 		$adm=Config::assocToObjProp($_POST,new Admin($config->PDO(true)));
+		$adm->student_id=trim($adm->student_id);
 		$ajax->result=$adm->auth();
 		if($ajax->result){
 			$sess=new SesAdm();

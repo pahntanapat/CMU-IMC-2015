@@ -34,38 +34,69 @@ else{
 </head>
 
 <body>
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div class="withbg-index">
 	<div class="row">
 		<div class="large-12 columns">
-			<img class="hide-for-small" src="../img/logo-head.png"/>
-			<img class="show-for-small" src="../img/logo-head-mini.png"/>
-			<div class="contain-to-grid sticky">
+			<div class="row show-for-large-up">
+				<div class="clearfix columns">
+					<img class="left" src="../img/logo-head_old.png"/>
+					<img class="right" src="../img/logo-head_cr.png"/>
+				</div>
+			</div>
+		  <div class="row show-for-medium-only">
+				<div class="clearfix columns">
+					<img class="left" src="../img/logo-head.png"/>
+				</div>
+			</div>
+			<img class="show-for-small-only" src="../img/logo-head-mini.png"/>
+			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
 						<li class="name">
-							<h1><a href="/">HOME</a></h1>
+							<h1>
+								<a href="/">
+									HOME
+								</a>
+						  </h1>
 						</li>
 						<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a>
 						</li>
 					</ul>
 					<section class="top-bar-section">
 						<ul class="left">
-							<li><a href="#">NEWS</a></li>
+							<li><a href="../news.html">NEWS</a></li>
 							<li class="has-dropdown"><a>DETAILS</a>
 								<ul class="dropdown">
-									<li><a href="#">CMU-IMC?</a></li>
+									<li><a href="../about_IMC.html">CMU-IMC</a></li>
+									<li><a href="../competition.html">Competition</a></li>
+									<li><a href="../registration.html">Registration</a></li>
+									<li><a href="../mini_gallery.html">Gallery</a></li>
 									<li class="divider"></li>
-									<li><label>CMU-IMC 2015</label></li>
-									<li><a href="#">Competition</a></li>
-									<li><a href="#">Activities</a></li>
+									<li><a href="../accommodation.html">Accommodation</a></li>
+									<li><a href="../activities.html">Recreational activities</a></li>
+									<li><a href="../cm_tour.html">Chiang Mai Tour</a></li>
 									<li class="divider"></li>
-									<li><a href="#">Miscellaneous</a></li>
+									<li><a href="../local_information.html">Local Information</a></li>
+									<li><a href="../faq.html">FAQ</a></li>
+									<li class="divider"></li>
+									<li><a href="../invite_package.html">Invitation Package</a></li>
 								</ul>
 							</li>
-							<li><a href="#">REGISTER</a></li>
-						</ul>
+							<li><a href="../reg/">REGISTER</a></li>
+							
+					  </ul>
 						<ul class="right">
-							<li><a href="#">FACEBOOK</a></li>
-							<li><a href="#">CONTACT</a></li>
+							<li><a href="https://www.facebook.com/CMU.IMC" target="_blank">FACEBOOK</a></li>
+							<li><a href="https://twitter.com/cmu_imc" target="_blank">TWITTER</a></li>
+							<li><a href="contact.html">CONTACT US</a></li>
 						</ul>
 					</section>
 				</nav>
@@ -86,7 +117,9 @@ else{
     <button type="reset" name="cancel" id="cancel" value="cancel">Cancel</button></div></fieldset>
   </form>
   <?=$ajax->toMsg()?>
+  <h3><a href="register.php" title="create new account">I don't have any account. Create new account.</a></h3>
 <!-- InstanceEndEditable --></div>
+</div>
 </div><!--End Body-->
 	<footer class="row">
 		<div class="large-12 columns">
