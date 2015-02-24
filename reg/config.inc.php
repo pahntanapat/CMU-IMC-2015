@@ -120,7 +120,7 @@ class Config extends MyConfig{
 		}
 	}
 	
-	public static function JSON($json=false,$exit=false){
+	public static function JSON($json=false,$exit=true){
 		header("Content-type: text/json;charset=utf-8");
 		if($json===false) return;
 		elseif($exit) exit($json);

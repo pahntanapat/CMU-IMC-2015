@@ -115,7 +115,7 @@ $t->submitLoad();
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-4 columns">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
         <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
@@ -156,10 +156,13 @@ $t->submitLoad();
         </div>
     </li>
 </ul>
-</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
+</div><div id="regContent" class="small-12 large-8 columns"><!-- InstanceBeginEditable name="reg_content" -->
 <h2><?=State::img(State::inTime($s->teamState,$config->REG_START_REG,$config->REG_END_REG))?>Team &amp; Institution information</h2>
 <?php
-echo State::toHTML(State::inTime($s->teamState,$config->REG_START_REG,$config->REG_END_REG));
+echo State::toHTML(
+	State::inTime($s->teamState,$config->REG_START_REG,$config->REG_END_REG),
+	array($config->REG_START_REG,$config->REG_END_REG)
+);
 
 $msg=new Message($db);
 $msg->team_id=$s->id;

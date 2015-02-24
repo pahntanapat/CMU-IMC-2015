@@ -46,6 +46,6 @@ if(Config::isPost()){
 	}
 }
 
-if(Config::isAjax()) Config::JSON($ajax,true);
+if(Config::isAjax()) Config::JSON($ajax);
 elseif($ajax->result) Config::redirect('./',$ajax->message);
 ?>

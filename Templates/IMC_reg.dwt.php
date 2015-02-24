@@ -106,7 +106,7 @@ require_once 'class.State.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><!-- InstanceBeginEditable name="Content" --><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><!-- InstanceBeginEditable name="Content" --><div class="small-12 large-4 columns">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
         <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
@@ -147,7 +147,7 @@ require_once 'class.State.php';
         </div>
     </li>
 </ul>
-</div><div id="regContent" class="small-12 large-9 columns"><!-- TemplateBeginEditable name="reg_content" -->reg_content<!-- TemplateEndEditable --></div><!-- InstanceEndEditable --></div>
+</div><div id="regContent" class="small-12 large-8 columns"><!-- TemplateBeginEditable name="reg_content" -->reg_content<!-- TemplateEndEditable --></div><!-- InstanceEndEditable --></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

@@ -31,7 +31,7 @@ if(Config::isPost()){ //Change Password
 			$ajax->message=Config::e($e);
 		}
 	}
-	if(Config::isAjax()) Config::JSON($ajax,true);
+	if(Config::isAjax()) Config::JSON($ajax);
 }else{ //Reload message
 	require_once 'class.Message.php';
 	$msg=new Message($config->PDO());
@@ -44,7 +44,7 @@ if(Config::isPost()){ //Change Password
 		$ajax=new SKAjax();
 		$ajax->message=$msg->__toString();
 		$ajax->msgID="teamMsg";
-		Config::JSON($ajax,true);
+		Config::JSON($ajax);
 	}
 }
 ?>

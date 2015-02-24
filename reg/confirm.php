@@ -162,7 +162,7 @@ if(Config::isPost()||Config::isAjax()){
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-4 columns">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
         <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
@@ -203,10 +203,13 @@ if(Config::isPost()||Config::isAjax()){
         </div>
     </li>
 </ul>
-</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
+</div><div id="regContent" class="small-12 large-8 columns"><!-- InstanceBeginEditable name="reg_content" -->
 <h2><?=State::img(State::inTime($s->cfInfoState,$config->REG_START_REG,$config->REG_END_REG))?>Confirm your information</h2>
 <?php
-echo State::toHTML(State::inTime($s->cfInfoState,$config->REG_START_REG,$config->REG_END_REG));
+echo State::toHTML(
+	State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG),
+	array($config->REG_START_REG, $config->REG_END_REG)
+);
 
 if(($step==1 && State::is($s->cfInfoState,State::ST_EDITABLE, $config->REG_START_REG, $config->REG_END_REG)) || ($step==2 && State::is($s->cfPostRegState,State::ST_EDITABLE, $config->REG_START_PAY, $config->REG_END_INFO))):
 ?>

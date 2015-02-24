@@ -34,6 +34,8 @@ require_once 'class.State.php';
 <script src="js/updateMenuState.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/jquery.form.min.js"></script>
+<script src="js/pay.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -108,7 +110,7 @@ require_once 'class.State.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-4 columns">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
         <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
@@ -149,11 +151,13 @@ require_once 'class.State.php';
         </div>
     </li>
 </ul>
-</div>
-<div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
+</div><div id="regContent" class="small-12 large-8 columns"><!-- InstanceBeginEditable name="reg_content" -->
   <h2><?=State::img(State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY))?> Upload your Transaction</h2>
 <?php
-echo State::toHTML(State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY));
+echo State::toHTML(
+	State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY),
+	array($config->REG_START_PAY, $config->REG_END_PAY)
+);
 
 $db=$config->PDO();
 

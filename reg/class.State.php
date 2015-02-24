@@ -50,14 +50,14 @@ class State{
 		}
 	}
 	
-	public static function toHTML($state, $addInfo=''){
+	public static function toHTML($state, $addInfo=NULL){
 		$html=self::img($state).' This section is ';
 		switch($state){
 			case self::ST_NOT_START:
-				$html.='"not ready" to edit. Please visit this page in "'.$addInfo.'".';
+				$html.='"not ready" to edit. Please visit this page in "'.(is_array($addInfo)?$addInfo[0]:$addInfo).'".';
 				break;
 			case self::ST_TIME_UP:
-				$html.='"over the deadline" at "'.$addInfo.'", so you cannot edit any information.';
+				$html.='"over the deadline" at "'.(is_array($addInfo)?$addInfo[1]:$addInfo).'", so you cannot edit any information.';
 				break;
 			case self::ST_LOCKED:
 				$html.='"locked". You are not allowed to edit any information.';

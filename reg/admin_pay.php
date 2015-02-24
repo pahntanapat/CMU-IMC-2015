@@ -4,6 +4,9 @@ require_once 'class.SesAdm.php';
 
 $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
+if(!$sess->checkPMS(SesAdm::PMS_PARTC)) Config::redirect('home.php','you don\'t have permission here.');
+
+require_once 'admin_pay.scr.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_admin.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -128,7 +131,16 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 		</ul></div></li>
 </ul>
 </div>
-<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->adminContent<!-- InstanceEndEditable --></div></div>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Approve Participants' transaction</h2>
+<? if(isset($_GET['id'])):?>
+<h5><a href="admin_team_list.php?id=<?=$_GET['id']?>" target="_blank">View team's information</a></h5>
+<?php
+	echo $ajax->toMsg();
+else:?>
+<a href="admin_pay.php#reload" class="button" id="reload">Reload</a>
+<?php
+echo $ajax->toMsg();
+endif;?><!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

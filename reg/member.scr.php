@@ -35,6 +35,7 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 				$s->setParticipantInfoState($_POST['part_no'], $p->info_state);
 				$s->setProgression();
 				$uploadAjax->updateMenuState($s);
+				$uploadAjax->addAction(SKAjaxReg::RESET_FORM);
 			}
 			$uploadAjax->message='Upload your image complete'."<br/><br/>".$upload->toImgPartStudentCard($_POST['part_no']);
 			$uploadAjax->result=true;
@@ -46,7 +47,7 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 		$uploadAjax->message=$e->getMessage();
 	}catch(Exception $e){
 		$uploadAjax->result=false;
-		$uploadAjax->message=Config::e($e);;
+		$uploadAjax->message=Config::e($e);
 	}
 	unset($upload);
 }elseif(Config::isPost()){
@@ -97,5 +98,5 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 	}
 }
 
-if(Config::isAjax()) Config::JSON(Config::isFile()?$uploadAjax:$ajax,true);
+if(Config::isAjax()) Config::JSON(Config::isFile()?$uploadAjax:$ajax);
 ?>

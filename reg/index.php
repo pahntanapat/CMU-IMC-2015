@@ -106,7 +106,7 @@ require_once 'index.scr.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-4 columns">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
         <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
@@ -147,7 +147,7 @@ require_once 'index.scr.php';
         </div>
     </li>
 </ul>
-</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
+</div><div id="regContent" class="small-12 large-8 columns"><!-- InstanceBeginEditable name="reg_content" -->
     <h2>CMU-IMC Registration system</h2><div class="panel radius callout" id="teamMsg"><?=$msg?></div><div>
   <form action="index.php" method="post" name="changePassword" id="changePassword" data-action="index.scr.php"> <fieldset>
       <legend>Change password</legend>

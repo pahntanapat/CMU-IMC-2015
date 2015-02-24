@@ -62,5 +62,5 @@ if(isset($_POST['del'])){ // Delete Admin
 	$ajax->message=tableAdmin($adm);
 }
 
-if(Config::isAjax()) Config::JSON($ajax,true);
+if(Config::isAjax()) Config::JSON($ajax);
 ?>
