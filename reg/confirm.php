@@ -24,15 +24,12 @@ if(Config::isPost()||Config::isAjax()){
 				require_once 'class.Member.php';
 				$db->beginTransaction();
 				$t=new Team($db);
-			//	$t->beginTransaction();
 				$t->id=$s->id;
 				
 				$ob=new Observer($db);
-			//	$ob->beginTransaction();
 				$ob->team_id=$s->id;
 				
 				$mem=new Participant($db);
-			//	$mem->beginTransaction();
 				$mem->team_id=$s->id;
 				
 				$t->team_state=State::ST_WAIT;
@@ -43,23 +40,26 @@ if(Config::isPost()||Config::isAjax()){
 				$ob->setState(State::ST_EDITABLE);
 				$mem->setState(State::ST_EDITABLE);
 				
-			//	$t->commit();
-			//	$ob->commit();
-			//	$mem->commit();
 				$db->commit();
 				$s->changeID(true);
 			}catch(Exception $e){
-		//		if(isset($t) && $t->inTransaction()) $t->rollBack();
-		//		if(isset($ob) && $ob->inTransaction()) $ob->rollBack();
-		//		if(isset($mem) && $mem->inTransaction()) $mem->rollBack();
 				if($db->inTransaction()) $db->rollBack();
-				
 				$msg=Config::e($e);
 			}
 		}elseif($step==2){
 			try{
+				require_once 'class.Team.php';
+				$db->beginTransaction();
 				
+				$t=new Team($db);
+				$t->id=$s->id;
+				$t->post_reg_state=State::ST_WAIT;
+				$t->setState(Team::ROW_POST_REG_STATE);
+				
+				$db->commit();
+				$s->changeID(true);
 			}catch(Exception $e){
+				if($db->inTransaction()) $db->rollBack();
 				$msg=Config::e($e);
 			}
 		}
@@ -205,12 +205,17 @@ if(Config::isPost()||Config::isAjax()){
     </li>
 </ul>
 </div><div id="regContent" class="small-12 large-8 columns"><!-- InstanceBeginEditable name="reg_content" -->
-<h2><?=State::img(State::inTime($s->cfInfoState,$config->REG_START_REG,$config->REG_END_REG))?>Confirm your information</h2>
+<h2><?=State::img($step==1
+	?State::inTime($s->cfInfoState,$config->REG_START_REG,$config->REG_END_REG)
+	:State::inTime($s->cfPostRegState,$config->REG_START_PAY,$config->REG_END_INFO))?>Confirm your information</h2>
 <?php
-echo State::toHTML(
-	State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG),
-	array($config->REG_START_REG, $config->REG_END_REG)
-);
+echo $step==1?State::toHTML(
+		State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG),
+		array($config->REG_START_REG, $config->REG_END_REG)
+	):State::toHTML(
+		State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO),
+		array($config->REG_START_PAY, $config->REG_END_INFO)
+	);
 
 if(($step==1 && State::is($s->cfInfoState,State::ST_EDITABLE, $config->REG_START_REG, $config->REG_END_REG)) || ($step==2 && State::is($s->cfPostRegState,State::ST_EDITABLE, $config->REG_START_PAY, $config->REG_END_INFO))):
 ?>
@@ -226,9 +231,9 @@ if(($step==1 && State::is($s->cfInfoState,State::ST_EDITABLE, $config->REG_START
       <input type="checkbox" name="cf[]" value="1" id="cf_3">
       <label for="cf_3">I confirm that all information is true.</label>
 <? elseif($step==2):?>
-<input name="sum" type="hidden" id="sum" value="3">
+<input name="sum" type="hidden" id="sum" value="2">
 <input type="checkbox" name="cf[]" value="1" id="cf_0">
-      <label for="cf_0">I have already completed <a href="./" title="all application forms in previous steps" target="_blank">all application forms in the previous steps</a>.</label><br>
+      <label for="cf_0">I have already completed <a href="post_reg.php">all application forms in the previous steps</a>.</label><br>
       <input type="checkbox" name="cf[]" value="1" id="cf_1">
       <label for="cf_1">I am ready to go to <a href="http://cmu-imc.med.cmu.ac.thl" title="CMU-IMC" target="_blank">CMU-IMC</a>.</label>
       <? endif;?>
