@@ -27,6 +27,7 @@ if(Config::isPost()) require_once 'home.scr.php';
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
+<script src="js/ui.js"></script>
 <!-- InstanceBeginEditable name="head" -->
 <script src="js/change_pw.js"></script>
 <!-- InstanceEndEditable -->
@@ -103,7 +104,7 @@ if(Config::isPost()) require_once 'home.scr.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-3 columns" id="sidebar">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
     	<a href="#profileBar"><i class="fa fa-user-md"></i> Admin's Profile</a>

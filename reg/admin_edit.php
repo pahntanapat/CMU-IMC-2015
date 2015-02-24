@@ -41,10 +41,10 @@ else{
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
+<script src="js/ui.js"></script>
 <!-- InstanceBeginEditable name="head" -->
 <script src="js/foundation-datepicker.js"></script>
 <script src="js/admin_edit.js"></script>
-<script src="js/ui.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -119,7 +119,7 @@ else{
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-3 columns" id="sidebar">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
     	<a href="#profileBar"><i class="fa fa-user-md"></i> Admin's Profile</a>

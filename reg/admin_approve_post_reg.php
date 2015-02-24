@@ -24,6 +24,7 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
+<script src="js/ui.js"></script>
 <!-- InstanceBeginEditable name="head" -->
 <!-- InstanceEndEditable -->
 
@@ -99,7 +100,7 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-3 columns" id="sidebar">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
     	<a href="#profileBar"><i class="fa fa-user-md"></i> Admin's Profile</a>

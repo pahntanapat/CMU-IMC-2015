@@ -1,4 +1,12 @@
 (function($){
+	$.fn.setSidebar=function(){
+		if($(window).width()/$(this).width()>3){
+			//Large Screen
+			$(this).find('ul.accordion>li>div').addClass('active');
+		}else{ // Medium - Small Screen
+			$(this).find('ul.accordion>li>div').removeClass('active').first().addClass('active');
+		}
+	};
 	$.addDialog=function(id){
 		if($('#'+id).length==0) $('<div id="'+id+'" class="reveal-modal" data-reveal></div>').appendTo('body');
 		return $('#'+id).prepend('<a class="close-reveal-modal" href="#">&#215;</a>').foundation('reveal', 'open');
@@ -25,7 +33,9 @@
 			.fdatepicker({format:'yyyy-mm-dd',viewMode:'years'});
 	};
 }(jQuery));
-
+$(window).resize(function(e) {
+	$('#sidebar').setSidebar();
+});
 function loadScript(){
 	try{
 		$(document).foundation();

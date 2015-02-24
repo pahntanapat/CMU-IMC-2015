@@ -29,6 +29,7 @@ require_once 'class.State.php';
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 <!-- InstanceBeginEditable name="head" -->
+<script src="../reg/js/ui.js"></script>
 <script src="js/updateMenuState.js"></script>
 <link href="../reg/class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- TemplateBeginEditable name="head" -->
@@ -106,7 +107,7 @@ require_once 'class.State.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><!-- InstanceBeginEditable name="Content" --><div class="small-12 large-4 columns">
+<div class="small-12 columns" id="content"><!-- InstanceBeginEditable name="Content" --><div class="small-12 large-4 columns" id="sidebar">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
         <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>

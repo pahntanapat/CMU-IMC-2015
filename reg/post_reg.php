@@ -36,13 +36,13 @@ require_once 'class.State.php';
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
+<script src="js/ui.js"></script>
 <script src="js/updateMenuState.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
 <script src="js/foundation-datepicker.js"></script>
 <script src="js/jquery.maskedinput.min.js"></script>
 <script src="js/jquery.form.min.js"></script>
-<script src="js/ui.js"></script>
 
 <link href="css/foundation-datepicker.css" rel="stylesheet" type="text/css">
 <!-- InstanceEndEditable -->
@@ -119,7 +119,7 @@ require_once 'class.State.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-4 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-4 columns" id="sidebar">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
         <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>

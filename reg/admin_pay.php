@@ -27,8 +27,8 @@ require_once 'admin_pay.scr.php';
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
-<!-- InstanceBeginEditable name="head" -->
 <script src="js/ui.js"></script>
+<!-- InstanceBeginEditable name="head" -->
 <script src="js/admin_approve.js"></script>
 <!-- InstanceEndEditable -->
 
@@ -104,7 +104,7 @@ require_once 'admin_pay.scr.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-3 columns" id="sidebar">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
     	<a href="#profileBar"><i class="fa fa-user-md"></i> Admin's Profile</a>
