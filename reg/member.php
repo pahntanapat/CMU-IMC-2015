@@ -73,24 +73,22 @@ require_once 'class.State.php';
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
 				<div class="clearfix columns">
-					<img class="left" src="../img/logo-head_old.png"/>
-					<img class="right" src="../img/logo-head_cr.png"/>
+					<img class="left" src="../img/logo-head_old_trans.png"/>
+					<img class="right" src="../img/logo-head_cr3.png"/>
 				</div>
 			</div>
 		  <div class="row show-for-medium-only">
 				<div class="clearfix columns">
-					<img class="left" src="../img/logo-head.png"/>
+					<img class="left" src="../img/logo-head_trans.png"/>
 				</div>
 			</div>
-			<img class="show-for-small-only" src="../img/logo-head-mini.png"/>
+			<img class="show-for-small-only" src="../img/logo-head-mini_trans.png"/>
 			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
 						<li class="name">
 							<h1>
-								<a href="/">
-									HOME
-								</a>
+								<a href="/">HOME</a>
 						  </h1>
 						</li>
 						<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a>
@@ -131,7 +129,7 @@ require_once 'class.State.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-4 columns">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
         <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
@@ -172,10 +170,13 @@ require_once 'class.State.php';
         </div>
     </li>
 </ul>
-</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->
+</div><div id="regContent" class="small-12 large-8 columns"><!-- InstanceBeginEditable name="reg_content" -->
 <h2><?=State::img(State::inTime($s->getParticipantInfoState($no), $config->REG_START_REG,$config->REG_END_REG)).$who[0]?>'s Information</h2>
 <?php
-echo State::toHTML(State::inTime($s->getParticipantInfoState($no),$config->REG_START_REG,$config->REG_END_REG));
+echo State::toHTML(
+	State::inTime($s->getParticipantInfoState($no),$config->REG_START_REG,$config->REG_END_REG),
+	array($config->REG_START_REG,$config->REG_END_REG)
+);
 
 $msg=new Message($db);
 $msg->team_id=$s->id;
@@ -314,7 +315,13 @@ if(!isset($uploadAjax)){
 if(!$r):?>
    <fieldset class="require">
         <legend>Upload <?=$who[0]?>'s copy of student ID card or certificate of student</legend>
-        <div><label class="require">Image file
+        <div class="panel"><h3>Recommended image properties</h3>
+    <ul>
+      <li>Resolution: &ge;200 dpi (dot per inch)</li>
+      <li>Filetype (file extension): JPEG (*.jpg, *.jpeg), PNG (*.png), or GIF (*.gif)</li>
+      <li>Size: &lt;50 KB (recommended), &le; 8 MB (the maximum size)</li>
+    </ul></div>
+         <div><label class="require">Image file
        <?=$img->toForm($r)?>
        <input name="part_no" type="hidden" id="part_no" value="<?=$no?>">
         <input name="id" type="hidden" id="id" value="<?=$member->id?>">

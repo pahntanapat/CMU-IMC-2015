@@ -18,11 +18,15 @@ $db=$config->PDO();
 
 if(Config::isPost()){
 	$ajax->result=false;
-	if($sess->checkPMS(SesAdm::PMS_PARTC)){
+	if($sess->checkPMS(SesAdm::PMS_PARTC|SesAdm::PMS_AUDIT)){
 		try{
 			$db->beginTransaction();
 			switch($_POST['act']){
 				case 'del':
+					if(!$sess->checkPMS(SesAdm::PMS_PARTC)){
+						$ajax->message='You don\'t have permission to do this action.';
+						break;
+					}
 					$t=new Team($db);
 					$p=new Participant($db);
 					$o=new Observer($db);
@@ -45,7 +49,7 @@ if(Config::isPost()){
 					
 					$i=new UploadImage();
 					$i->id=$t->id;
-					if(@$_POST['del_tsc']) $i->deletePay();
+					if(@$_POST['del_tsc'] && $sess->checkPMS(SesAdm::PMS_AUDIT)) $i->deletePay();
 					if(@$_POST['del_p']) $i->deleteTeamPhoto();
 					if(@$_POST['del_tk']) $i->deleteTicket();
 					
@@ -53,6 +57,10 @@ if(Config::isPost()){
 					$ajax->message='Update team\'s info success';
 					break;
 				case 'part':
+					if(!$sess->checkPMS(SesAdm::PMS_PARTC)){
+						$ajax->message='You don\'t have permission to do this action.';
+						break;
+					}
 					$m=Config::assocToObjProp(Config::trimArray($_POST),$_POST['part_no']>0?new Participant($db):new Observer($db));
 					if($m->team_id==0) break;
 					if($m->id==0) $m->add();
@@ -98,5 +106,5 @@ if(Config::isPost()){
 	$ajax->message=fullList($db);
 }
 
-if(Config::isAjax()) Config::JSON($ajax,true);
+if(Config::isAjax()) Config::JSON($ajax);
 ?>

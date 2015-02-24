@@ -27,6 +27,10 @@
 }(jQuery));
 
 function loadScript(){
-	$(document).foundation();
-	$.datetimepicker();
+	try{
+		$(document).foundation();
+		$.datetimepicker();
+	}catch(e){
+		return e;
+	}
 }

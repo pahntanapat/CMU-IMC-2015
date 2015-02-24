@@ -4,6 +4,9 @@ require_once 'class.SesAdm.php';
 
 $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
+if(!$sess->checkPMS(SesAdm::PMS_PARTC)) Config::redirect('home.php','you don\'t have permission here.');
+
+require_once 'admin_pay.scr.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_admin.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -25,6 +28,8 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/ui.js"></script>
+<script src="js/admin_approve.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -43,24 +48,22 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
 				<div class="clearfix columns">
-					<img class="left" src="../img/logo-head_old.png"/>
-					<img class="right" src="../img/logo-head_cr.png"/>
+					<img class="left" src="../img/logo-head_old_trans.png"/>
+					<img class="right" src="../img/logo-head_cr3.png"/>
 				</div>
 			</div>
 		  <div class="row show-for-medium-only">
 				<div class="clearfix columns">
-					<img class="left" src="../img/logo-head.png"/>
+					<img class="left" src="../img/logo-head_trans.png"/>
 				</div>
 			</div>
-			<img class="show-for-small-only" src="../img/logo-head-mini.png"/>
+			<img class="show-for-small-only" src="../img/logo-head-mini_trans.png"/>
 			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
 						<li class="name">
 							<h1>
-								<a href="/">
-									HOME
-								</a>
+								<a href="/">HOME</a>
 						  </h1>
 						</li>
 						<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a>
@@ -130,7 +133,16 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 		</ul></div></li>
 </ul>
 </div>
-<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->adminContent<!-- InstanceEndEditable --></div></div>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Approve Participants' transaction</h2>
+<? if(isset($_GET['id'])):?>
+<h5><a href="admin_team_list.php?id=<?=$_GET['id']?>" target="_blank">View team's information</a></h5>
+<?php
+	echo $ajax->toMsg();
+else:?>
+<a href="admin_pay.php#reload" class="button" id="reload">Reload</a>
+<?php
+echo $ajax->toMsg();
+endif;?><!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

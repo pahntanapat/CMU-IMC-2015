@@ -200,7 +200,7 @@ if(SesAdm::isPMS($pms, SesAdm::PMS_AUDIT)):
 else: echo "<h4>You don't have permission to view the transaction.</h4>";
 endif;
 echo $img->toImgTeamPhoto().$img->toImgTicket();
-if(SesAdm::isPMS($pms, SesAdm::PMS_AUDIT)):
+if(SesAdm::isPMS($pms, SesAdm::PMS_PARTC)):
 ?>
 <div><label>Delete TEAM's PHOTO <small>If you remove file, the file is permanently romoved.</small></label>
     <input name="del_p" type="radio" id="del_p_0" value="0" checked="CHECKED" /><label for="del_p_0">Keep it</label><input name="del_p" type="radio" id="del_p_1" value="1" /><label for="del_p_1">Delete it</label></div>
@@ -208,7 +208,7 @@ if(SesAdm::isPMS($pms, SesAdm::PMS_AUDIT)):
     <input name="del_tk" type="radio" id="del_tk_0" value="0" checked="checked" /><label for="del_tk_0">Keep it</label><input name="del_tk" type="radio" id="del_tk_1" value="1" /><label for="del_tk_1">Delete it</label></div>
 <? endif;?>
 </fieldset>
-<? if(!$r):?><fieldset class="require"><legend>Save</legend><div>
+<? if(!$r || SesAdm::isPMS($pms, SesAdm::PMS_AUDIT)):?><fieldset class="require"><legend>Save</legend><div>
   <button type="submit" name="save" id="save" value="save">save</button>
   <button type="reset" name="cancel" id="button" value="cancel">cancel</button></div></fieldset><? endif;?>
   </form>

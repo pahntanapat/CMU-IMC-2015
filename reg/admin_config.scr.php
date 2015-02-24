@@ -37,6 +37,6 @@ try{
 if(Config::isAjax()){
 	$json->addHtmlTextVal(SKAjax::SET_HTML,'#result',$json->message);
 	$json->message='';
-	Config::JSON($json,true);
+	Config::JSON($json);
 }
 ?>

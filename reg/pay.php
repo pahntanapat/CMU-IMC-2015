@@ -5,10 +5,12 @@ require_once 'class.SesPrt.php';
 $s=SesPrt::check(true,true);
 if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
-if(Config::isPost()||Config::isAjax()) require_once 'index.scr.php';
+if(Config::isPost()||Config::isAjax()) require_once 'pay.scr.php';
 
 require_once 'class.Message.php';
 require_once 'class.State.php';
+
+
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -32,6 +34,8 @@ require_once 'class.State.php';
 <script src="js/updateMenuState.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/jquery.form.min.js"></script>
+<script src="js/pay.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -50,24 +54,22 @@ require_once 'class.State.php';
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
 				<div class="clearfix columns">
-					<img class="left" src="../img/logo-head_old.png"/>
-					<img class="right" src="../img/logo-head_cr.png"/>
+					<img class="left" src="../img/logo-head_old_trans.png"/>
+					<img class="right" src="../img/logo-head_cr3.png"/>
 				</div>
 			</div>
 		  <div class="row show-for-medium-only">
 				<div class="clearfix columns">
-					<img class="left" src="../img/logo-head.png"/>
+					<img class="left" src="../img/logo-head_trans.png"/>
 				</div>
 			</div>
-			<img class="show-for-small-only" src="../img/logo-head-mini.png"/>
+			<img class="show-for-small-only" src="../img/logo-head-mini_trans.png"/>
 			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
 						<li class="name">
 							<h1>
-								<a href="/">
-									HOME
-								</a>
+								<a href="/">HOME</a>
 						  </h1>
 						</li>
 						<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a>
@@ -108,7 +110,7 @@ require_once 'class.State.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-4 columns">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
         <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
@@ -149,7 +151,60 @@ require_once 'class.State.php';
         </div>
     </li>
 </ul>
-</div><div id="regContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="reg_content" -->reg_content<!-- InstanceEndEditable --></div></div>
+</div><div id="regContent" class="small-12 large-8 columns"><!-- InstanceBeginEditable name="reg_content" -->
+  <h2><?=State::img(State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY))?> Upload your Transaction</h2>
+<?php
+echo State::toHTML(
+	State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY),
+	array($config->REG_START_PAY, $config->REG_END_PAY)
+);
+
+$db=$config->PDO();
+
+$msg=new Message($db);
+$msg->team_id=$s->id;
+$msg->show_page=Message::PAGE_PAY;
+echo $msg;
+unset($msg);
+
+require_once 'class.Team.php';
+$t=new Team($db);
+$t->id=$s->id;
+$t->load();
+$num=$t->countPay();
+
+require_once 'class.UploadImage.php';
+$img=new UploadImage();
+$img->team_id=$s->id;
+if(!isset($ajax)){
+	require_once 'class.SKAjaxReg.php';
+	
+	$ajax=new SKAjaxReg();
+	$ajax->msgID='uploadMsg';
+	$ajax->message=$img->toImgPay();
+}
+$r=!State::is($s->payState, State::ST_EDITABLE, $config->REG_START_PAY, $config->REG_END_PAY);
+
+if($num[1]>=$config->REG_MAX_TEAM):?>
+<div class="alert-box alert"><h5><i class="fa fa-exclamation-circle"></i> Sorry! The teams uploading their transaction are full (limit: <?=$num[0]?>/<?=$config->REG_MAX_TEAM?>).</h5></div>
+<? elseif(!$r):?>
+  <div class="panel round">
+  <h3>Application Fee</h3><p><b><?=$t->fee()?> per person</b> (<?=$t->fee(1+$config->REG_PARTICIPANT_NUM)?> per team including one advisor and <?=$config->REG_PARTICIPANT_NUM?> medical students or <?=$t->fee($config->REG_PARTICIPANT_NUM)?> per team with <?=$config->REG_PARTICIPANT_NUM?> medical students only)<br><small>* All transaction fees are NOT included.</small></p>
+    <h3>Recommended image properties</h3>
+    <ul>
+      <li>Resolution: &ge;200 dpi (dot per inch)</li>
+      <li>Filetype (file extension): JPEG (*.jpg, *.jpeg), PNG (*.png), or GIF (*.gif)</li>
+      <li>Size: &lt;50 KB (recommended size), &le; 8 MB (maximum limit for system)</li>
+    </ul>
+  </div>
+  <form action="pay.php" method="post" enctype="multipart/form-data" name="uploadForm" id="uploadForm"><fieldset class="require"><legend>Upload the transaction</legend><div><label class="require">Image file <?=$img->toForm($r)?></label>
+  </div><div><button type="submit" name="submitUpload">Upload</button><button type="reset" name="resetUpload">Cancel</button></div></fieldset>
+<div class="alert-box info"><h5><i class="fa fa-info-circle"></i> <?=$num[0]?> of <?=$config->REG_MAX_TEAM?> teams that have already uploaded their transactions.</h5></div></form>
+<?php
+endif;
+echo $ajax->toMsg();
+?>
+<!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

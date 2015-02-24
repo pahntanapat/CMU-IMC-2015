@@ -11,6 +11,8 @@ label.require::before{
 	color:#F00;
 }
 
+fieldset{background:#FFF}
+
 fieldset.require::after{
 	content:"* = required field";
 	color:#F00;

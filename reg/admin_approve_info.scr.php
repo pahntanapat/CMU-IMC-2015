@@ -12,7 +12,7 @@ $db=$config->PDO();
 require_once 'class.SKAjax.php';
 $ajax=new SKAjax();
 
-if(Config::isPost()){
+if(Config::isPost()){ // Submit
 	try{
 		require_once 'class.Message.php';
 		require_once 'class.Team.php';
@@ -81,7 +81,7 @@ if(Config::isPost()){
 		$ajax->msgID='approveForm';
 		$ajax->message=approveTeam($msg,$ajax->message);
 	}
-}elseif(isset($_GET['id'])){
+}elseif(isset($_GET['id'])){ //Show info of team ID: $_GET['id']
 	require_once 'class.Message.php';
 	$msg=new Message($db);
 	$msg->team_id=$_GET['id'];
@@ -89,10 +89,10 @@ if(Config::isPost()){
 	
 	$ajax->msgID='approveForm';
 	$ajax->message=approveTeam($msg);
-}else{
+}else{ // Show all table
 	require_once 'admin_team_list.view.php';
 	$ajax->msgID='teamList';
 	$ajax->message=teamList(new Team($db), 'admin_approve_info.php', Team::ROW_TEAM_STATE);
 }
-if(Config::isAjax()) Config::JSON($ajax,true);
+if(Config::isAjax()) Config::JSON($ajax);
 ?>

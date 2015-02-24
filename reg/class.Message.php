@@ -47,10 +47,13 @@ class Message extends SKeasySQL{
 		$sql=($this->id<=0 || $this->id==NULL)
 			?$this->insert($this->rowList)
 			:'UPDATE '.$this->TABLE.' SET '.self::equal($this->rowList).' WHERE '.self::ROW_ID.'=:id';
+		
 		$stm=$this->db->prepare($sql);
 		$this->bindValue($stm);
 		if(!($this->id<=0 || $this->id==NULL)) $stm->bindValue(':id',$this->id);
+		
 		$stm->execute();
+		
 		if($this->id<=0 || $this->id==NULL) $this->id=$this->db->lastInsertId();
 		return array($this->id, $stm->rowCount());
 	}
@@ -108,8 +111,13 @@ class Message extends SKeasySQL{
 		return ob_get_clean();
 	}
 	
-	public function toForm($action,$approveArray,$approveState=false,$addInfo=NULL){
+	public function toForm($action, $approveArray, $approveState=false, $addInfo=NULL){
 		require_once 'class.State.php';
+		require_once 'class.Admin.php';
+		
+		$admin=new Admin($this->db);
+		$admin->id=$this->admin_id;
+		$admin->load();
 		ob_start();?>
 <form action="<?=$action?>" method="post">
   <fieldset>
@@ -133,7 +141,9 @@ class Message extends SKeasySQL{
       </label>
     </div>
         <div>
-<b>Last updated: </b><?=$this->time?>
+<p><b>Last updated: </b><?=$this->time?></p>
+<p><b>Sent By: </b><?=$admin->nickname?></p>
+<p><b>Student ID: </b><?=$admin->student_id?></p>
     </div>
     <div><button type="submit">Approve</button><button type="reset">Cancel</button></div>
   </fieldset>

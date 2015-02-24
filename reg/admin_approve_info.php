@@ -29,11 +29,8 @@ require_once 'admin_approve_info.scr.php';
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
 <!-- InstanceBeginEditable name="head" -->
-<script src="js/jquery.maskedinput.min.js"></script>
-<script src="js/foundation-datepicker.js"></script>
 <script src="js/ui.js"></script>
-<script src="js/admin_approve_info.js"></script>
-
+<script src="js/admin_approve.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -52,24 +49,22 @@ require_once 'admin_approve_info.scr.php';
 		<div class="large-12 columns">
 			<div class="row show-for-large-up">
 				<div class="clearfix columns">
-					<img class="left" src="../img/logo-head_old.png"/>
-					<img class="right" src="../img/logo-head_cr.png"/>
+					<img class="left" src="../img/logo-head_old_trans.png"/>
+					<img class="right" src="../img/logo-head_cr3.png"/>
 				</div>
 			</div>
 		  <div class="row show-for-medium-only">
 				<div class="clearfix columns">
-					<img class="left" src="../img/logo-head.png"/>
+					<img class="left" src="../img/logo-head_trans.png"/>
 				</div>
 			</div>
-			<img class="show-for-small-only" src="../img/logo-head-mini.png"/>
+			<img class="show-for-small-only" src="../img/logo-head-mini_trans.png"/>
 			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
 						<li class="name">
 							<h1>
-								<a href="/">
-									HOME
-								</a>
+								<a href="/">HOME</a>
 						  </h1>
 						</li>
 						<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a>
@@ -139,9 +134,10 @@ require_once 'admin_approve_info.scr.php';
 		</ul></div></li>
 </ul>
 </div>
-<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Approve Participants' information: Step 1</h2><br>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Approve Participants' information: Step 1</h2>
+<? if(isset($_GET['id'])):?>
+<h5><a href="admin_team_list.php?id=<?=$_GET['id']?>" target="_blank">View team's information</a></h5>
 <?php
-if(isset($_GET['id'])):
 	echo $ajax->toMsg();
 else:?>
 <a href="admin_approve_info.php#reload" class="button" id="reload">Reload</a>

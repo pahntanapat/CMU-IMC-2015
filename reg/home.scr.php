@@ -60,6 +60,6 @@ if(Config::isAjax()){
 	$json->addHtmlTextVal(SKAjax::SET_HTML,'#'.(isset($elem->msgCP)?'msgCP':'msgEP'),(isset($elem->msgCP)?$elem->msgCP:$elem->msgEP));
 	if($elem->msgCP) $json->setFormDefault($_POST);
 	else $json->addHtmlTextVal(SKAjax::SET_VAL,':password','');
-	Config::JSON($json,true);
+	Config::JSON($json);
 }
 ?>

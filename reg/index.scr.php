@@ -31,7 +31,7 @@ if(Config::isPost()){ //Change Password
 			$ajax->message=Config::e($e);
 		}
 	}
-	if(Config::isAjax()) Config::JSON($ajax,true);
+	if(Config::isAjax()) Config::JSON($ajax);
 }else{ //Reload message
 	require_once 'class.Message.php';
 	$msg=new Message($config->PDO());
@@ -40,11 +40,12 @@ if(Config::isPost()){ //Change Password
 	$sess->changeID(true);
 	
 	if(Config::isAjax()){
-		require_once 'class.SKAjax.php';
-		$ajax=new SKAjax();
+		require_once 'class.SKAjaxReg.php';
+		$ajax=new SKAjaxReg();
 		$ajax->message=$msg->__toString();
 		$ajax->msgID="teamMsg";
-		Config::JSON($ajax,true);
+		$ajax->updateMenuState($sess);
+		Config::JSON($ajax);
 	}
 }
 ?>

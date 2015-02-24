@@ -41,7 +41,7 @@ if(!Config::checkCAPTCHA()){
 if(Config::isAjax()){
 	if($ajax->result) $ajax->addAction(SKAjax::REDIRECT,'home.php');
 	else $ajax->addAction(SKAjax::RELOAD_CAPTCHA);
-	Config::JSON($ajax,true);
+	Config::JSON($ajax);
 }elseif($ajax->result){
 	Config::redirect('home.php',$ajax->message);
 }
