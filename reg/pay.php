@@ -163,7 +163,7 @@ $db=$config->PDO();
 
 $msg=new Message($db);
 $msg->team_id=$s->id;
-$msg->show_page=Message::PAGE_INFO_TEAM;
+$msg->show_page=Message::PAGE_PAY;
 echo $msg;
 unset($msg);
 
@@ -198,8 +198,8 @@ if($num[1]>=$config->REG_MAX_TEAM):?>
     </ul>
   </div>
   <form action="pay.php" method="post" enctype="multipart/form-data" name="uploadForm" id="uploadForm"><fieldset class="require"><legend>Upload the transaction</legend><div><label class="require">Image file <?=$img->toForm($r)?></label>
-  </div><div><button type="submit" name="submitUpload">Upload</button><button type="reset" name="resetUpload">Cancel</button></div></fieldset></form>
-<div class="alert-box info"><h5><i class="fa fa-info-circle"></i> <?=$num[0]?> of <?=$config->REG_MAX_TEAM?> teams that have already uploaded their transactions.</h5></div>
+  </div><div><button type="submit" name="submitUpload">Upload</button><button type="reset" name="resetUpload">Cancel</button></div></fieldset>
+<div class="alert-box info"><h5><i class="fa fa-info-circle"></i> <?=$num[0]?> of <?=$config->REG_MAX_TEAM?> teams that have already uploaded their transactions.</h5></div></form>
 <?php
 endif;
 echo $ajax->toMsg();

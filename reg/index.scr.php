@@ -40,10 +40,11 @@ if(Config::isPost()){ //Change Password
 	$sess->changeID(true);
 	
 	if(Config::isAjax()){
-		require_once 'class.SKAjax.php';
-		$ajax=new SKAjax();
+		require_once 'class.SKAjaxReg.php';
+		$ajax=new SKAjaxReg();
 		$ajax->message=$msg->__toString();
 		$ajax->msgID="teamMsg";
+		$ajax->updateMenuState($sess);
 		Config::JSON($ajax);
 	}
 }

@@ -28,6 +28,8 @@ require_once 'admin_pay.scr.php';
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/ui.js"></script>
+<script src="js/admin_approve.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>

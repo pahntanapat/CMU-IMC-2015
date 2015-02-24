@@ -47,10 +47,13 @@ class Message extends SKeasySQL{
 		$sql=($this->id<=0 || $this->id==NULL)
 			?$this->insert($this->rowList)
 			:'UPDATE '.$this->TABLE.' SET '.self::equal($this->rowList).' WHERE '.self::ROW_ID.'=:id';
+		
 		$stm=$this->db->prepare($sql);
 		$this->bindValue($stm);
 		if(!($this->id<=0 || $this->id==NULL)) $stm->bindValue(':id',$this->id);
+		
 		$stm->execute();
+		
 		if($this->id<=0 || $this->id==NULL) $this->id=$this->db->lastInsertId();
 		return array($this->id, $stm->rowCount());
 	}

@@ -44,6 +44,7 @@ if(Config::isFile()){
 				
 				$ajax->result=true;
 				$ajax->message="<div class=\"alert-box success radius\">Upload your transaction complete. Please wait for transaction approval.</div>";
+				$ajax->addHtmlTextVal(SKAjaxReg::SET_HTML,'#uploadForm','');
 			}
 		}catch(UploadImageException $e){
 			$ajax->result=false;

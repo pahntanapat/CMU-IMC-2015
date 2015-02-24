@@ -29,11 +29,8 @@ require_once 'admin_approve_info.scr.php';
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
 <!-- InstanceBeginEditable name="head" -->
-<script src="js/jquery.maskedinput.min.js"></script>
-<script src="js/foundation-datepicker.js"></script>
 <script src="js/ui.js"></script>
-<script src="js/admin_approve_info.js"></script>
-
+<script src="js/admin_approve.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
