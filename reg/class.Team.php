@@ -285,30 +285,7 @@ class Team extends SKeasySQL{
 		$stm->execute();
 		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
 	}
-	
-	// Route methods
-	public function countRoute(){
-		$stm=$this->db->prepare('SELECT '.self::ROW_ROUTE.' AS r, COUNT('.self::ROW_ROUTE.') AS c FROM '.$this->TABLE.' GROUP BY '.self::ROW_ROUTE);
-		$stm->execute();
-		$a=array_fill(0,$this->getRoute(true),0);
-		while($row=$stm->fetch(PDO::FETCH_ASSOC))
-			$a[$row['r']]=$row['c'];
-		return $a;
-		//SELECT COUNT(DISTINCT gender) FROM 
-	}
-	public function maxRoute(){
-		global $config;
-		return ceil(($config->REG_MAX_TEAM)/($this->getRoute(true)));
-	}
-	public function getRoute($count=false){
-		global $config;
-		if($count) return 1+substr_count($config->INFO_ROUTE,"\n");
-		$a=explode("\n",$config->INFO_ROUTE);
-		foreach($a as $k=>$v)
-			$a[$k]=trim($v);
-		return $a;
-	}
-	
+
 	// functional method
 	protected function rowArray($withUniv=false,$withPostReg=false,$row=array()){
 		if($withUniv)
@@ -369,8 +346,36 @@ class Team extends SKeasySQL{
 				$this->country=='Thailand'?$config->REG_PAY_PER_PART_TH:$config->REG_PAY_PER_PART_US
 			), 2);
 	}
-	public function routeForm(){
+		
+	// Route methods
+	public function countRoute(){
+		$stm=$this->db->prepare('SELECT '
+			.self::ROW_ROUTE.' AS r, '
+			.'COUNT('.self::ROW_ROUTE.') AS c, '
+			.'COUNT(CASE '.self::ROW_ID.' WHEN ? THEN 1 ELSE NULL END) AS i'
+			.' FROM '.$this->TABLE.' GROUP BY '.self::ROW_ROUTE);
+		$stm->bindValue(1, $this->id, PDO::PARAM_INT);
+		$stm->execute();
+		$a=array_fill(0,$this->getRoute(true),array(0,0));
+		while($row=$stm->fetch(PDO::FETCH_ASSOC))
+			$a[$row['r']]=array($row['c'], $row['i']);
+		return $a;
+		//SELECT COUNT(DISTINCT gender) FROM 
+	}
+	public function maxRoute(){
 		global $config;
+		return ceil(($config->REG_MAX_TEAM)/($this->getRoute(true)));
+	}
+	public function getRoute($count=false){
+		global $config;
+		if($count) return 1+substr_count($config->INFO_ROUTE,"\n");
+		$a=explode("\n",$config->INFO_ROUTE);
+		foreach($a as $k=>$v)
+			$a[$k]=trim($v);
+		return $a;
+	}
+	
+	public function routeForm(){
 		$d=func_num_args()>0?func_get_arg(0):false;
 		
 		if(is_numeric($this->route)) $this->route=intval($this->route);
@@ -379,9 +384,9 @@ class Team extends SKeasySQL{
 		
 		ob_start();?><div><label class="require">Route of Chiang Mai Tour</label>
 <?php
-		  foreach(explode("\n",$config->INFO_ROUTE) as $k=>$v):
+		  foreach($this->getRoute() as $k=>$v):
 			$v=trim($v);?>
-<input name="route" type="radio" id="route_<?=$k?>" value="<?=$k?>"<? if($this->route===$k):?> checked="CHECKED"<? endif; if($d||$cr[$k]>=$mx):?> disabled="disabled"<? endif;?>><label for="shirt_size_<?=$k?>"><?=$v?> (<?=$cr[$k].'/'.$mx?>)</label>
+<input name="route" type="radio" id="route_<?=$k?>" value="<?=$k?>"<? if($this->route===$k):?> checked="CHECKED"<? endif; if($d||$cr[$k][1]>=$mx):?> disabled="disabled"<? endif;?>><label for="route_<?=$k?>"><?=$v?> (<?=$cr[$k][0].'/'.$mx?>)</label>
 <? endforeach;?></div><?php
 		return ob_get_clean();
 	}

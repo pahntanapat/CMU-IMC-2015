@@ -165,7 +165,7 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 ?><div><?php
 		if(file_exists($filename)):
 			$filename=urlencode(base64_encode(base64_encode($filename).'|'.rand()));
-?><a href="images.php?img=<?=$filename?>" target="_blank" class="th"><img src="images.php?img=<?=$filename?>"/></a><?php
+?><a href="images.php?img=<?=$filename?>" target="_blank" class="th"><img src="images.php?img=<?=$filename?>" width="100%"/></a><?php
 		else:
 ?><b>&quot;No image&quot;</b><?php
 		endif;

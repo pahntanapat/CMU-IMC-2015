@@ -16,6 +16,7 @@ if(!isset($t)){
 }
 require_once 'class.Message.php';
 require_once 'class.State.php';
+require_once 'class.UploadImage.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -43,6 +44,7 @@ require_once 'class.State.php';
 <script src="js/foundation-datepicker.js"></script>
 <script src="js/jquery.maskedinput.min.js"></script>
 <script src="js/jquery.form.min.js"></script>
+<script src="js/post_reg.js"></script>
 
 <link href="css/foundation-datepicker.css" rel="stylesheet" type="text/css">
 <!-- InstanceEndEditable -->
@@ -189,22 +191,22 @@ $r=!State::is($s->postRegState,State::ST_EDITABLE,$config->REG_START_PAY,$config
 <fieldset><legend>Type/Time of Arrival &amp; Departure</legend>
 
 <div>
-  <label class="require">Arrival time
-    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_time?>"<?=Config::readonly($r)?>>
+  <label class="require">Arrival time <small><a href="../local_information.html#other" target="_blank">In Thailand timezone (UTC+07:00)</a></small>
+    <input name="arrive_time" type="datetime" id="arrive_time" value="<?=$t->arrive_time?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
   <label class="require">Expected type of arrival (to Chiang Mai) <small> Airplane, Bus, Train, Van</small>
-    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->arrive_by?>"<?=Config::readonly($r)?>></label>
+    <input name="arrive_by" type="text" id="arrive_by" value="<?=$t->arrive_by?>"<?=Config::readonly($r)?>></label>
 </div>
 <div>
-  <label>Departure time
-    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_time?>"<?=Config::readonly($r)?>>
+  <label>Departure time <small><a href="../local_information.html#other" target="_blank">In Thailand timezone (UTC+07:00)</a></small>
+    <input name="depart_time" type="datetime" id="depart_time" value="<?=$t->depart_time?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
   <label>Expected type of departure (from Chiang Mai) <small>Airplane, Bus, Train, Van</small>
-    <input name="arrive_time" type="text" id="arrive_time" value="<?=$t->depart_by?>"<?=Config::readonly($r)?>>
+    <input name="depart_by" type="text" id="depart_by" value="<?=$t->depart_by?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 </fieldset>
@@ -212,14 +214,59 @@ $r=!State::is($s->postRegState,State::ST_EDITABLE,$config->REG_START_PAY,$config
       <fieldset class="require"><legend>Save</legend>
       <div><button type="submit" name="submitInfo">Save</button><button type="reset" name="resetInfo">Cancel</button></div>
       </fieldset>
-<? endif;?>
+<?php
+if(!isset($ajax)){
+	require_once 'class.SKAjaxReg.php';
+	$ajax=new SKAjaxReg();
+}
+echo $ajax->toMsg();
+endif;
+?>
 </form>
 <hr>
 <h3 data-magellan-destination="photo" id="photo">Upload your team's photo</h3>
-<form action="post_reg.php" method="post" id="photoForm"></form>
+<?php
+$img=new UploadImage();
+$img->team_id=$s->id;
+
+if(!$r):
+?>
+<form action="post_reg.php" method="post" enctype="multipart/form-data" id="photoForm"><fieldset class="require">
+  <legend>Upload team's photo</legend>
+  <div>
+    <label class="require">Image file <?=$img->toForm($r)?><input name="upload" type="hidden" id="upload" value="photo"></label>
+  </div><div><button type="submit" name="submitUpload">Upload</button><button type="reset" name="resetUpload">Cancel</button></div></fieldset></form>
+<?php
+endif;
+if(!isset($teamAjax)){
+	require_once 'class.SKAjaxReg.php';
+	$teamAjax=new SKAjaxReg();
+	$teamAjax->msgID='teamAjax';
+	
+	$teamAjax->message=$img->toImgTeamPhoto();
+}
+echo $teamAjax->toMsg();
+?>
 <hr>
-<h3 data-magellan-destination="ticket" id="ticket">Upload ticket (Arrival to Chiang Mai)</h3>
-<form action="post_reg.php" method="post" id="ticketForm"></form>
+<h3 data-magellan-destination="ticket" id="ticket">Upload arrival ticket (Arrival to Chiang Mai)</h3>
+<? if(!$r):?>
+<form action="post_reg.php" method="post" enctype="multipart/form-data" id="ticketForm"><fieldset class="require">
+  <legend>Upload arrival ticket</legend>
+  <div><label class="require">Image file <?=$img->toForm($r)?>
+    <input name="upload" type="hidden" id="upload" value="ticket">
+  </label>
+  </div><div><button type="submit" name="submitUpload">Upload</button><button type="reset" name="resetUpload">Cancel</button></div></fieldset></form>
+  <?php
+endif;
+if(!isset($ticketAjax)){
+	require_once 'class.SKAjaxReg.php';
+	$ticketAjax=new SKAjaxReg();
+	$ticketAjax->msgID='ticketAjax';
+	
+	$ticketAjax->message=$img->toImgTicket();
+}
+echo $ticketAjax->toMsg();
+?>
 <!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->

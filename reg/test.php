@@ -29,8 +29,9 @@ require_once 'class.Message.php';
 
 <body>
 <pre><?php
-session_start();
-var_dump($_SESSION);
+require_once 'class.Team.php';
+$t=new Team($config->PDO());
+var_dump($t->getRoute(),$t->countRoute());
 ?></pre>
 <div>
 

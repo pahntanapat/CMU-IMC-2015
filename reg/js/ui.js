@@ -15,8 +15,25 @@
 		date=date.trim();
 		return date.length>0?(date.match(/^\d{4}[\-](0?[1-9]|1[012])[\-](0?[1-9]|[12][0-9]|3[01])$/)?true:false):true;
 	};
+	$.checkDateTime=function(d){
+		d=d.trim();
+		return d.length>0?(d.match(/^\d{4}[\-](0?[1-9]|1[012])[\-](0?[1-9]|[12][0-9]|3[01]) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/)?true:false):true;
+	};
 	$.fn.checkDate=function(){
-		return $.checkDate($(this).val());
+		var result=true;
+		$(this).each(function(index, element) {
+            result&=$.checkDate($(element).val());
+			return result;
+        });
+		return result;
+	};
+	$.fn.checkDateTime=function(){
+		var result=true;
+		$(this).each(function(index, element) {
+            result&=$.checkDateTime($(element).val());
+			return result;
+        });
+		return result;
 	};
 /*	$.fn.tabs=function(){
 		var me=this;
