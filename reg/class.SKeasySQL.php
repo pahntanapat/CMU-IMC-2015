@@ -28,6 +28,10 @@ abstract class SKeasySQL{
 	public function inTransaction(){
 		return $this->db->inTransaction();
 	}
+	
+	public function reset(){
+		return $this->prepare('DELETE FROM '.$this->TABLE)->execute();
+	}
 
 	public static function row(){
 		if(func_num_args()==0) return ' * '; // If there are no argument, this function will return *.
