@@ -31,7 +31,8 @@ function approveTeam(Message $msg, $message=''){
 	$img->team_id=$msg->team_id;
 	$msg->show_page=Message::PAGE_INFO_TEAM;
 ?>
-<h3>Team's name: </h3>
+<h3>Team's name: <?=$t->team_name?><small>
+<a href="admin.team.php?id=<?=$t->id?>" target="_blank">Edit their information</a></small></h3>
  <ul class="tabs" data-tab>
    <li class="tab-title active"><a href="#t">Team's info</a></li>
 <? for($no=0;$no<=$config->REG_PARTICIPANT_NUM;$no++):?>

@@ -217,7 +217,8 @@ echo $step==1?State::toHTML(
 		array($config->REG_START_PAY, $config->REG_END_INFO)
 	);
 
-if(($step==1 && State::is($s->cfInfoState,State::ST_EDITABLE, $config->REG_START_REG, $config->REG_END_REG)) || ($step==2 && State::is($s->cfPostRegState,State::ST_EDITABLE, $config->REG_START_PAY, $config->REG_END_INFO))):
+if(($step==1 && State::is($s->cfInfoState, State::ST_EDITABLE, $config->REG_START_REG, $config->REG_END_REG) && $s->cfInfoState==State::ST_EDITABLE)
+ || ($step==2 && State::is($s->cfPostRegState,State::ST_EDITABLE, $config->REG_START_PAY, $config->REG_END_INFO) && $s->cfPostRegState==State::ST_EDITABLE)):
 ?>
 <form action="confirm.php?step=<?=$step?>" method="post" id="confirmForm"><fieldset><legend>Confirm Registration information</legend><div>
 <? if($step==1):?>

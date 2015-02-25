@@ -133,7 +133,14 @@ require_once 'admin.post_reg.scr.php';
 		</ul></div></li>
 </ul>
 </div>
-<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->adminContent<!-- InstanceEndEditable --></div></div>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Approve Participants' information: Step 2</h2>
+<? if(isset($_GET['id'])):
+	echo $ajax->toMsg();
+else:?>
+<a href="admin.post_reg.php#reload" class="button" id="reload">Reload</a>
+<?php
+echo $ajax->toMsg();
+endif;?><!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

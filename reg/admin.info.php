@@ -134,9 +134,7 @@ require_once 'admin.info.scr.php';
 </ul>
 </div>
 <div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Approve Participants' information: Step 1</h2>
-<? if(isset($_GET['id'])):?>
-<h5><a href="admin.team.php?id=<?=$_GET['id']?>" target="_blank">View team's information</a></h5>
-<?php
+<? if(isset($_GET['id'])):
 	echo $ajax->toMsg();
 else:?>
 <a href="admin.info.php#reload" class="button" id="reload">Reload</a>
