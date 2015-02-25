@@ -28,6 +28,7 @@ require_once 'admin.post_reg.scr.php';
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
 <script src="js/ui.js"></script>
+<link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
 <script src="js/admin.approve.js"></script>
 <!-- InstanceEndEditable -->
@@ -112,22 +113,23 @@ require_once 'admin.post_reg.scr.php';
     </li>
     <li class="accordion-navigation">
     	<a href="#adminMenu"><i class="fa fa-bars"></i> Main menu</a>
-    	<div class="content" id="adminMenu"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard">Main page</a></li>
-    		<li><a href="home.php#editProfile" title="edit profile">Edit profile</a></li>
-    		<li><a href="home.php#changePassword">Chage password</a></li>
-    		<li><a href="logout.php?admin" title="Log out">Log out</a></li></ul></div>
+    	<div class="content" id="adminMenu"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard"><i class="fa fa-home fa-lg"></i> Main page</a></li>
+    		<li><a href="home.php#editProfile" title="edit profile"><i class="fa fa-pencil fa-lg"></i> Edit profile</a></li>
+    		<li><a href="home.php#changePassword"><i class="fa fa-key fa-lg"></i> Chage password</a></li>
+    		<li><a href="logout.php?admin" title="Log out"><i class="fa fa-sign-out fa-lg"></i> Log out</a></li></ul></div>
     </li>
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
             <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
-      		<li class="divider"></li>
+      		<li><hr></li>
       		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
       		<li><a href="admin.pay.php">Approve the transactions</a></li>
       		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
-      		<li class="divider"></li>
-      		<li><a href="#" title="for General Modulator">for General Modulator</a></li>
-      		<li class="divider"></li>
+      		<li><hr></li>
+      		<li><a href="#" title="Participating teams">Participating teams</a></li>
+      		<li><a href="#" title="Summarize information">Summarize information</a></li>
+      		<li><hr></li>
       		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
       		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>
 		</ul></div></li>

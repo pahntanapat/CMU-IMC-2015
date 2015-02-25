@@ -1,40 +1,34 @@
 <?php
 require_once 'config.inc.php';
-require_once 'class.SesPrt.php';
+require_once 'class.SesAdm.php';
 
-$s=SesPrt::check(true,true);
-if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
-
-if(Config::isPost()||Config::isAjax()) require_once 'index.scr.php';
-
-require_once 'class.Message.php';
-require_once 'class.State.php';
+$sess=SesAdm::check();
+if(!$sess) Config::redirect('admin.php','you are not log in.');
 ?>
 <!doctype html>
-<html><!-- InstanceBegin template="/Templates/IMC_Main.dwt" codeOutsideHTMLIsLocked="false" -->
+<html><!-- InstanceBegin template="/Templates/IMC_admin.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Chiang Mai University International Medical Challenge</title>
+<title>Participating Teams :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
 <script src="../js/foundation.min.js"></script>
 <script src="../js/vendor/modernizr.js"></script>
 <script src="../slick/slick.min.js"></script>
-<script src="../reg/js/skajax.js"></script>
+<script src="js/skajax.js"></script>
 <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="../slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="../css/foundation.min.css"/>
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
+
+<script src="js/ui.js"></script>
+<link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
-<script src="../reg/js/ui.js"></script>
-<script src="js/updateMenuState.js"></script>
-<link href="../reg/class.State.php?css=1" rel="stylesheet" type="text/css">
-<!-- TemplateBeginEditable name="head" -->
-<!-- TemplateEndEditable -->
 <!-- InstanceEndEditable -->
+
 </head>
 
 <body>
@@ -107,47 +101,40 @@ require_once 'class.State.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><!-- InstanceBeginEditable name="Content" --><div class="small-12 large-4 columns" id="sidebar">
+<div class="small-12 columns" id="content"><div class="small-12 large-3 columns" id="sidebar">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
-        <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
-        <div id="sbTeamInfo" class="content active">
-            <b>Team's name:</b> <?=$s->teamName?><br>
-            <b>Institution:</b> <?=$s->institution?><br>
-            <b>University:</b> <?=$s->university?><br>
-            <b>Country:</b> <?=$s->country?><br><br>
-            <b>Progression</b>
-            <div id="progression" class="progress round"><span class="meter" style="width:<?=$s->getProgression()?>%"></span></div>
-        </div>
+    	<a href="#profileBar"><i class="fa fa-user-md"></i> Admin's Profile</a>
+        <div id="profileBar" class="content active"><b>Student ID:</b> <?=$sess->student_id?><br><b>Nickname:</b> <?=$sess->nickname?></div>
     </li>
     <li class="accordion-navigation">
-        <a href="#sbMenu"><i class="fa fa-bars"></i> Main menu</a>
-        <div id="sbMenu" class="content"><ul class="side-nav">
-  <li><a href="../reg/index.php" title="Main page"><i class="fa fa-home fa-lg"></i> Main page</a></li>
-  <li><a href="../reg/index.php#changePW"><?=State::img(State::ST_EDITABLE)?>Change password</a></li>
-  <li><a href="../reg/logout.php" title="Log out"><i class="fa fa-sign-out fa-lg"></i> Log out</a></li></ul>
-        </div>
+    	<a href="#adminMenu"><i class="fa fa-bars"></i> Main menu</a>
+    	<div class="content" id="adminMenu"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard"><i class="fa fa-home fa-lg"></i> Main page</a></li>
+    		<li><a href="home.php#editProfile" title="edit profile"><i class="fa fa-pencil fa-lg"></i> Edit profile</a></li>
+    		<li><a href="home.php#changePassword"><i class="fa fa-key fa-lg"></i> Chage password</a></li>
+    		<li><a href="logout.php?admin" title="Log out"><i class="fa fa-sign-out fa-lg"></i> Log out</a></li></ul></div>
     </li>
     <li class="accordion-navigation">
-        <a href="#sbStep"><i class="fa fa-check-square"></i> Steps of Registration</a>
-        <div id="sbStep" class="content">
-        <ul class="side-nav">
-  <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="../reg/team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
-  <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="../reg/member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
-  <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="../reg/member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
-  <? endfor;?>
-  <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="../reg/confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
-  <li><hr></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="../reg/pay.php" title="Upload Transaction">Upload Transaction</a></li>
-  <li><hr></li>
-  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="../reg/post_reg.php" title="Select route &amp; upload team's picture &amp; update arrival time">Update your journey</a></li>
-  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="../reg/confirm.php?step=2" title="Confirmation of journey">Confirmation of the journey</a></li>
+    	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
+    	 <div class="content" id="adminTask"><ul class="side-nav">
+            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+      		<li><hr></li>
+      		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
+      		<li><a href="admin.pay.php">Approve the transactions</a></li>
+      		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
+      		<li><hr></li>
+      		<li><a href="#" title="Participating teams">Participating teams</a></li>
+      		<li><a href="#" title="Summarize information">Summarize information</a></li>
+      		<li><hr></li>
+      		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
+      		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>
+		</ul></div></li>
 </ul>
-        </div>
-    </li>
-</ul>
-</div><div id="regContent" class="small-12 large-8 columns"><!-- TemplateBeginEditable name="reg_content" -->reg_content<!-- TemplateEndEditable --></div><!-- InstanceEndEditable --></div>
+</div>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
+  <h2>Participating teams</h2>
+  <div></div>
+<!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

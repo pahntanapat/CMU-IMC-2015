@@ -132,10 +132,9 @@ $t->submitLoad();
     <li class="accordion-navigation">
         <a href="#sbMenu"><i class="fa fa-bars"></i> Main menu</a>
         <div id="sbMenu" class="content"><ul class="side-nav">
-        <li class="divider"></li>
-  <li><a href="index.php" title="Main page">Main page</a></li>
-  <li><a href="index.php#changePW">Change password</a></li>
-  <li><a href="logout.php" title="Log out">Log out</a></li></ul>
+  <li><a href="index.php" title="Main page"><i class="fa fa-home fa-lg"></i> Main page</a></li>
+  <li><a href="index.php#changePW"><?=State::img(State::ST_EDITABLE)?>Change password</a></li>
+  <li><a href="logout.php" title="Log out"><i class="fa fa-sign-out fa-lg"></i> Log out</a></li></ul>
         </div>
     </li>
     <li class="accordion-navigation">

@@ -123,10 +123,9 @@ require_once 'index.scr.php';
     <li class="accordion-navigation">
         <a href="#sbMenu"><i class="fa fa-bars"></i> Main menu</a>
         <div id="sbMenu" class="content"><ul class="side-nav">
-        <li class="divider"></li>
-  <li><a href="index.php" title="Main page">Main page</a></li>
-  <li><a href="index.php#changePW">Change password</a></li>
-  <li><a href="logout.php" title="Log out">Log out</a></li></ul>
+  <li><a href="index.php" title="Main page"><i class="fa fa-home fa-lg"></i> Main page</a></li>
+  <li><a href="index.php#changePW"><?=State::img(State::ST_EDITABLE)?>Change password</a></li>
+  <li><a href="logout.php" title="Log out"><i class="fa fa-sign-out fa-lg"></i> Log out</a></li></ul>
         </div>
     </li>
     <li class="accordion-navigation">
@@ -149,7 +148,8 @@ require_once 'index.scr.php';
     </li>
 </ul>
 </div><div id="regContent" class="small-12 large-8 columns"><!-- InstanceBeginEditable name="reg_content" -->
-    <h2>CMU-IMC Registration system</h2><div class="panel radius callout" id="teamMsg"><?=$msg?></div><div>
+    <h2>CMU-IMC Registration system</h2><div class="panel radius callout" id="teamMsg"><?=$msg?></div><hr><div>
+    <h3><?=State::img(State::ST_EDITABLE)?>Change password</h3>
   <form action="index.php" method="post" name="changePassword" id="changePassword" data-action="index.scr.php"> <fieldset>
       <legend>Change password</legend>
       <div>
@@ -175,14 +175,14 @@ require_once 'index.scr.php';
 		$ajax->msgID="msgCP";
 	}
 	echo $ajax->toMsg();
-?>
-  </form>
-</div>
+?></form>
+</div><hr>
 <ul class="accordion" data-accordion>
 <li class="accordion-navigation"><a href="#sponsor1">Booking form 1</a><div id="sponsor1" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+5%2C000+THB"/></div></li>
 <li class="accordion-navigation"><a href="#sponsor2">Booking form 2</a><div id="sponsor2" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+4%2C000+THB"/></div></li>
 <li class="accordion-navigation"><a href="#sponsor3">Booking form 3</a><div id="sponsor3" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+3%2C000+THB"/></div></li>
-</ul><!-- InstanceEndEditable --></div></div>
+</ul><hr>
+<?=State::stateList()?><!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">
