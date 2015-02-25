@@ -154,7 +154,12 @@ if(isset($_GET['act'])) require_once 'admin.config.scr.php';
         <li class="tab-title"><a href="#db">Database</a></li>
       </ul>
       <div class="tabs-content">
-      <div id="cpr" class="content active">&copy; 2015 By Sinkanok Labs, Sinkanok Groups</div>
+      <div id="cpr" class="content active">
+        <p>Copyright &copy; 2015 <a href="http://labs.sinkanok.com">Sinkanok Labs</a>, <a href="http://sinkanok.com">Sinkanok Groups</a></p>
+        <p><strong>Programmer:</strong> Pahn - Sinkanok Labs </p>
+        <p>Powered by <strong>SKAjax Framwork</strong> and <strong>Modified Programming Architecture of Sinkanok Labs</strong>.</p>
+        <h4>Products of Sinkanok Labs: <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid</a>, <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid 2.0</a>, and <a href="http://labs.sinkanok.com/converter/total.html" target="_blank">Unit Convertor</a></h4>
+      </div>
       <div id="sch" class="content">
       <div class="alert-box secondary" data-alert><i class="fa fa-calendar"></i> วันเวลาต้องอยู่ในรูปแบบ<br>&quot;[ปี ค.ศ. 4 หลัง]-[เลขเดือน 2 หลัก เช่น 01]-[วันที่ 2 หลัก เช่น 09][เว้นวรรค 1 ครั้ง][ชั่วโมง 2 หลัก]:[นาที 2 หลัก]:[วินาที 2 หลัก]&quot;<br>เช่น<br><ul><li>2015-01-20 04:30:00</li><li>2015-12-31 23:59:59</li><li>2015-10-02 00:00:00</li></ul></div>
       <div>

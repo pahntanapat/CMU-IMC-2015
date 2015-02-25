@@ -99,15 +99,20 @@ class Message extends SKeasySQL{
         <li class="accordion-navigation"><a href="#teamMessage<?=$i->id?>"><?=$i->title?></a>
         <div id="teamMessage<?=$i->id?>" class="content"><p><?=$i->detail?></p><h6><?=$i->time?></h6></div></li>
 		<? endforeach;?>
-        <li class="accordion-navigation"><a href="#SinkanokLabs">About the Registration system</a>
-        <div id="SinkanokLabs" class="content active"><p>Powered by SKAjax Framwork and Storage-Processor-Carrier-View Architecture of Sinkanok Groups</p><p>Copyright &copy; 2015 <a href="http://labs.sinkanok.com">Sinkanok Labs</a>, <a href="http://sinkanok.com">Sinkanok Groups</a></p></div></li></ul><?php
+        <li class="accordion-navigation"><a href="#SinkanokLabs">About the CMU-IMC Registration system</a>
+          <div id="SinkanokLabs" class="content active">
+          <p>Copyright &copy; 2015 <a href="http://labs.sinkanok.com">Sinkanok Labs</a>, <a href="http://sinkanok.com">Sinkanok Groups</a></p>
+          <p><strong>Programmer:</strong> Pahn - Sinkanok Labs          </p>
+          <p>Powered by <strong>SKAjax Framwork</strong> and <strong>Modified Programming Architecture of Sinkanok Labs</strong>.</p>
+          <h4>Products of Sinkanok Labs: <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid</a>, <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid 2.0</a>, and <a href="http://labs.sinkanok.com/converter/total.html" target="_blank">Unit Convertor</a></h4>
+          </div></li></ul><?php
 		return ob_get_clean();
 	}
 	
 	public static function msg(self $i){
 		if($i->id<0||$i->id==NULL) return '';
 		ob_start();?>
-        <div id="teamMsg" data-id="<?=$i->id?>" class="round panel callout"><h3><?=$i->title?></h3><p><?=$i->detail?></p><h6><?=$i->time?></h6></div>
+<div id="teamMsg" data-id="<?=$i->id?>" class="round panel callout"><h3><?=$i->title?></h3><p><?=$i->detail?></p><h6><?=$i->time?></h6></div>
 		<?php
 		return ob_get_clean();
 	}
