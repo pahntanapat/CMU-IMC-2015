@@ -312,12 +312,12 @@ class Team extends SKeasySQL{
 			}
 			$sql='SELECT '
 				.self::row(
-					self::ROW_ID, self::ROW_TEAM_NAME,
+				/*	self::ROW_ID, self::ROW_TEAM_NAME,
 					self::ROW_INSTITUTION, self::ROW_UNIVERSITY,
-					self::ROW_COUNTRY
+					self::ROW_COUNTRY*/
 				)
 				.' FROM '.$this->TABLE
-				.($type!=''?' WHERE '.$type.'=:s':'')
+				.($type!=''?' WHERE '.$sql.'=:s':'')
 				.' ORDER BY '.($type==self::ROW_ARRIVE_TIME?
 					self::ROW_DEPART_TIME.', '.self::ROW_ARRIVE_BY.', '.self::ROW_COUNTRY:
 					self::ROW_TEAM_NAME.', '.self::ROW_INSTITUTION.', '.self::ROW_UNIVERSITY.', '.self::ROW_COUNTRY)
@@ -325,7 +325,7 @@ class Team extends SKeasySQL{
 		}
 		$stm=$this->db->prepare($sql);
 		if($type!='') $stm->bindValue(':s',
-			$type==self::ROW_ARRIVE_TIME||$type==self::ROW_ARRIVE_BY
+			($type==self::ROW_ARRIVE_TIME||$type==self::ROW_ARRIVE_BY)
 				?State::ST_OK:State::ST_WAIT,
 			PDO::PARAM_INT);
 		$stm->execute();

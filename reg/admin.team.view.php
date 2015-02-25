@@ -41,7 +41,7 @@ function teamList(Team $t, $link, $type='', $msg=''){
     <th scope="col">Medical school</th>
     <th scope="col">University/College</th>
     <th scope="col">Country</th>
-    <? if($type==Team::ROW_ARRIVE_TIME):?>
+    <? if($type==Team::ROW_ARRIVE_TIME||$type==Team::ROW_ARRIVE_BY):?>
     <th scope="col">Arrival Time</th>
     <th scope="col">Arrival Method</th>
     <th scope="col">Departure Time</th>
@@ -56,7 +56,7 @@ function teamList(Team $t, $link, $type='', $msg=''){
     <td><?=$row->institution?></td>
     <td><?=$row->university?></td>
     <td><?=$row->country?></td>
-    <? if($type==Team::ROW_ARRIVE_TIME):?>
+    <? if($type==Team::ROW_ARRIVE_TIME||$type==Team::ROW_ARRIVE_BY):?>
     <td><?=$row->arrive_time?></td>
     <td><?=$row->arrive_by?></td>
     <td><?=$row->depart_time?></td>

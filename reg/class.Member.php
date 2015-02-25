@@ -172,7 +172,7 @@ abstract class Member extends SKeasySQL{
 		$tmp=new Team(NULL);
 		$stm=$this->db->prepare(
 			'SELECT '.$this->TABLE.'.*, '
-				.($genderStr?self::rowGender().', ':'')
+				.($genderStr?self::genderSQL().', ':'')
 				.$tmp->TABLE.'.'.Team::ROW_TEAM_NAME.', '
 				.$tmp->TABLE.'.'.Team::ROW_INSTITUTION.', '
 				.$tmp->TABLE.'.'.Team::ROW_UNIVERSITY.', '
@@ -266,7 +266,7 @@ class Observer extends Member{
 		$tmp=new Team(NULL);
 		$stm=$this->db->prepare(
 			'SELECT '.$this->TABLE.'.*, '
-				.($genderStr?self::rowGender().', ':'')
+				.($genderStr?self::genderSQL().', ':'')
 				.'GROUP_CONCAT('.$tmp->TABLE.'.'.Team::ROW_TEAM_NAME.' SEPARATOR \', \') AS '.Team::ROW_TEAM_NAME.', '
 				.$tmp->TABLE.'.'.Team::ROW_INSTITUTION.', '
 				.$tmp->TABLE.'.'.Team::ROW_UNIVERSITY.', '

@@ -11,7 +11,7 @@ require_once 'class.Member.php';
 require_once 'admin.team.view.php';
 // print mode
 function printMode($title, $body){
-	ob_start();?><!--
+	ob_start();?>
 <!doctype html>
 <html>
 <head>
@@ -24,7 +24,7 @@ function printMode($title, $body){
 
 <body><?=$body?><p><small>Print at: <?=date('Y-m-d H:i:s e')?></small></p>
 </body>
-</html>-->
+</html>
 <?php
 	return ob_get_clean();
 }
@@ -47,10 +47,10 @@ function summarize(PDO $db){
     <h2>Summarized information <small class="hide-for-print"><a href="admin.participant.php?print&view=sum" target="_blank" class="button">Print</a> <a href="admin.participant.php?view=sum" class="button reload">Reload</a></small></h2>
     <ol class="hide-for-print">
       <li><a href="#team">Team</a></li>
-      <li><a href="#part">Participants (Medical students)</a></li>
       <li><a href="#obs">Advisors</a></li>
+      <li><a href="#part">Participants (Medical students)</a></li>
     </ol>
-<h3 id="team">Team (<?=$tmp->countField()?> teams)</h3>
+<h3 id="team">Teams (<?=$tmp->countField()?> teams)</h3>
 <h4>Status of team's information (step 1)</h4>
 <?=toTable($tmp->countField(Team::ROW_TEAM_STATE, State::toSQL(Team::ROW_TEAM_STATE)))?>
 <h4>Status of team's transaction</h4>
@@ -66,13 +66,29 @@ function summarize(PDO $db){
 <h4>Route</h4>
 <?=toTable($tmp->countField(Team::ROW_ROUTE, $tmp->routeSQL()))?>
 <hr />
+<?	foreach(array(new Observer($db), new Participant($db)) as $tmp):?>
+<h3 id="<? if(property_exists($tmp, 'part_no')):?>part<? else:?>obs<? endif;?>"><? if(property_exists($tmp, 'part_no')):?>Participant<? else:?>Advisor<? endif;?>s (<?=$tmp->countField()?> people)</h3>
+<h4>Status of their information (step 1)</h4>
+<?=toTable($tmp->countField(Participant::ROW_INFO_STATE, State::toSQL(Participant::ROW_INFO_STATE)))?>
+<h4>Gender</h4>
 <?php
-
+	echo toTable($tmp->countField(Participant::ROW_GENDER, Participant::genderSQL()));
+	if(property_exists($tmp, 'part_no')):
 ?>
-<h3 id="part">Participant (<?=$tmp->countField()?> teams)</h3>
-<h4>Status of team's information (step 1)</h4>
-<?=toTable($tmp->countField(Team::ROW_TEAM_STATE, State::toSQL(Team::ROW_TEAM_STATE)))?>
+<h4>Medical student year</h4>
 <?php
+	echo toTable($tmp->countField(Participant::ROW_STD_Y));
+	endif;
+?>
+<h4>Nationality</h4>
+<?=toTable($tmp->countField(Participant::ROW_NATIONALITY))?>
+<h4>Religion</h4>
+<?=toTable($tmp->countField(Participant::ROW_RELIGION))?>
+<h4>Shirt size</h4>
+<?=toTable($tmp->countField(Participant::ROW_SHIRT_SIZE))?>
+<hr />
+<?php
+	endforeach;
 	return ob_get_clean();
 }
 // table team --> admin.team.view.php
