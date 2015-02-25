@@ -9,17 +9,6 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 
 function fullList(PDO $db, $msg=''){
 	require_once 'class.Member.php';
-	$arr=array(
-		'title'=>Participant::ROW_TITLE,
-		'firstname'=>Participant::ROW_FIRSTNAME,
-		'middlename'=>Participant::ROW_MIDDLENAME,
-		'lastname'=>Participant::ROW_LASTNAME,
-		'gender (0 = female, 1 = male)'=>Participant::ROW_GENDER,
-		'team\'s name'=>Team::ROW_TEAM_NAME,
-		'medical school'=>Team::ROW_INSTITUTION,
-		'university'=>Team::ROW_UNIVERSITY,
-		'country'=>Team::ROW_COUNTRY
-	);
 	ob_start();?>
 <ul class="tabs" data-tab>
  <li class="tab-title active"><a href="#panel1">Teams</a></li>
@@ -29,9 +18,9 @@ function fullList(PDO $db, $msg=''){
 </ul>
 <div class="tabs-content">
  <div class="content active" id="panel1"><?php $tmp=new Team($db); echo teamList($tmp, 'admin.team.php');?></div>
- <div class="content" id="panel2"><?php $tmp=new Observer($db); echo Config::toTable($tmp->getList(),$arr);?></div>
-  <div class="content" id="panel3"><?=Config::toTable($tmp->getDistinctList(),$arr);?></div>
- <div class="content" id="panel4"><?php $tmp=new Participant($db); echo Config::toTable($tmp->getList(),$arr);?></div>
+ <div class="content" id="panel2"><?php $tmp=new Observer($db); echo Config::toTable($tmp->getList(true), Observer::forTableRow(true));?></div>
+  <div class="content" id="panel3"><?=Config::toTable($tmp->getDistinctList(true), Observer::forTableRow(true));?></div>
+ <div class="content" id="panel4"><?php $tmp=new Participant($db); echo Config::toTable($tmp->getList(true), Participant::forTableRow(true));?></div>
 </div>
     <?php
 	return ob_get_clean();
@@ -52,13 +41,27 @@ function teamList(Team $t, $link, $type='', $msg=''){
     <th scope="col">Medical school</th>
     <th scope="col">University/College</th>
     <th scope="col">Country</th>
+    <? if($type==Team::ROW_ARRIVE_TIME):?>
+    <th scope="col">Arrival Time</th>
+    <th scope="col">Arrival Method</th>
+    <th scope="col">Departure Time</th>
+    <th scope="col">Departure Method</th>
+    <? endif;?>
   </tr>
   <? foreach($t->getList($type) as $row):?><tr>
-    <? if($type==''):?><td><input name="del[]" type="checkbox" class="del" value="<?=$row->id?>" title="delete"></td><? endif;?>
+    <? if($type==''):?>
+    <td><input name="del[]" type="checkbox" class="del" value="<?=$row->id?>" title="delete"></td>
+	<? endif;?>
     <td><a href="<?=$link?>?id=<?=$row->id?>" target="_blank" class="edit"><?=$row->team_name?></a></td>
     <td><?=$row->institution?></td>
     <td><?=$row->university?></td>
     <td><?=$row->country?></td>
+    <? if($type==Team::ROW_ARRIVE_TIME):?>
+    <td><?=$row->arrive_time?></td>
+    <td><?=$row->arrive_by?></td>
+    <td><?=$row->depart_time?></td>
+    <td><?=$row->depart_by?></td>
+     <? endif;?>
   </tr><? endforeach;?>
 </table>
 <?php

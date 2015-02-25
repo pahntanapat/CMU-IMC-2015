@@ -52,6 +52,47 @@ class Team extends SKeasySQL{
 			self::ROW_ROUTE=>':route'
 		);
 		
+
+	// functional method
+	protected function rowArray($withUniv=false,$withPostReg=false,$row=array()){
+		if($withUniv)
+			$row=array_merge($row,array(
+				self::ROW_INSTITUTION,
+				self::ROW_UNIVERSITY,
+				self::ROW_COUNTRY,
+				self::ROW_ADDRESS,
+				self::ROW_PHONE
+			));
+		if($withPostReg)
+			$row=array_merge($row,array(
+				self::ROW_ARRIVE_BY,
+				self::ROW_ARRIVE_TIME,
+				self::ROW_DEPART_BY,
+				self::ROW_DEPART_TIME,
+		
+				self::ROW_ROUTE
+			));
+		$rows=array();
+		foreach($row as $k)
+			if(array_key_exists($k,$this->rows)) $rows[$k]=$this->rows[$k];
+		return $rows;
+	}
+	protected function bindValue(PDOStatement $stm,$row){
+		foreach($row as $k=>$v){
+			switch($k){
+				case self::ROW_ARRIVE_TIME:
+				case self::ROW_DEPART_TIME:
+					$stm->bindValue($v,$this->$k?$this->$k:NULL);
+					break;
+				case self::ROW_ROUTE:
+					$stm->bindValue($v,$this->$k,PDO::PARAM_INT);
+					break;
+				default:
+					$stm->bindValue($v,$this->$k);
+			}
+		}
+	}
+	
 	/**
 	* Prepare SQL command for function that select data for session
 	*/
@@ -75,6 +116,7 @@ class Team extends SKeasySQL{
 		if($withID) $rows[$this->TABLE.'.'.self::ROW_ID]=self::ROW_ID;
 		return self::row($rows);
 	}
+	
 	// convert PDOStatement to $this
 	private function prepareSession(PDOStatement $stm){
 		require_once 'class.State.php';
@@ -127,6 +169,7 @@ class Team extends SKeasySQL{
 		return $this->prepareSession($stm);
 	}
 	
+	// Routine method
 	public function del($list){
 		$stm=$this->db->prepare('DELETE FROM '.$this->TABLE
 			.' WHERE '.self::ROW_ID.self::IN($list));
@@ -285,46 +328,24 @@ class Team extends SKeasySQL{
 		$stm->execute();
 		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
 	}
-
-	// functional method
-	protected function rowArray($withUniv=false,$withPostReg=false,$row=array()){
-		if($withUniv)
-			$row=array_merge($row,array(
-				self::ROW_INSTITUTION,
-				self::ROW_UNIVERSITY,
-				self::ROW_COUNTRY,
-				self::ROW_ADDRESS,
-				self::ROW_PHONE
-			));
-		if($withPostReg)
-			$row=array_merge($row,array(
-				self::ROW_ARRIVE_BY,
-				self::ROW_ARRIVE_TIME,
-				self::ROW_DEPART_BY,
-				self::ROW_DEPART_TIME,
-		
-				self::ROW_ROUTE
-			));
-		$rows=array();
-		foreach($row as $k)
-			if(array_key_exists($k,$this->rows)) $rows[$k]=$this->rows[$k];
-		return $rows;
+	
+	/**
+	  *@return array(ID1, ID2, ...) of team that state of post reg step = OK
+	  *
+	  */
+	public function getIDList(){
+		$stm=$this->db->prepare('SELECT '.self::ROW_ID
+			.' FROM '.$this->TABLE
+			.' WHERE '.self::ROW_POST_REG_STATE.'=?'
+		);
+		$stm=new PDOStatement();
+		require_once 'class.State.php';
+		$stm->bindValue(1,State::ST_OK, PDO::PARAM_INT);
+		$stm->execute();
+		return $stm->fetchAll(PDO::FETCH_COLUMN, 0);
 	}
-	protected function bindValue(PDOStatement $stm,$row){
-		foreach($row as $k=>$v){
-			switch($k){
-				case self::ROW_ARRIVE_TIME:
-				case self::ROW_DEPART_TIME:
-					$stm->bindValue($v,$this->$k?$this->$k:NULL);
-					break;
-				case self::ROW_ROUTE:
-					$stm->bindValue($v,$this->$k,PDO::PARAM_INT);
-					break;
-				default:
-					$stm->bindValue($v,$this->$k);
-			}
-		}
-	}
+	
+	// Summarizing method
 	
 	// Miscellenous method
 	public function countPay(){

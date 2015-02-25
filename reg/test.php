@@ -29,9 +29,11 @@ require_once 'class.Message.php';
 
 <body>
 <pre><?php
-require_once 'class.Team.php';
-$t=new Team($config->PDO());
-var_dump($t->getRoute(),$t->countRoute());
+require_once 'class.Member.php';
+$db=$config->PDO();//$db=new PDO();
+$stm=$db->prepare('SELECT *, (CASE gender WHEN 1 THEN "male" ELSE "female" END) AS gender FROM `participant_info`');
+$stm->execute();
+var_dump($stm->fetchAll(PDO::FETCH_CLASS, 'Participant', array($db)));
 ?></pre>
 <div>
 
