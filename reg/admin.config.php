@@ -7,7 +7,7 @@ $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
 elseif(!$sess->checkPMS(SesAdm::PMS_WEB)) Config::redirect('home.php','you don\'t have permission here.');
 $json=new SKAjax();
-if(isset($_GET['act'])) require_once 'admin_config.scr.php';
+if(isset($_GET['act'])) require_once 'admin.config.scr.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_admin.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -32,7 +32,7 @@ if(isset($_GET['act'])) require_once 'admin_config.scr.php';
 <!-- InstanceBeginEditable name="head" -->
 <script src="js/foundation-datepicker.js"></script>
 <script src="js/jquery.maskedinput.min.js"></script>
-<script src="js/admin_config.js"></script>
+<script src="js/admin.config.js"></script>
 <link rel="stylesheet" href="css/ui.css">
 <!-- InstanceEndEditable -->
 
@@ -124,22 +124,22 @@ if(isset($_GET['act'])) require_once 'admin_config.scr.php';
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="admin_team_list.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
       		<li class="divider"></li>
-      		<li><a href="admin_approve_info.php">Approve teams' information: step 1</a></li>
-      		<li><a href="admin_pay.php">Approve the transactions</a></li>
-      		<li><a href="admin_approve_post_reg.php">Approve teams' information: step 2</a></li>
+      		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
+      		<li><a href="admin.pay.php">Approve the transactions</a></li>
+      		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
       		<li class="divider"></li>
       		<li><a href="#" title="for General Modulator">for General Modulator</a></li>
       		<li class="divider"></li>
-      		<li><a href="admin_edit.php" title="Edit administrator">Edit administrator</a></li>
-      		<li><a href="admin_config.php" title="System configuration">System configuration</a></li>
+      		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
+      		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>
 		</ul></div></li>
 </ul>
 </div>
 <div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
 <h2>System configuration</h2>
- <form action="admin_config.php?act=save" method="post">
+ <form action="admin.config.php?act=save" method="post">
     <fieldset>
       <legend>ตั้งค่าระบบ</legend>
       <ul class="tabs" data-tab>
@@ -219,7 +219,7 @@ if(isset($_GET['act'])) require_once 'admin_config.scr.php';
         <div data-alert class="alert-box alert radius"><i class="fa fa-2x pull-left fa-exclamation-triangle"></i>ถ้าเปลี่ยน upload folder เมื่อมีคน upload ไฟล์ขึ้นไปแล้ว จำทำให้ระบบไม่สามารถหาไฟล์ได้ แม้ว่าจะมีไฟล์อยู่บน host ดังนั้น ผู้ที่แก้ไขต้องไปย้ายไฟล์บน host ด้วย FTP เองด้วย</div>
         </div>
       </div>
-      <div class="btnset"><button type="submit">บันทึก</button><button type="reset">ยกเลิก</button><a href="admin_config.php?act=reset" title="reset" class="reset button">Reset
+      <div class="btnset"><button type="submit">บันทึก</button><button type="reset">ยกเลิก</button><a href="admin.config.php?act=reset" title="reset" class="reset button">Reset
         </a></div>
         </div>
     </fieldset>

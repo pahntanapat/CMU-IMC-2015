@@ -116,16 +116,16 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="../reg/admin_team_list.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+            <li><a href="../reg/admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
       		<li class="divider"></li>
-      		<li><a href="../reg/admin_approve_info.php">Approve teams' information: step 1</a></li>
-      		<li><a href="../reg/admin_pay.php">Approve the transactions</a></li>
-      		<li><a href="../reg/admin_approve_post_reg.php">Approve teams' information: step 2</a></li>
+      		<li><a href="../reg/admin.info.php">Approve teams' information: step 1</a></li>
+      		<li><a href="../reg/admin.pay.php">Approve the transactions</a></li>
+      		<li><a href="../reg/admin.post_reg.php">Approve teams' information: step 2</a></li>
       		<li class="divider"></li>
       		<li><a href="#" title="for General Modulator">for General Modulator</a></li>
       		<li class="divider"></li>
-      		<li><a href="../reg/admin_edit.php" title="Edit administrator">Edit administrator</a></li>
-      		<li><a href="../reg/admin_config.php" title="System configuration">System configuration</a></li>
+      		<li><a href="../reg/admin.edit.php" title="Edit administrator">Edit administrator</a></li>
+      		<li><a href="../reg/admin.config.php" title="System configuration">System configuration</a></li>
 		</ul></div></li>
 </ul>
 </div>

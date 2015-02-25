@@ -2,7 +2,7 @@ $(document).ready(function(e) {
 	loadScript();
     $('#reloadAdminList').click(function(e) {
 		e.preventDefault();
-        return $(this).loadSKOriginal('admin_team_list.scr.php',$.SK(),loadScript);
+        return $(this).loadSKOriginal('admin.team.scr.php',$.SK(),loadScript);
     });
 	$(document).on('submit','form.updateInfoForm',function(e){
 		e.preventDefault();
@@ -10,7 +10,7 @@ $(document).ready(function(e) {
 	});
 	$('#teamListForm').submit(function(e) {
         e.preventDefault();
-		return $(this).postSKOriginal('admin_team_list.scr.php?'+$.SK(),loadScript);
+		return $(this).postSKOriginal('admin.team.scr.php?'+$.SK(),loadScript);
     });
 	$(document).on('click','a.edit',function(e){
 		e.preventDefault();

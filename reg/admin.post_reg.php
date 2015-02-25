@@ -4,30 +4,16 @@ require_once 'class.SesAdm.php';
 
 $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
-elseif(!$sess->checkPMS(SesAdm::PMS_ADMIN))  Config::redirect('home.php','you don\'t have permission here.');
+if(!$sess->checkPMS(SesAdm::PMS_PARTC)) Config::redirect('home.php','you don\'t have permission here.');
 
-require_once 'admin_edit.scr.php';
-/*if(Config::isPost()) require_once 'admin_edit.scr.php';
-else{
-	require_once 'class.SKAjax.php';
-	require_once 'admin_edit.scr.php';
-	
-	$ajax=new SKAjax();
-	if(isset($_GET['id'])){
-		$ajax->msgID="divAdminForm";
-		$ajax->message=formAdmin(new Admin($config->PDO()),Config::isPost()?NULL:$_GET['id']);
-	}else{
-		$ajax->msgID="adminList";
-		$ajax->message=tableAdmin(new Admin($config->PDO()));
-	}
-}*/
+require_once 'admin.post_reg.scr.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_admin.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Edit Admin :Chiang Mai University International Medical Challenge</title>
+<title>Approve Information in Step 2 :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
@@ -43,8 +29,7 @@ else{
 
 <script src="js/ui.js"></script>
 <!-- InstanceBeginEditable name="head" -->
-<script src="js/foundation-datepicker.js"></script>
-<script src="js/admin_edit.js"></script>
+<script src="js/admin.approve.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -135,30 +120,20 @@ else{
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="admin_team_list.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
       		<li class="divider"></li>
-      		<li><a href="admin_approve_info.php">Approve teams' information: step 1</a></li>
-      		<li><a href="admin_pay.php">Approve the transactions</a></li>
-      		<li><a href="admin_approve_post_reg.php">Approve teams' information: step 2</a></li>
+      		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
+      		<li><a href="admin.pay.php">Approve the transactions</a></li>
+      		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
       		<li class="divider"></li>
       		<li><a href="#" title="for General Modulator">for General Modulator</a></li>
       		<li class="divider"></li>
-      		<li><a href="admin_edit.php" title="Edit administrator">Edit administrator</a></li>
-      		<li><a href="admin_config.php" title="System configuration">System configuration</a></li>
+      		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
+      		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>
 		</ul></div></li>
 </ul>
 </div>
-<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Add/Edit/Delete admin</h2>
-<?php
-	if(isset($_GET['id'])):
-		echo $ajax->toMsg();
-	else:?><form action="admin_edit.php" method="post" id="adminListForm">
-  <div>
-    <button type="button" id="selectAll">Select All</button>
-    <a href="admin_edit.php#reloadAdminList" title="reload" class="button" id="reloadAdminList">Reload</a> <a href="admin_edit.php?id=0" title="Add new admin" class="edit button">Add</a>
-    <button type="submit" name="remove" id="remove" value="remove">Remove</button>
-  </div>
-  <?=$ajax->toMsg()?></form><? endif;?><!-- InstanceEndEditable --></div></div>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->adminContent<!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

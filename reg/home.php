@@ -120,16 +120,16 @@ if(Config::isPost()) require_once 'home.scr.php';
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="admin_team_list.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
       		<li class="divider"></li>
-      		<li><a href="admin_approve_info.php">Approve teams' information: step 1</a></li>
-      		<li><a href="admin_pay.php">Approve the transactions</a></li>
-      		<li><a href="admin_approve_post_reg.php">Approve teams' information: step 2</a></li>
+      		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
+      		<li><a href="admin.pay.php">Approve the transactions</a></li>
+      		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
       		<li class="divider"></li>
       		<li><a href="#" title="for General Modulator">for General Modulator</a></li>
       		<li class="divider"></li>
-      		<li><a href="admin_edit.php" title="Edit administrator">Edit administrator</a></li>
-      		<li><a href="admin_config.php" title="System configuration">System configuration</a></li>
+      		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
+      		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>
 		</ul></div></li>
 </ul>
 </div>

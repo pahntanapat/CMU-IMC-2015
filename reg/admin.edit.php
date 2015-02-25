@@ -4,17 +4,30 @@ require_once 'class.SesAdm.php';
 
 $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
-if(!$sess->checkPMS(SesAdm::PMS_PARTC)) Config::redirect('home.php','you don\'t have permission here.');
+elseif(!$sess->checkPMS(SesAdm::PMS_ADMIN))  Config::redirect('home.php','you don\'t have permission here.');
 
-require_once 'admin_approve_info.scr.php';
-
+require_once 'admin.edit.scr.php';
+/*if(Config::isPost()) require_once 'admin.edit.scr.php';
+else{
+	require_once 'class.SKAjax.php';
+	require_once 'admin.edit.scr.php';
+	
+	$ajax=new SKAjax();
+	if(isset($_GET['id'])){
+		$ajax->msgID="divAdminForm";
+		$ajax->message=formAdmin(new Admin($config->PDO()),Config::isPost()?NULL:$_GET['id']);
+	}else{
+		$ajax->msgID="adminList";
+		$ajax->message=tableAdmin(new Admin($config->PDO()));
+	}
+}*/
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_admin.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Approve Information in Step 2 :Chiang Mai University International Medical Challenge</title>
+<title>Edit Admin :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
@@ -30,7 +43,8 @@ require_once 'admin_approve_info.scr.php';
 
 <script src="js/ui.js"></script>
 <!-- InstanceBeginEditable name="head" -->
-<script src="js/admin_approve.js"></script>
+<script src="js/foundation-datepicker.js"></script>
+<script src="js/admin.edit.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -121,29 +135,30 @@ require_once 'admin_approve_info.scr.php';
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="admin_team_list.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
       		<li class="divider"></li>
-      		<li><a href="admin_approve_info.php">Approve teams' information: step 1</a></li>
-      		<li><a href="admin_pay.php">Approve the transactions</a></li>
-      		<li><a href="admin_approve_post_reg.php">Approve teams' information: step 2</a></li>
+      		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
+      		<li><a href="admin.pay.php">Approve the transactions</a></li>
+      		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
       		<li class="divider"></li>
       		<li><a href="#" title="for General Modulator">for General Modulator</a></li>
       		<li class="divider"></li>
-      		<li><a href="admin_edit.php" title="Edit administrator">Edit administrator</a></li>
-      		<li><a href="admin_config.php" title="System configuration">System configuration</a></li>
+      		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
+      		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>
 		</ul></div></li>
 </ul>
 </div>
-<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Approve Participants' information: Step 1</h2>
-<? if(isset($_GET['id'])):?>
-<h5><a href="admin_team_list.php?id=<?=$_GET['id']?>" target="_blank">View team's information</a></h5>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Add/Edit/Delete admin</h2>
 <?php
-	echo $ajax->toMsg();
-else:?>
-<a href="admin_approve_info.php#reload" class="button" id="reload">Reload</a>
-<?php
-echo $ajax->toMsg();
-endif;?><!-- InstanceEndEditable --></div></div>
+	if(isset($_GET['id'])):
+		echo $ajax->toMsg();
+	else:?><form action="admin.edit.php" method="post" id="adminListForm">
+  <div>
+    <button type="button" id="selectAll">Select All</button>
+    <a href="admin.edit.php#reloadAdminList" title="reload" class="button" id="reloadAdminList">Reload</a> <a href="admin.edit.php?id=0" title="Add new admin" class="edit button">Add</a>
+    <button type="submit" name="remove" id="remove" value="remove">Remove</button>
+  </div>
+  <?=$ajax->toMsg()?></form><? endif;?><!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

@@ -139,10 +139,10 @@ else:
 <!-- InstanceEndEditable -->
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="../login_not_used/js/jquery-ui-1.10.4.custom.min.js"></script>
-<script src="../login_not_used/js/mahidol_ajax.js"></script>
-<link rel="stylesheet" href="../mahidol_quiz.css">
-<link href="../mahidol.css" rel="stylesheet" type="text/css">
+<script src="login_not_used/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script src="login_not_used/js/mahidol_ajax.js"></script>
+<link rel="stylesheet" href="mahidol_quiz.css">
+<link href="mahidol.css" rel="stylesheet" type="text/css">
 
 <script src="../login_not_used/js/mahidol_ajax.js"></script>
 <link rel="stylesheet" type="text/css" href="admin.css">

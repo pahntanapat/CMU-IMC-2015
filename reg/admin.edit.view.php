@@ -16,7 +16,7 @@ function tableAdmin(Admin $adm,$msg=''){
     <th scope="row"><input name="del[]" type="checkbox" class="del" value="<?=$row->id?>" title="delete"></th>
     <td><?=$row->student_id?></td>
     <td><?=$row->nickname?></td>
-    <td class="center"><a href="admin_edit.php?id=<?=$row->id?>" title="Edit admin" class="edit">Edit</a></td>
+    <td class="center"><a href="admin.edit.php?id=<?=$row->id?>" title="Edit admin" class="edit">Edit</a></td>
   </tr><? endforeach;?>
 </table>
 <?php
@@ -36,8 +36,8 @@ function formAdmin(Admin $adm,$id=false,$msg=NULL){
 		$adm->id=0;
 	}
 	ob_start();?>
-    <a href="admin_edit.php?id=<?=$adm->id?>" target="_blank">View in new tab</a>
-    <form action="admin_edit.php?id=<?=$adm->id?>" method="post" id="formAdmin"><fieldset><legend><?=$adm->id==0?'Add':'Edit'?> admin</legend>
+    <a href="admin.edit.php?id=<?=$adm->id?>" target="_blank">View in new tab</a>
+    <form action="admin.edit.php?id=<?=$adm->id?>" method="post" id="formAdmin"><fieldset><legend><?=$adm->id==0?'Add':'Edit'?> admin</legend>
     <div>
       <label for="student_id">Student ID:</label>
       <input name="student_id" type="text" required="required" id="student_id" placeholder="รหัสนักศึกษา" value="<?=$adm->student_id?>" autocomplete="off">
