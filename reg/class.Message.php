@@ -9,11 +9,12 @@ class Message extends SKeasySQL{
 		ROW_SHOW_PAGE='show_page',
 		ROW_TIME='time',
 		
-		PAGE_INFO_TEAM=10,
-		PAGE_INFO_PART_=20,
-		PAGE_INFO_OBSERVER=20,
-		PAGE_PAY=30,
-		PAGE_POST_REG_TEAM=40
+		PAGE_INFO_TEAM=0,
+		PAGE_INFO_OBSERVER=1,
+		PAGE_PAY=2,
+		PAGE_POST_REG_TEAM=3,
+		
+		PAGE_INFO_PART_=4
 		;
 		
 	public $team_id, $title, $detail, $time, $admin_id, $show_page;

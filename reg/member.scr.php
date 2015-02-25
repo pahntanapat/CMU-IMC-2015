@@ -7,12 +7,19 @@ if(!$s) Config::redirect('login.php','You do not log in. Please log in.');
 
 require_once 'class.SKAjaxReg.php';
 $ajax=new SKAjaxReg();
+
 $uploadAjax=new SKAjaxReg();
+$uploadAjax->msgID='uploadMsg';
 
 $db=$config->PDO();
 
-if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PARTICIPANT_NUM){
-	$uploadAjax->msgID='uploadMsg';
+if(Config::isPost() && !State::is($s->getParticipantInfoState($_POST['part_no']),State::ST_EDITABLE,$config->REG_START_REG,$config->REG_END_REG)){
+	$ajax->message='You are not allowed to change the information. Please contact administrators.';
+	$ajax->result=false;
+	
+	$uploadAjax->message=$ajax->message;
+	$uploadAjax->result=false;
+}elseif(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PARTICIPANT_NUM){
 	$uploadAjax->result=false;
 	try{
 		require_once 'class.UploadImage.php';
@@ -51,9 +58,7 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 	}
 	unset($upload);
 }elseif(Config::isPost()){
-	if(!State::is($s->getParticipantInfoState($_POST['part_no']),State::ST_EDITABLE,$config->REG_START_REG,$config->REG_END_REG)){
-		$ajax->message='You are not allowed to change the information. Please contact administrators.';
-	}elseif(!(Config::isBlank($_POST,'email') || Config::checkEmail($_POST['email'],$e))){
+	if(!(Config::isBlank($_POST,'email') || Config::checkEmail($_POST['email'],$e))){
 		$ajax->message=$e;
 	}elseif(!(Config::isBlank($_POST,'birth') || Config::isDate($_POST['birth'],$e))){
 		$ajax->message=$e;
@@ -84,7 +89,7 @@ if(Config::isFile() && $_POST['part_no']>0 && $_POST['part_no']<=$config->REG_PA
 				$ajax->message=$ajax->result?'Update the information success.':'No any information change.';
 			}
 			if($ajax->result){
-				$ajax->setFormDefault((array) $member);
+				$ajax->setFormDefault((array) $member, array(Observer::ROW_GENDER, Observer::ROW_SHIRT_SIZE));
 				$s->setParticipantInfoState($_POST['part_no'], $member->info_state);
 				$s->setProgression();
 				$ajax->updateMenuState($s);

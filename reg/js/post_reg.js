@@ -1,21 +1,17 @@
 $(document).ready(function(e) {
-	$.datetimepicker();
+    $.datetimepicker();
 	$('#infoForm').submit(function(e) {
         e.preventDefault();
-		if(!$('#birth').checkDate()){
-			$('#msg').html('<div class="alert-box alert">Date of birth is invalid. Please fill out the correct format (YYYY-MM-DD).</div>');
+		if(!$('input[type="datetime"]').checkDateTime()){
+			$('#msg').html('<div class="alert-box alert">Arrival or Depart time is invalid. Please fill out the correct format (YYYY-MM-DD hh:mm:ss).</div>');
 			return false;
 		}
-		if($('#birth').val().trim().length>0 && Date.parse($('#birth').val())>=new Date().getTime()){
-			$('#msg').html('<div class="alert-box alert">Date of birth is greater than today. Please fill out the correct date.</div>');
-			return false;
-		}
-		return $(this).postSK('member.scr.php?'+$.SK());
+		return $(this).postSK('post_reg.scr.php?'+$.SK());
     });
-	$('#uploadForm').ajaxForm({
+	$('#photoForm, #ticketForm').ajaxForm({
 		clearForm: true,
 		dataType: 'json',
-		url: 'member.scr.php?'+$.SK(),
+		url: 'post_reg.scr.php?'+$.SK(),
 		type: 'POST',
 		beforeSerialize:function(){
 			$('#uploadMsg')

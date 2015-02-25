@@ -6,7 +6,7 @@ $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
 if(!$sess->checkPMS(SesAdm::PMS_PARTC)) Config::redirect('home.php','you don\'t have permission here.');
 
-require_once 'admin_approve_info.view.php';
+require_once 'admin.info.view.php';
 $db=$config->PDO();
 
 require_once 'class.SKAjax.php';
@@ -90,9 +90,9 @@ if(Config::isPost()){ // Submit
 	$ajax->msgID='approveForm';
 	$ajax->message=approveTeam($msg);
 }else{ // Show all table
-	require_once 'admin_team_list.view.php';
+	require_once 'admin.team.view.php';
 	$ajax->msgID='teamList';
-	$ajax->message=teamList(new Team($db), 'admin_approve_info.php', Team::ROW_TEAM_STATE);
+	$ajax->message=teamList(new Team($db), 'admin.info.php', Team::ROW_TEAM_STATE);
 }
 if(Config::isAjax()) Config::JSON($ajax);
 ?>

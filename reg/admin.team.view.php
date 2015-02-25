@@ -28,7 +28,7 @@ function fullList(PDO $db, $msg=''){
  <li class="tab-title"><a href="#panel4">Participants</a></li>
 </ul>
 <div class="tabs-content">
- <div class="content active" id="panel1"><?php $tmp=new Team($db); echo teamList($tmp, 'admin_team_list.php');?></div>
+ <div class="content active" id="panel1"><?php $tmp=new Team($db); echo teamList($tmp, 'admin.team.php');?></div>
  <div class="content" id="panel2"><?php $tmp=new Observer($db); echo Config::toTable($tmp->getList(),$arr);?></div>
   <div class="content" id="panel3"><?=Config::toTable($tmp->getDistinctList(),$arr);?></div>
  <div class="content" id="panel4"><?php $tmp=new Participant($db); echo Config::toTable($tmp->getList(),$arr);?></div>
@@ -99,9 +99,9 @@ function teamInfo($id,$pms, $msg=''){
 	?>
 <h3>Team's name: <?=$t->team_name?></h3>
 <ul class="inline-list">
-  <li><a href="admin_approve_info.php?id=<?=$t->id?>" target="_blank">Approve Infomation in step 1</a></li>
-  <li><a href="admin_pay.php?id=<?=$t->id?>" target="_blank">Approce Transactions</a></li>
-  <li><a href="admin_approve_post_reg.php?id=<?=$t->id?>" target="_blank">Approve Infomation in step 2</a></li>
+  <li><a href="admin.info.php?id=<?=$t->id?>" target="_blank">Approve Infomation in step 1</a></li>
+  <li><a href="admin.pay.php?id=<?=$t->id?>" target="_blank">Approce Transactions</a></li>
+  <li><a href="admin.post_reg.php?id=<?=$t->id?>" target="_blank">Approve Infomation in step 2</a></li>
 </ul>
 <ul class="tabs" data-tab>
 <li class="tab-title active"><a href="#statusTab">Overall of Status</a></li>
@@ -123,7 +123,7 @@ function teamInfo($id,$pms, $msg=''){
 </ol>
 </div>
 <div class="content" id="teamTab">
-<form action="admin_team_list.php?id=<?=$_GET['id']?>" class="updateInfoForm"><fieldset>
+<form action="admin.team.php?id=<?=$_GET['id']?>" class="updateInfoForm"><fieldset>
   <legend>Team's information</legend>
   <div>
     <label class="require">Email for overall contact
@@ -218,7 +218,7 @@ if(SesAdm::isPMS($pms, SesAdm::PMS_PARTC)):
 		$member=$m[$no];
 ?>
 <div class="content" id="partTab<?=$no?>">
-   <form action="admin_team_list.php?id=<?=$_GET['id']?>" method="post" name="infoForm" class="updateInfoForm">
+   <form action="admin.team.php?id=<?=$_GET['id']?>" method="post" name="infoForm" class="updateInfoForm">
       <fieldset>
         <legend>General Information</legend>
         <div>

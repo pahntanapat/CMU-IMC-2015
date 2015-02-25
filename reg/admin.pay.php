@@ -4,30 +4,16 @@ require_once 'class.SesAdm.php';
 
 $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
-elseif(!$sess->checkPMS(SesAdm::PMS_ADMIN))  Config::redirect('home.php','you don\'t have permission here.');
+if(!$sess->checkPMS(SesAdm::PMS_PARTC)) Config::redirect('home.php','you don\'t have permission here.');
 
-require_once 'admin_edit.scr.php';
-/*if(Config::isPost()) require_once 'admin_edit.scr.php';
-else{
-	require_once 'class.SKAjax.php';
-	require_once 'admin_edit.scr.php';
-	
-	$ajax=new SKAjax();
-	if(isset($_GET['id'])){
-		$ajax->msgID="divAdminForm";
-		$ajax->message=formAdmin(new Admin($config->PDO()),Config::isPost()?NULL:$_GET['id']);
-	}else{
-		$ajax->msgID="adminList";
-		$ajax->message=tableAdmin(new Admin($config->PDO()));
-	}
-}*/
+require_once 'admin.pay.scr.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_admin.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Edit Admin :Chiang Mai University International Medical Challenge</title>
+<title>Approve transactions :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
@@ -41,10 +27,10 @@ else{
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
-<!-- InstanceBeginEditable name="head" -->
-<script src="js/foundation-datepicker.js"></script>
-<script src="js/admin_edit.js"></script>
 <script src="js/ui.js"></script>
+<link href="class.State.php?css=1" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<script src="js/admin.approve.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -119,7 +105,7 @@ else{
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-3 columns" id="sidebar">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
     	<a href="#profileBar"><i class="fa fa-user-md"></i> Admin's Profile</a>
@@ -127,38 +113,38 @@ else{
     </li>
     <li class="accordion-navigation">
     	<a href="#adminMenu"><i class="fa fa-bars"></i> Main menu</a>
-    	<div class="content" id="adminMenu"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard">Main page</a></li>
-    		<li><a href="home.php#editProfile" title="edit profile">Edit profile</a></li>
-    		<li><a href="home.php#changePassword">Chage password</a></li>
-    		<li><a href="logout.php?admin" title="Log out">Log out</a></li></ul></div>
+    	<div class="content" id="adminMenu"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard"><i class="fa fa-home fa-lg"></i> Main page</a></li>
+    		<li><a href="home.php#editProfile" title="edit profile"><i class="fa fa-pencil fa-lg"></i> Edit profile</a></li>
+    		<li><a href="home.php#changePassword"><i class="fa fa-key fa-lg"></i> Chage password</a></li>
+    		<li><a href="logout.php?admin" title="Log out"><i class="fa fa-sign-out fa-lg"></i> Log out</a></li></ul></div>
     </li>
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="admin_team_list.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
-      		<li class="divider"></li>
-      		<li><a href="admin_approve_info.php">Approve teams' information: step 1</a></li>
-      		<li><a href="admin_pay.php">Approve the transactions</a></li>
-      		<li><a href="admin_approve_post_reg.php">Approve teams' information: step 2</a></li>
-      		<li class="divider"></li>
-      		<li><a href="#" title="for General Modulator">for General Modulator</a></li>
-      		<li class="divider"></li>
-      		<li><a href="admin_edit.php" title="Edit administrator">Edit administrator</a></li>
-      		<li><a href="admin_config.php" title="System configuration">System configuration</a></li>
+            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+      		<li><hr></li>
+      		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
+      		<li><a href="admin.pay.php">Approve the transactions</a></li>
+      		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
+      		<li><hr></li>
+      		<li><a href="#" title="Participating teams">Participating teams</a></li>
+      		<li><a href="#" title="Summarize information">Summarize information</a></li>
+      		<li><hr></li>
+      		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
+      		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>
 		</ul></div></li>
 </ul>
 </div>
-<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Add/Edit/Delete admin</h2>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Approve Participants' transaction</h2>
+<? if(isset($_GET['id'])):?>
+<h5><a href="admin.team.php?id=<?=$_GET['id']?>" target="_blank">View team's information</a></h5>
 <?php
-	if(isset($_GET['id'])):
-		echo $ajax->toMsg();
-	else:?><form action="admin_edit.php" method="post" id="adminListForm">
-  <div>
-    <button type="button" id="selectAll">Select All</button>
-    <a href="admin_edit.php#reloadAdminList" title="reload" class="button" id="reloadAdminList">Reload</a> <a href="admin_edit.php?id=0" title="Add new admin" class="edit button">Add</a>
-    <button type="submit" name="remove" id="remove" value="remove">Remove</button>
-  </div>
-  <?=$ajax->toMsg()?></form><? endif;?><!-- InstanceEndEditable --></div></div>
+	echo $ajax->toMsg();
+else:?>
+<a href="admin.pay.php#reload" class="button" id="reload">Reload</a>
+<?php
+echo $ajax->toMsg();
+endif;?><!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

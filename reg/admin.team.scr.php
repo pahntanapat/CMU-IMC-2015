@@ -9,7 +9,7 @@ require_once 'class.Team.php';
 require_once 'class.Member.php';
 require_once 'class.UploadImage.php';
 
-require_once 'admin_team_list.view.php';
+require_once 'admin.team.view.php';
 require_once 'class.SKAjax.php';
 
 $ajax=new SKAjax();

@@ -28,7 +28,7 @@ function showPay($teamID, $adminID, Team $t, Message $msg, UploadImage $img, $me
 	$msg->show_page=Message::PAGE_PAY;
 	
 	return $img->toImgPay()
-		.($msg->load()->toForm('admin_pay.php?id='.$teamID,
+		.($msg->load()->toForm('admin.pay.php?id='.$teamID,
 			array(State::ST_WAIT,State::ST_PASS,State::ST_NOT_PASS),
 			$t->pay_state
 		))
@@ -68,9 +68,9 @@ if(Config::isPost()){ // Submit
 	$ajax->msgID='approveForm';
 	$ajax->message=showPay($_GET['id'], $sess->id, new Team($db), new Message($db), new UploadImage());
 }else{ // Show all table
-	require_once 'admin_team_list.view.php';
+	require_once 'admin.team.view.php';
 	$ajax->msgID='teamList';
-	$ajax->message=teamList(new Team($db), 'admin_pay.php', Team::ROW_PAY_STATE);
+	$ajax->message=teamList(new Team($db), 'admin.pay.php', Team::ROW_PAY_STATE);
 }
 if(Config::isAjax()) Config::JSON($ajax);
 ?>

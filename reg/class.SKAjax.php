@@ -133,12 +133,12 @@ HTML;
 	  *@return $this
 	  *add Command that set value of input to default value
 	  */
-	public function setFormDefault($assoc=NULL){
+	public function setFormDefault($assoc=NULL, $except=array()){
 		if(!is_array($assoc))
 			$assoc=$_POST;
 		require_once 'class.State.php';
 		foreach($assoc as $k=>$v)
-			$this->addHtmlTextVal(SKAjax::SET_VAL,'input[name=\''.$k.'\']',$v);
+			if(!in_array($k,$except)) $this->addHtmlTextVal(SKAjax::SET_VAL,'input[name=\''.$k.'\']',$v);
 		return $this;
 	}
 }

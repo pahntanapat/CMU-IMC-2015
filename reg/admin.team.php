@@ -5,7 +5,7 @@ require_once 'class.SesAdm.php';
 $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
 
-require_once 'admin_team_list.scr.php';
+require_once 'admin.team.scr.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_admin.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -26,11 +26,12 @@ require_once 'admin_team_list.scr.php';
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 
+<script src="js/ui.js"></script>
+<link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
 <script src="js/foundation-datepicker.js"></script>
 <script src="js/jquery.maskedinput.min.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/admin_team_list.js"></script>
+<script src="js/admin.team.js"></script>
 
 <link href="css/foundation-datepicker.css" rel="stylesheet" type="text/css">
 <!-- InstanceEndEditable -->
@@ -107,7 +108,7 @@ require_once 'admin_team_list.scr.php';
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><div class="small-12 large-3 columns" id="sidebar">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
     	<a href="#profileBar"><i class="fa fa-user-md"></i> Admin's Profile</a>
@@ -115,24 +116,25 @@ require_once 'admin_team_list.scr.php';
     </li>
     <li class="accordion-navigation">
     	<a href="#adminMenu"><i class="fa fa-bars"></i> Main menu</a>
-    	<div class="content" id="adminMenu"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard">Main page</a></li>
-    		<li><a href="home.php#editProfile" title="edit profile">Edit profile</a></li>
-    		<li><a href="home.php#changePassword">Chage password</a></li>
-    		<li><a href="logout.php?admin" title="Log out">Log out</a></li></ul></div>
+    	<div class="content" id="adminMenu"><ul class="side-nav"><li><a href="home.php" title="Admin dashboard"><i class="fa fa-home fa-lg"></i> Main page</a></li>
+    		<li><a href="home.php#editProfile" title="edit profile"><i class="fa fa-pencil fa-lg"></i> Edit profile</a></li>
+    		<li><a href="home.php#changePassword"><i class="fa fa-key fa-lg"></i> Chage password</a></li>
+    		<li><a href="logout.php?admin" title="Log out"><i class="fa fa-sign-out fa-lg"></i> Log out</a></li></ul></div>
     </li>
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="admin_team_list.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
-      		<li class="divider"></li>
-      		<li><a href="admin_approve_info.php">Approve teams' information: step 1</a></li>
-      		<li><a href="admin_pay.php">Approve the transactions</a></li>
-      		<li><a href="admin_approve_post_reg.php">Approve teams' information: step 2</a></li>
-      		<li class="divider"></li>
-      		<li><a href="#" title="for General Modulator">for General Modulator</a></li>
-      		<li class="divider"></li>
-      		<li><a href="admin_edit.php" title="Edit administrator">Edit administrator</a></li>
-      		<li><a href="admin_config.php" title="System configuration">System configuration</a></li>
+            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+      		<li><hr></li>
+      		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
+      		<li><a href="admin.pay.php">Approve the transactions</a></li>
+      		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
+      		<li><hr></li>
+      		<li><a href="#" title="Participating teams">Participating teams</a></li>
+      		<li><a href="#" title="Summarize information">Summarize information</a></li>
+      		<li><hr></li>
+      		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
+      		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>
 		</ul></div></li>
 </ul>
 </div>
@@ -144,12 +146,12 @@ if(isset($_GET['id'])):?>
 echo $ajax->toMsg();
 else:?>
   <h2>Edit Teams' &amp; Participants' information</h2>
-  <form action="admin_team_list.php" method="post" id="teamListForm">
+  <form action="admin.team.php" method="post" id="teamListForm">
   <div>
     <button type="button" id="selectAll">Select All</button>
-    <a href="admin_team_list.php#reloadAdminList" title="reload" class="button" id="reloadAdminList">Reload</a>
+    <a href="admin.team.php#reloadAdminList" title="reload" class="button" id="reloadAdminList">Reload</a>
     <button type="submit" name="remove" id="remove" value="remove">Remove</button>
-    <a href="admin_team_list.php?id=0" title="add" target="_blank" class="button edit" id="reloadAdminList">Add</a>
+    <a href="admin.team.php?id=0" title="add" target="_blank" class="button edit" id="reloadAdminList">Add</a>
     <input name="act" type="hidden" id="act" value="del">
   </div>
   <?=$ajax->toMsg()?>

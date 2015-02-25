@@ -1,14 +1,15 @@
 <?php
 class State{
 	const
-		ST_LOCKED=0, ST_EDITABLE=1, ST_CONFIRM=2, ST_B_PASS=4,
-		ST_WAIT=2,				// ST_CONFIRM
-		ST_NOT_PASS=3,	// ST_EDITABLE|ST_CONFIRM
-		ST_PASS=6,				// ST_CONFIRM|ST_B_PASS
-		ST_OK=7	,			// ST_CONFIRM|ST_B_PASS| ST_EDITABLE
-		
 		ST_NOT_START=-1,
-		ST_TIME_UP=-2
+		ST_TIME_UP=-2,
+		
+		ST_LOCKED=0, ST_EDITABLE=1, STB_CONFIRM=2, STB_PASS=4, //Basic State
+		ST_WAIT=2,				// STB_CONFIRM
+		ST_NOT_PASS=3,	// ST_EDITABLE|STB_CONFIRM
+		ST_PASS=6,				// STB_CONFIRM|STB_PASS
+		ST_OK=7			// STB_CONFIRM|STB_PASS| ST_EDITABLE
+		
 		;
 	public static function is($st1,$st2,$startTime=false,$endTime=false){
 		return (($st1&$st2)!=0)
@@ -51,7 +52,7 @@ class State{
 	}
 	
 	public static function toHTML($state, $addInfo=NULL){
-		$html=self::img($state).' This section is ';
+		$html=self::img($state, false).'This section is ';
 		switch($state){
 			case self::ST_NOT_START:
 				$html.='"not ready" to edit. Please visit this page in "'.(is_array($addInfo)?$addInfo[0]:$addInfo).'".';
@@ -81,7 +82,11 @@ class State{
 		}
 		return "<div data-alert class=\"alert-box ".self::toDivClass($state)." radius\">".$html."<a href=\"#\" class=\"close\">&times;</a></div>";
 	}
-	public static function img($state){
+	public static function img($state, $color=true){
+		if($color){
+			$state=self::toClass($state);
+			return $state?"<i class=\"fa ".$state." fa-lg\"></i> ":NULL;
+		}
 		switch($state){
 			case self::ST_TIME_UP:
 			case self::ST_NOT_START:
@@ -93,23 +98,15 @@ class State{
 			case self::ST_OK: $state='check-square-o';break;
 			default: return '';
 		}
-		return $state?"<i class=\"fa fa-".$state." pull-left fa-border fa-lg\"></i>":NULL;
+		return $state?"<i class=\"fa fa-".$state." fa-lg\"></i> ":NULL;
 	}
+	
 	public static function css($withHeader=false,$withTag=false){
 		if($withHeader) header("Content-type: text/css;charset=utf-8");
 		ob_start();
 		if(!$withTag) echo '@charset "utf-8";'.PHP_EOL;
 		/*
-		$r=new ReflectionClass(__CLASS__);
-		foreach($r->getConstants() as $state=>$v):
-			if(strpos($state,'ST_')===false) continue;
-			$state=self::toClass($v);
-			?>
- .<?=$state?>>a::before{
-	content:url(/reg/image/<?=$state?>.png);
-}
-        	<?php
-		endforeach;*/
+		*/
 		$mainCSS=<<<CSS
 font-family: FontAwesome;display: inline-block;padding-right: 0.25em;
 CSS;
@@ -122,9 +119,23 @@ CSS;
 			self::ST_OK=>array("f046",'#C0F')
 		);
 		foreach($list as $k=>$v):
-?>.<?=self::toClass($k)?>>a::before{content:"\<?=$v[0]?>";color:<?=$v[1]?>;<?=$mainCSS?>}<?php
+?>i.<?=self::toClass($k)?>:before, li.<?=self::toClass($k)?>>a:before{content:"\<?=$v[0]?>";color:<?=$v[1]?>;<?=$mainCSS?>}<?php
 		endforeach;
 		return $withTag&&!$withHeader?"<style>".ob_get_clean()."</style>":ob_get_clean();
+	}
+	
+	public static function stateList(){
+		ob_start();?>
+        <h3>The Status of each steps of the CMU-IMC Registration System</h3>
+        <div><?php	
+		$tmp=array('[start datetime]', '[end datetime]');
+		$r=new ReflectionClass(__CLASS__);
+		foreach($r->getConstants() as $state=>$v){
+			if(strpos($state,'ST_')===false) continue;
+			echo self::toHTML($v, $tmp).PHP_EOL;
+		}
+		?></div><?php	
+		return ob_get_clean();
 	}
 }
 if(isset($_GET['css']))

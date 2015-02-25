@@ -9,7 +9,7 @@ elseif(!$sess->checkPMS(SesAdm::PMS_ADMIN))  Config::redirect('home.php','you do
 require_once 'class.SKAjax.php';
 $ajax=new SKAjax();
 
-require_once 'admin_edit.view.php';
+require_once 'admin.edit.view.php';
 $adm=new Admin($config->PDO());
 if(isset($_POST['del'])){ // Delete Admin
 	$ajax->msgID="adminList";

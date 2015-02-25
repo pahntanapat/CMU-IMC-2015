@@ -24,6 +24,8 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 <link href="../css/imc_main.css" rel="stylesheet" type="text/css">
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 <!-- InstanceBeginEditable name="head" -->
+<script src="../reg/js/ui.js"></script>
+<link href="../reg/class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- TemplateBeginEditable name="head" -->
 <!-- TemplateEndEditable -->
 <!-- InstanceEndEditable -->
@@ -99,7 +101,7 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 	</div>
 
 <div class="row"> <!--Whole Body -->
-<div class="small-12 columns" id="content"><!-- InstanceBeginEditable name="Content" --><div class="small-12 large-3 columns">
+<div class="small-12 columns" id="content"><!-- InstanceBeginEditable name="Content" --><div class="small-12 large-3 columns" id="sidebar">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
     	<a href="#profileBar"><i class="fa fa-user-md"></i> Admin's Profile</a>
@@ -107,24 +109,25 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
     </li>
     <li class="accordion-navigation">
     	<a href="#adminMenu"><i class="fa fa-bars"></i> Main menu</a>
-    	<div class="content" id="adminMenu"><ul class="side-nav"><li><a href="../reg/home.php" title="Admin dashboard">Main page</a></li>
-    		<li><a href="../reg/home.php#editProfile" title="edit profile">Edit profile</a></li>
-    		<li><a href="../reg/home.php#changePassword">Chage password</a></li>
-    		<li><a href="../reg/logout.php?admin" title="Log out">Log out</a></li></ul></div>
+    	<div class="content" id="adminMenu"><ul class="side-nav"><li><a href="../reg/home.php" title="Admin dashboard"><i class="fa fa-home fa-lg"></i> Main page</a></li>
+    		<li><a href="../reg/home.php#editProfile" title="edit profile"><i class="fa fa-pencil fa-lg"></i> Edit profile</a></li>
+    		<li><a href="../reg/home.php#changePassword"><i class="fa fa-key fa-lg"></i> Chage password</a></li>
+    		<li><a href="../reg/logout.php?admin" title="Log out"><i class="fa fa-sign-out fa-lg"></i> Log out</a></li></ul></div>
     </li>
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="../reg/admin_team_list.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
-      		<li class="divider"></li>
-      		<li><a href="../reg/admin_approve_info.php">Approve teams' information: step 1</a></li>
-      		<li><a href="../reg/admin_pay.php">Approve the transactions</a></li>
-      		<li><a href="../reg/admin_approve_post_reg.php">Approve teams' information: step 2</a></li>
-      		<li class="divider"></li>
-      		<li><a href="#" title="for General Modulator">for General Modulator</a></li>
-      		<li class="divider"></li>
-      		<li><a href="../reg/admin_edit.php" title="Edit administrator">Edit administrator</a></li>
-      		<li><a href="../reg/admin_config.php" title="System configuration">System configuration</a></li>
+            <li><a href="../reg/admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+      		<li><hr></li>
+      		<li><a href="../reg/admin.info.php">Approve teams' information: step 1</a></li>
+      		<li><a href="../reg/admin.pay.php">Approve the transactions</a></li>
+      		<li><a href="../reg/admin.post_reg.php">Approve teams' information: step 2</a></li>
+      		<li><hr></li>
+      		<li><a href="#" title="Participating teams">Participating teams</a></li>
+      		<li><a href="#" title="Summarize information">Summarize information</a></li>
+      		<li><hr></li>
+      		<li><a href="../reg/admin.edit.php" title="Edit administrator">Edit administrator</a></li>
+      		<li><a href="../reg/admin.config.php" title="System configuration">System configuration</a></li>
 		</ul></div></li>
 </ul>
 </div>

@@ -16,10 +16,10 @@ $db=newPDO();
 <!-- InstanceEndEditable -->
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="../login_not_used/js/jquery-ui-1.10.4.custom.min.js"></script>
-<script src="../login_not_used/js/mahidol_ajax.js"></script>
-<link rel="stylesheet" href="../mahidol_quiz.css">
-<link href="../mahidol.css" rel="stylesheet" type="text/css">
+<script src="login_not_used/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script src="login_not_used/js/mahidol_ajax.js"></script>
+<link rel="stylesheet" href="mahidol_quiz.css">
+<link href="mahidol.css" rel="stylesheet" type="text/css">
 
 <script src="../login_not_used/js/mahidol_ajax.js"></script>
 <link rel="stylesheet" type="text/css" href="admin.css">
@@ -43,7 +43,7 @@ $db=newPDO();
     <li><a href="admin.php" title="จัดการ admin">จัดการ admin</a></li>
     <li><a href="config.php" title="ตั้งค่าระบบ">ตั้งค่าระบบ</a></li>
     <li><a href="edit_user.php" title="จัดการผู้แข่งขัน">จัดการผู้แข่งขัน</a></li>
-    <li><a href="../../admin/quiz.php" title="ตรวจ Quiz/อนุมัติเข้ารอบ">ตรวจ Quiz/อนุมัติเข้ารอบ</a></li>
+    <li><a href="coach.php" title="ตรวจ Quiz/อนุมัติเข้ารอบ">ตรวจ Quiz/อนุมัติเข้ารอบ</a></li>
     <li><a href="pay.php" title="ตรวจหลักฐานการโอนเงิน">ตรวจหลักฐานการโอนเงิน</a></li>
     <li><a href="team_message.php" title="ส่งข้อความถึงผู้แข่งขัน">ส่งข้อความถึงผู้แข่งขัน</a></li>
     <li><a href="give_sorted_id.php" title="จัดการรหัสผู้แข่งขันและห้องสอบ">จัดการรหัสผู้แข่งขันและห้องสอบ</a></li>
