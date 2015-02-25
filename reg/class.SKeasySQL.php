@@ -58,16 +58,16 @@ abstract class SKeasySQL{
 	
 	abstract public function getList();
 	/**
-	  * Load object from $_POST if the page was submit
-	  * In other way, Load from DB
-	  *
+	  * Get rows and count it
+	  * @param ROW of table, ...
+	  * @return PDOStatement
 	  */
-	public function submitLoad(){
-		require_once 'config.inc.php';
-		if(Config::isPost())
-			return Config::assocToObjProp($_POST,$this);
-		else
-			return $this->load();
+	public function countField($field='*', $renderField=false){
+		if($field=='*' || strlen(trim($field))==0)
+			return  $this->db->query('SELECT COUNT(*) AS c FROM '.$this->TABLE)->fetchColumn(0);
+
+		if($renderField===false) $renderField=$field;
+		return $this->db->query('SELECT '.$renderField.', COUNT('.$field.') AS c FROM '.$this->TABLE.' GROUP BY '.$field);
 	}
 	
 	public static function IN($list){

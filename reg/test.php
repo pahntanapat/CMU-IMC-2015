@@ -30,13 +30,32 @@ require_once 'class.Message.php';
 <body>
 <pre><?php
 require_once 'class.Member.php';
-$db=$config->PDO();//$db=new PDO();
+require_once 'class.Team.php';
+$db=$config->PDO();/*//$db=new PDO();
 $stm=$db->prepare('SELECT *, (CASE gender WHEN 1 THEN "male" ELSE "female" END) AS gender FROM `participant_info`');
 $stm->execute();
-var_dump($stm->fetchAll(PDO::FETCH_CLASS, 'Participant', array($db)));
+var_dump($stm->fetchAll(PDO::FETCH_CLASS, 'Participant', array($db)));*/
+require_once 'class.State.php';
+$t=new Team($db);
+var_dump($t->getIDList());
 ?></pre>
 <div>
+<?php
+function toTable(PDOStatement $stm){
+	ob_start();?>
+<table><tr><th scope="col"></th><th scope="col"></th></tr>
+<? while($r=$stm->fetch(PDO::FETCH_NUM)):?>
+    <tr><td><?=$r[0]?></td>
+    <td><?=$r[1]?></td></tr>
+<? endwhile;?>
+</table>
+<?php
+	return ob_get_clean();
+}
 
+$m=new Participant($db);
+echo toTable($m->countField(Participant::ROW_GENDER));
+?>
 </div>
 <?php
 

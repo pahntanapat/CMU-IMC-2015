@@ -46,5 +46,4 @@ if(!Config::isPost()){
 }
 
 if(Config::isAjax()) Config::JSON($ajax);
-
 ?>

@@ -36,6 +36,15 @@ class State{
 			default: return '';
 		}
 	}
+	public static function toSQL($col){
+		$sql='';
+		$r=new ReflectionClass(__CLASS__);
+		foreach($r->getConstants() as $state=>$v){
+			if(strpos($state,'ST_')===false) continue;
+			$sql.=' WHEN '.$v.' THEN "'.self::toClass($v).' (code: '.$v.')" ';
+		}
+		return ' (CASE '.$col.' '.$sql.' ELSE "" END) AS '.$col.' ';
+	}
 	
 	public static function toDivClass($state){
 		switch($state){

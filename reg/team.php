@@ -9,14 +9,12 @@ require_once 'class.SKAjaxReg.php';
 $ajax=new SKAjaxReg();
 if(Config::isPost()||Config::isAjax()) require_once 'team.scr.php';
 
+if(!isset($t)){
+	require_once 'class.Team.php';
+	$t->id=$s->id;
+	$t->load();
+}
 require_once 'class.Message.php';
-require_once 'class.Team.php';
-
-$db=$config->PDO();
-
-$t=new Team($db);
-$t->id=$s->id;
-$t->submitLoad();
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->

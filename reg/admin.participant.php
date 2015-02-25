@@ -30,6 +30,7 @@ require_once 'admin.participant.scr.php';
 <script src="js/ui.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
+<script src="js/admin.participant.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -121,13 +122,16 @@ require_once 'admin.participant.scr.php';
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
             <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+      		<li><a href="admin.participant.php" title="Summarize information">Summarize information</a></li>
+      		<li><a href="admin.participant.php?view=team&order=0" title="Participating teams">Confirmed teams (Order by Team's name)</a></li>
+      		<li><a href="admin.participant.php?view=team&order=1" title="Participating teams">Confirmed teams (Order by Arrival time)</a></li>
+            <li><a href="admin.participant.php?view=part" title="Participating teams">Confirmed participant (Medical student)</a></li>
+            <li><a href="admin.participant.php?view=obs&distinct=0" title="Participating teams">Confirmed advisors</a></li>
+            <li><a href="admin.participant.php?view=obs&distinct=1" title="Participating teams">Confirmed distinct advisors</a></li>
       		<li><hr></li>
       		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
       		<li><a href="admin.pay.php">Approve the transactions</a></li>
       		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
-      		<li><hr></li>
-      		<li><a href="#" title="Participating teams">Participating teams</a></li>
-      		<li><a href="#" title="Summarize information">Summarize information</a></li>
       		<li><hr></li>
       		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
       		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>
@@ -135,8 +139,7 @@ require_once 'admin.participant.scr.php';
 </ul>
 </div>
 <div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
-  <h2>Participating teams</h2>
-  <div></div>
+<?=$ajax->toMsg()?>
 <!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->

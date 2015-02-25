@@ -126,13 +126,16 @@ if(isset($_GET['act'])) require_once 'admin.config.scr.php';
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
             <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+      		<li><a href="admin.participant.php" title="Summarize information">Summarize information</a></li>
+      		<li><a href="admin.participant.php?view=team&order=0" title="Participating teams">Confirmed teams (Order by Team's name)</a></li>
+      		<li><a href="admin.participant.php?view=team&order=1" title="Participating teams">Confirmed teams (Order by Arrival time)</a></li>
+            <li><a href="admin.participant.php?view=part" title="Participating teams">Confirmed participant (Medical student)</a></li>
+            <li><a href="admin.participant.php?view=obs&distinct=0" title="Participating teams">Confirmed advisors</a></li>
+            <li><a href="admin.participant.php?view=obs&distinct=1" title="Participating teams">Confirmed distinct advisors</a></li>
       		<li><hr></li>
       		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
       		<li><a href="admin.pay.php">Approve the transactions</a></li>
       		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
-      		<li><hr></li>
-      		<li><a href="#" title="Participating teams">Participating teams</a></li>
-      		<li><a href="#" title="Summarize information">Summarize information</a></li>
       		<li><hr></li>
       		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
       		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>

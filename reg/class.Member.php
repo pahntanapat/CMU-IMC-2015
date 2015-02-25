@@ -172,7 +172,7 @@ abstract class Member extends SKeasySQL{
 		$tmp=new Team(NULL);
 		$stm=$this->db->prepare(
 			'SELECT '.$this->TABLE.'.*, '
-				.($genderStr?'(CASE '.self::ROW_GENDER.' WHEN 1 THEN "male" WHEN 0 THEN "female" ELSE "" END) AS '.self::ROW_GENDER.', ':'')
+				.($genderStr?self::rowGender().', ':'')
 				.$tmp->TABLE.'.'.Team::ROW_TEAM_NAME.', '
 				.$tmp->TABLE.'.'.Team::ROW_INSTITUTION.', '
 				.$tmp->TABLE.'.'.Team::ROW_UNIVERSITY.', '
@@ -222,6 +222,9 @@ abstract class Member extends SKeasySQL{
 		return $arr;
 	}
 	
+	public static function genderSQL(){
+		return ' (CASE '.self::ROW_GENDER.' WHEN 1 THEN "male" WHEN 0 THEN "female" ELSE "" END) AS '.self::ROW_GENDER.' ';
+	}
 	public static function gender(){
 		if(func_num_args()>0) $c=func_get_arg(0);
 		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['gender'];
@@ -263,7 +266,7 @@ class Observer extends Member{
 		$tmp=new Team(NULL);
 		$stm=$this->db->prepare(
 			'SELECT '.$this->TABLE.'.*, '
-				.($genderStr?'(CASE '.self::ROW_GENDER.' WHEN 1 THEN "male" WHEN 0 THEN "female" ELSE "" END) AS '.self::ROW_GENDER.', ':'')
+				.($genderStr?self::rowGender().', ':'')
 				.'GROUP_CONCAT('.$tmp->TABLE.'.'.Team::ROW_TEAM_NAME.' SEPARATOR \', \') AS '.Team::ROW_TEAM_NAME.', '
 				.$tmp->TABLE.'.'.Team::ROW_INSTITUTION.', '
 				.$tmp->TABLE.'.'.Team::ROW_UNIVERSITY.', '
