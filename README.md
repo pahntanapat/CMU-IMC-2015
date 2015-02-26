@@ -2,10 +2,10 @@
 
 This README would normally document whatever steps are necessary to get your application up and running.
 
-**[CMU-IMC](http://cmu-imc.med.cmu.ac.th/)** website is written to perform information to visitors and to collect participants' information
+**[CMU-IMC website](http://cmu-imc.med.cmu.ac.th/)** is written to perform information to visitors and to collect participants' information
 
-1. Static web pages - (c) Faculty of Medicine, CMU
-2. Registration System - (c) Sinkanok Labs, Sinkanok Groups
+1. **Static web pages** - (c) Faculty of Medicine, CMU
+2. **Registration System** - (c) Sinkanok Labs, Sinkanok Groups
     1. Participants-side, User-side, or Front-end
     2. Staff-side, Admin-side or Back-end
 
@@ -55,9 +55,9 @@ class Config extends MyConfig{
 ### How to Edit the System ###
 
 * The templates is located at /Template/
-    1. IMC_Main.dwt - the main template for whole page in the System
-    2. IMC_reg.dwt.php - the template of front-end, it inherits (create and under control) from IMC_Main.dwt. Moreover, it contains PHP script `<?php ... ?> <? ... ?>`.
-    3. IMC_admin.dwt.php - the back-end template, it also inherits from IMC_Main.dwt and contains PHP script.
+    1. **IMC_Main.dwt** - the main template for whole page in the System
+    2. **IMC_reg.dwt.php** - the template of front-end, it inherits (create and under control) from IMC_Main.dwt. Moreover, it contains PHP script `<?php ... ?> <? ... ?>`.
+    3. **IMC_admin.dwt.php** - the back-end template, it also inherits from IMC_Main.dwt and contains PHP script.
 * We require PHP programming skill (in Object-oriented programming) to edit the PHP script!
 * All filenames of back-end pages (except home.php, home.scr.php) begin with admin.
 * All classes in this System use for connect DB, [session](http://php.net/manual/en/intro.session.php) processing, or other functions.
