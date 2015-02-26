@@ -2,7 +2,7 @@
 
 This README would normally document whatever steps are necessary to get your application up and running.
 
-**CMU-IMC** website is written to perform information to visitors and to collect participants' information
+**[CMU-IMC](http://cmu-imc.med.cmu.ac.th/)** website is written to perform information to visitors and to collect participants' information
 
 1. Static web pages - (c) Faculty of Medicine, CMU
 2. Registration System - (c) Sinkanok Labs, Sinkanok Groups
@@ -65,7 +65,7 @@ class Config extends MyConfig{
 
 ### Copyright ###
 
-* The static page - copyright 2015 by Faculty of Medicine, Chiang Mai University
+* The static page - copyright 2015 by [Faculty of Medicine](http://www.med.cmu.ac.th/), [Chiang Mai University](http://cmu.ac.th/)
 * The Registration System - copyright 2015 by [Sinkanok Labs](http://labs.sinkanok.com), [Sinkanok Groups](http://sinkanok.com)
 
-All right reserve
+**All right reserve**
