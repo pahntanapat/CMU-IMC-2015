@@ -2,18 +2,35 @@
 
 This README would normally document whatever steps are necessary to get your application up and running.
 
-CMU-IMC website is written to perform information to visitors and to collect participants' information
+**CMU-IMC** website is written to perform information to visitors and to collect participants' information
 
 1. Static web pages - (c) Faculty of Medicine, CMU
 2. Registration System - (c) Sinkanok Labs, Sinkanok Groups
     1. Participants-side, User-side, or Front-end
     2. Staff-side, Admin-side or Back-end
 
-### What is this repository for? ###
+### Pre-installed Configuration (in config.inc.php) ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+The config file is /reg/config.inc.php. All configs are stored in PHP format.
+
+```
+#!PHP
+<?php
+require_once 'class.MyConfig.php';
+class Config extends MyConfig{
+	const
+		DB_USER="root", DB_PW="[password]",
+		DB_NAME="imc", DB_HOST='localhost',
+		UPLOAD_FOLDER='images',
+	....
+               INFO_SHIRT_SIZE="SS\nS\nM\nL\nXL\nXXL"
+	;
+        ....
+        ....
+}
+?>
+```
+
 
 ### How do I get set up? ###
 
