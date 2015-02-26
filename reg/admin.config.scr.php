@@ -14,10 +14,14 @@ try{
 	switch(@$_GET['act']){
 		case 'rdb':
 			require_once 'class.Team.php';
+			require_once 'class.Admin.php';
 			require_once 'class.Member.php';
 			require_once 'class.UploadImage.php';
 			$db=$config->PDO();
 			$db->beginTransaction();
+			$tmp=new Admin($db);
+			$tmp->reset();
+			
 			$tmp=new Team($db);
 			$tmp->reset();
 			

@@ -30,7 +30,7 @@ abstract class SKeasySQL{
 	}
 	
 	public function reset(){
-		return $this->prepare('DELETE FROM '.$this->TABLE)->execute();
+		return $this->db->prepare('DELETE FROM '.$this->TABLE)->execute();
 	}
 
 	public static function row(){

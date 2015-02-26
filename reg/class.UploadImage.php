@@ -75,9 +75,7 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 	}
 	
 	public function reset(){
-		$v=self::rootFolder();
-		if(is_dir($v))
-			return rmdir($v);
+		return self::deleteDirectory(self::rootFolder());
 	}
 	
 	public function upload($filename){
@@ -216,10 +214,19 @@ HTML;
 		$i=0;
 		foreach($list as $v){
 			$v=self::getFolder($v);
-			if(!is_dir($v)) continue;
-			if(rmdir($v)) $i++;
+			if(self::deleteDirectory($v)) $i++;
 		}
 		return $i;
+	}
+	protected static function deleteDirectory($dir) {
+		if (!file_exists($dir)) return true;
+		if (!is_dir($dir)) return unlink($dir);
+	
+		foreach (scandir($dir) as $item) {
+			if ($item == '.' || $item == '..') continue;
+			if (!self::deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) return false;
+		}
+		return rmdir($dir);
 	}
 }
 
