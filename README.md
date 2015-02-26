@@ -11,37 +11,39 @@ This README would normally document whatever steps are necessary to get your app
 
 ### Pre-installed Configuration (in config.inc.php) ###
 
-The config file is /reg/config.inc.php. All configs are stored in PHP format.
+The config file is /reg/config.inc.php. All configs are stored in PHP format. The config variables are under `const // Config variables` and their names are **UPPERCASE**.
 
 ```
 #!PHP
 <?php
 require_once 'class.MyConfig.php';
 class Config extends MyConfig{
-	const
+	const // Config variables
 		DB_USER="root", DB_PW="[password]",
 		DB_NAME="imc", DB_HOST='localhost',
 		UPLOAD_FOLDER='images',
-	....
-               INFO_SHIRT_SIZE="SS\nS\nM\nL\nXL\nXXL"
+		....
+		INFO_SHIRT_SIZE="SS\nS\nM\nL\nXL\nXXL"
 	;
+
         ....
+        // Methods of Class
         ....
 }
 ?>
 ```
 
 
-### How do I get set up? ###
+### Installation ###
 
-* Summary of set up
+* Set-up
 * Configuration
 * Dependencies
 * Database configuration
 * How to run tests
 * Deployment instructions
 
-### Contribution guidelines ###
+### Post-installed Configuration ###
 
 * Writing tests
 * Code review
