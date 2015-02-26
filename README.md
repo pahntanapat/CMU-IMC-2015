@@ -36,12 +36,11 @@ class Config extends MyConfig{
 
 ### Installation ###
 
-* Set-up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+1. Create MySQL database and tables for Reg System by SQL in /sql/imc-db-table.sql. If you want to create the tables only, execute SQL in /sql/imc-table.sql.
+2. Config the Reg system before uploading (see *Pre-installed Configuration*)
+3. Upload all directories to hosting. **EXCEPT** /sql/ and /Template/
+4. Log in with DB_USER, DB_PW in config.inc.php
+5. Go to Menu **Admin Task > System Configuration** and Edit your
 
 ### Post-installed Configuration ###
 
