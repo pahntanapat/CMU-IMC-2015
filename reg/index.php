@@ -33,6 +33,7 @@ require_once 'index.scr.php';
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
 <script src="js/change_pw.js"></script>
+<script src="js/joyride.js"></script>
 <!-- InstanceEndEditable -->
 
 </head>
@@ -110,7 +111,7 @@ require_once 'index.scr.php';
 <div class="small-12 columns" id="content"><div class="small-12 large-4 columns" id="sidebar">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
-        <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
+        <a href="#sbTeamInfo" id="h-sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
         <div id="sbTeamInfo" class="content active">
             <b>Team's name:</b> <?=$s->teamName?><br>
             <b>Institution:</b> <?=$s->institution?><br>
@@ -121,7 +122,7 @@ require_once 'index.scr.php';
         </div>
     </li>
     <li class="accordion-navigation">
-        <a href="#sbMenu"><i class="fa fa-bars"></i> Main menu</a>
+        <a href="#sbMenu" id="h-sbMenu"><i class="fa fa-bars"></i> Main menu</a>
         <div id="sbMenu" class="content"><ul class="side-nav">
   <li><a href="index.php" title="Main page"><i class="fa fa-home fa-lg"></i> Main page</a></li>
   <li><a href="index.php#changePW"><?=State::img(State::ST_EDITABLE)?>Change password</a></li>
@@ -129,7 +130,7 @@ require_once 'index.scr.php';
         </div>
     </li>
     <li class="accordion-navigation">
-        <a href="#sbStep"><i class="fa fa-check-square"></i> Steps of Registration</a>
+        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Steps of Registration</a>
         <div id="sbStep" class="content">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
@@ -139,7 +140,7 @@ require_once 'index.scr.php';
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transaction">Upload Transaction</a></li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transaction">Upload &amp; Confirm Transaction</a></li>
   <li><hr></li>
   <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="post_reg.php" title="Select route &amp; upload team's picture &amp; update arrival time">Update your journey</a></li>
   <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of the journey</a></li>
@@ -150,19 +151,19 @@ require_once 'index.scr.php';
 </div><div id="regContent" class="small-12 large-8 columns"><!-- InstanceBeginEditable name="reg_content" -->
     <h2>CMU-IMC Registration system</h2><div class="panel radius callout" id="teamMsg"><?=$msg?></div><hr><div>
     <h3><?=State::img(State::ST_EDITABLE)?>Change password</h3>
-  <form action="index.php" method="post" name="changePassword" id="changePassword" data-action="index.scr.php"> <fieldset>
+  <form action="index.php" method="post" name="changePassword" id="changePassword" data-action="index.scr.php"> <fieldset class="require">
       <legend>Change password</legend>
       <div>
-        <label for="oldPassword">old password</label>
-        <input type="password" name="oldPassword" id="oldPassword">
+        <label class="require">old password
+        <input type="password" name="oldPassword" id="oldPassword"></label>
       </div>
       <div>
-        <label for="pw">new password</label>
-        <input type="password" name="pw" id="pw">
+        <label class="require">new password
+        <input type="password" name="pw" id="pw"></label>
       </div>
       <div>
-        <label for="cfPW">confirm password</label>
-        <input type="password" name="cfPW" id="cfPW">
+        <label class="require">confirm password
+        <input type="password" name="cfPW" id="cfPW"></label>
       </div>
       <div>
        <button name="savePW" type="submit" id="savePW" value="Save">Save</button>
@@ -181,8 +182,21 @@ require_once 'index.scr.php';
 <li class="accordion-navigation"><a href="#sponsor1">Booking form 1</a><div id="sponsor1" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+5%2C000+THB"/></div></li>
 <li class="accordion-navigation"><a href="#sponsor2">Booking form 2</a><div id="sponsor2" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+4%2C000+THB"/></div></li>
 <li class="accordion-navigation"><a href="#sponsor3">Booking form 3</a><div id="sponsor3" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+3%2C000+THB"/></div></li>
-</ul><hr>
-<?=State::stateList()?><!-- InstanceEndEditable --></div></div>
+</ul><hr><?=State::stateList()?>
+<button type="button" class="right" id="loadJR"><i class="fa fa-question-circle"></i> Help</button>
+<ol class="joyride-list" data-joyride>
+  <li data-text="Next" data-options="prev_button:false"><h4>Hi!</h4><p>Welcome to CMU-IMC Registration System.</p><input type="checkbox" id="hideJR" name="hideJR" value="1"><label for="hideJR">Don't show it again.</label></li>
+  <li data-id="h-sbTeamInfo" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4><i class="fa fa-user-md"></i> Profile</h4><p>Your team's profile and progression of registration are here. You can click its head (gray bar) to hide or expand it.</p></li>
+  <li data-id="h-sbMenu" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4><i class="fa fa-bars"></i> Main menu</h4><p>Go to main page, change password, or log out are under this menu. Also, it can be hidden or expanded by clicking on its head.</p></li>
+  <li data-id="h-sbStep" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4><i class="fa fa-check-square"></i> Steps of Registration</h4><p>All steps of registration are here. If it is hidden, please click it head to expand.</p></li>
+  <li data-id="menuTeamInfo" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4>Step-by-Step</h4><p>The steps of registration is sorted from the first to last. You can follow them step-by-step.</p></li>
+  <li data-id="menuObsvInfo" data-text="Next" data-prev-text="Prev" data-options="tip_animation:fade"><h4><i class="fa fa-pencil"></i> The Status(1)</h4><p>Each step have its &quot;Status&quot;, displaying in front of the step. It show how the step is, e.g. Locked, Editable, Waiting for approval.</p></li>
+  <li data-id="stateList" data-text="Next" data-prev-text="Prev" data-options="tip_location:top"><h4><i class="fa fa-pencil"></i> The Status (2)</h4><p>All descriptions of statuses are here and on the top of each step.</p></li>
+  <li data-id="reloadMsg" data-text="Next" data-prev-text="Prev"><h4>Message from Admin</h4><p>Also, <b>Messages from Administrators (CMU-IMC Staffs)</b> are located on the top of every page. They will tell what is wrong or important in each page.</p></li>
+  <li data-id="loadJR" data-text="Next" data-prev-text="Prev" data-options="tip_location:left"><h4>To replay again</h4><p>Last, if you want to start the introduction guide again, click this button.</p></li>
+  <li data-text="End" data-prev-text="Prev"><p>Thank you for your attention to me. Let's start first step of registration.</p></li>
+</ol>
+<!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">

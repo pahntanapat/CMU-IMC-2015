@@ -92,7 +92,7 @@ class Message extends SKeasySQL{
 	
 	public static function msgList($msg){
 		ob_start();?>
-        <div><h3>Messages from administrator <small>Last update: <?=date('Y-m-d H:i:s e')?></small></h3>
+        <div id="teamMsg"><h3>Messages from administrator <small>Last update: <?=date('Y-m-d H:i:s e')?></small></h3>
         <button id="reloadMsg" type="button">reload</button></div>
         <ul class="accordion" data-accordion>
 		<? foreach($msg as $i):?>
