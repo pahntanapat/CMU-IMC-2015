@@ -9,8 +9,10 @@ require_once 'class.SKAjaxReg.php';
 $ajax=new SKAjaxReg();
 if(Config::isPost()||Config::isAjax()) require_once 'team.scr.php';
 
+$db=$config->PDO();
 if(!isset($t)){
 	require_once 'class.Team.php';
+	$t=new Team($db);
 	$t->id=$s->id;
 	$t->load();
 }
@@ -39,6 +41,8 @@ require_once 'class.Message.php';
 <script src="js/updateMenuState.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
+<script src="../js/vendor/jquery.cookie.js"></script>
+<script src="js/joyride.js"></script>
 <script src="js/save.js"></script>
 <!-- InstanceEndEditable -->
 

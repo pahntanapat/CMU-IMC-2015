@@ -1,3 +1,7 @@
 $(document).ready(function(e) {
-    $(document).foundation('joyride','start');
+	alert($.cookie('showJR'));
+    if(typeof $.cookie('showJR')=='undefined')
+		$.cookie('showJR','true');
+	if($.cookie('showJR', Boolean))
+		$(document).foundation('joyride','start');
 });

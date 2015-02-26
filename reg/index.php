@@ -33,6 +33,7 @@ require_once 'index.scr.php';
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
 <script src="js/change_pw.js"></script>
+<script src="../js/vendor/jquery.cookie.js"></script>
 <script src="js/joyride.js"></script>
 <!-- InstanceEndEditable -->
 
@@ -178,7 +179,7 @@ require_once 'index.scr.php';
 	echo $ajax->toMsg();
 ?></form>
 </div><hr>
-<ul class="accordion" data-accordion>
+<ul class="accordion hide" data-accordion>
 <li class="accordion-navigation"><a href="#sponsor1">Booking form 1</a><div id="sponsor1" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+5%2C000+THB"/></div></li>
 <li class="accordion-navigation"><a href="#sponsor2">Booking form 2</a><div id="sponsor2" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+4%2C000+THB"/></div></li>
 <li class="accordion-navigation"><a href="#sponsor3">Booking form 3</a><div id="sponsor3" class="content active"><img src="http://placehold.it/600x400&text=Booking+Form+3%2C000+THB"/></div></li>
@@ -194,7 +195,7 @@ require_once 'index.scr.php';
   <li data-id="stateList" data-text="Next" data-prev-text="Prev" data-options="tip_location:top"><h4><i class="fa fa-pencil"></i> The Status (2)</h4><p>All descriptions of statuses are here and on the top of each step.</p></li>
   <li data-id="reloadMsg" data-text="Next" data-prev-text="Prev"><h4>Message from Admin</h4><p>Also, <b>Messages from Administrators (CMU-IMC Staffs)</b> are located on the top of every page. They will tell what is wrong or important in each page.</p></li>
   <li data-id="loadJR" data-text="Next" data-prev-text="Prev" data-options="tip_location:left"><h4>To replay again</h4><p>Last, if you want to start the introduction guide again, click this button.</p></li>
-  <li data-text="End" data-prev-text="Prev"><p>Thank you for your attention to me. Let's start first step of registration.</p></li>
+  <li data-text="End" data-prev-text="Prev"><h4>Let's go!</h4><p>Thank you for your attention to me. Let's start first step of registration.</p></li>
 </ol>
 <!-- InstanceEndEditable --></div></div>
 </div>

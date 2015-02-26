@@ -30,6 +30,8 @@ if(Config::isPost()) require_once 'home.scr.php';
 <script src="js/ui.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
+<script src="../js/vendor/jquery.cookie.js"></script>
+<script src="js/joyride.js"></script>
 <script src="js/change_pw.js"></script>
 <!-- InstanceEndEditable -->
 
