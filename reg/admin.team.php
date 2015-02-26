@@ -124,20 +124,20 @@ require_once 'admin.team.scr.php';
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
-      		<li><a href="admin.participant.php" title="Summarize information">Summarize information</a></li>
-      		<li><a href="admin.participant.php?view=team&order=0" title="Participating teams">Confirmed teams (Order by Team's name)</a></li>
-      		<li><a href="admin.participant.php?view=team&order=1" title="Participating teams">Confirmed teams (Order by Arrival time)</a></li>
-            <li><a href="admin.participant.php?view=obs&distinct=0" title="Participating teams">Confirmed advisors</a></li>
-            <li><a href="admin.participant.php?view=obs&distinct=1" title="Participating teams">Confirmed distinct advisors</a></li>
-            <li><a href="admin.participant.php?view=part" title="Participating teams">Confirmed participant (Medical student)</a></li>
+            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information"><i class="fa fa-pencil-square-o fa-lg"></i> Edit teams', participants', and advisors' information</a></li>
+      		<li><a href="admin.participant.php" title="Summarize information"><i class="fa fa-bar-chart fa-lg"></i> Summarize information</a></li>
+      		<li><a href="admin.participant.php?view=team&order=0" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed teams (Order by Team's name)</a></li>
+      		<li><a href="admin.participant.php?view=team&order=1" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed teams (Order by Arrival time)</a></li>
+            <li><a href="admin.participant.php?view=obs&distinct=0" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed advisors</a></li>
+            <li><a href="admin.participant.php?view=obs&distinct=1" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed distinct advisors</a></li>
+            <li><a href="admin.participant.php?view=part" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed participant (Medical student)</a></li>
       		<li><hr></li>
-      		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
-      		<li><a href="admin.pay.php">Approve the transactions</a></li>
-      		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
+      		<li><a href="admin.info.php"><i class="fa fa-check-square-o fa-lg"></i> Approve teams' information: step 1</a></li>
+      		<li><a href="admin.pay.php"><i class="fa fa-check-square-o fa-lg"></i> Approve the transactions</a></li>
+      		<li><a href="admin.post_reg.php"><i class="fa fa-check-square-o fa-lg"></i> Approve teams' information: step 2</a></li>
       		<li><hr></li>
-      		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
-      		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>
+      		<li><a href="admin.edit.php" title="Edit administrator"><i class="fa fa-users fa-lg"></i> Edit administrator</a></li>
+      		<li><a href="admin.config.php" title="System configuration"><span class="fa-stack"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-terminal fa-stack-1x fa-inverse"></i></span> System configuration</a></li>
 		</ul></div></li>
 </ul>
 </div>
@@ -172,7 +172,7 @@ else:?>
 				</div>
 				<div class="small-2 columns">
 					<ul class="inline-list right">
-						<li><a href="#">Contact</a></li>
+						<li><a href="../contact.html">Contact</a></li>
 					</ul>
 				</div>
 			</div>

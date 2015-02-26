@@ -125,20 +125,20 @@ if(isset($_GET['act'])) require_once 'admin.config.scr.php';
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
-      		<li><a href="admin.participant.php" title="Summarize information">Summarize information</a></li>
-      		<li><a href="admin.participant.php?view=team&order=0" title="Participating teams">Confirmed teams (Order by Team's name)</a></li>
-      		<li><a href="admin.participant.php?view=team&order=1" title="Participating teams">Confirmed teams (Order by Arrival time)</a></li>
-            <li><a href="admin.participant.php?view=obs&distinct=0" title="Participating teams">Confirmed advisors</a></li>
-            <li><a href="admin.participant.php?view=obs&distinct=1" title="Participating teams">Confirmed distinct advisors</a></li>
-            <li><a href="admin.participant.php?view=part" title="Participating teams">Confirmed participant (Medical student)</a></li>
+            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information"><i class="fa fa-pencil-square-o fa-lg"></i> Edit teams', participants', and advisors' information</a></li>
+      		<li><a href="admin.participant.php" title="Summarize information"><i class="fa fa-bar-chart fa-lg"></i> Summarize information</a></li>
+      		<li><a href="admin.participant.php?view=team&order=0" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed teams (Order by Team's name)</a></li>
+      		<li><a href="admin.participant.php?view=team&order=1" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed teams (Order by Arrival time)</a></li>
+            <li><a href="admin.participant.php?view=obs&distinct=0" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed advisors</a></li>
+            <li><a href="admin.participant.php?view=obs&distinct=1" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed distinct advisors</a></li>
+            <li><a href="admin.participant.php?view=part" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed participant (Medical student)</a></li>
       		<li><hr></li>
-      		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
-      		<li><a href="admin.pay.php">Approve the transactions</a></li>
-      		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
+      		<li><a href="admin.info.php"><i class="fa fa-check-square-o fa-lg"></i> Approve teams' information: step 1</a></li>
+      		<li><a href="admin.pay.php"><i class="fa fa-check-square-o fa-lg"></i> Approve the transactions</a></li>
+      		<li><a href="admin.post_reg.php"><i class="fa fa-check-square-o fa-lg"></i> Approve teams' information: step 2</a></li>
       		<li><hr></li>
-      		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
-      		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>
+      		<li><a href="admin.edit.php" title="Edit administrator"><i class="fa fa-users fa-lg"></i> Edit administrator</a></li>
+      		<li><a href="admin.config.php" title="System configuration"><span class="fa-stack"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-terminal fa-stack-1x fa-inverse"></i></span> System configuration</a></li>
 		</ul></div></li>
 </ul>
 </div>
@@ -158,7 +158,13 @@ if(isset($_GET['act'])) require_once 'admin.config.scr.php';
         <p>Copyright &copy; 2015 <a href="http://labs.sinkanok.com">Sinkanok Labs</a>, <a href="http://sinkanok.com">Sinkanok Groups</a></p>
         <p><strong>Programmer:</strong> Pahn - Sinkanok Labs </p>
         <p>Powered by <strong>SKAjax Framwork</strong> and <strong>Modified Programming Architecture of Sinkanok Labs</strong>.</p>
-        <h4>Products of Sinkanok Labs: <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid</a>, <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid 2.0</a>, and <a href="http://labs.sinkanok.com/converter/total.html" target="_blank">Unit Converter</a></h4>
+        <h5>Products of Sinkanok Labs: <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid</a>, <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid 2.0</a>, and <a href="http://labs.sinkanok.com/converter/total.html" target="_blank">Unit Converter</a></h5>
+        <div class="row">
+          <div class="small-6 medium-3 columns"><a href="http://labs.sinkanok.com/sakodpid_mini.html" target="_blank" class="th"><img src="img/promotebanner_mini.png" alt="Sakodpid 1.0 mini" longdesc="http://labs.sinkanok.com/sakodpid_mini.html" /></a></div>
+          <div class="small-6 medium-3 columns"><a href="http://labs.sinkanok.com/converter/total.html" target="_blank" class="th"><img src="img/promotebanner_pro.png" alt="Sakodpid 1.0 mini" longdesc="http://labs.sinkanok.com/converter/total.html" /></a></div>
+          <div class="small-6 medium-3 columns"><a href="http://labs.sinkanok.com/converter/essential.html" target="_blank" class="th"><img src="img/essential_logo.png" alt="Essential Unit Converter" longdesc="http://labs.sinkanok.com/converter/essential.html" /></a></div>
+          <div class="small-6 medium-3 columns"><a href="http://labs.sinkanok.com/converter/total.html" target="_blank" class="th"><img src="img/total_logo.png" alt="Essential Unit Converter" longdesc="http://labs.sinkanok.com/converter/total.html" /></a></div>
+        </div>
       </div>
       <div id="sch" class="content">
       <div class="alert-box secondary" data-alert><i class="fa fa-calendar"></i> วันเวลาต้องอยู่ในรูปแบบ<br>&quot;[ปี ค.ศ. 4 หลัง]-[เลขเดือน 2 หลัก เช่น 01]-[วันที่ 2 หลัก เช่น 09][เว้นวรรค 1 ครั้ง][ชั่วโมง 2 หลัก]:[นาที 2 หลัก]:[วินาที 2 หลัก]&quot;<br>เช่น<br><ul><li>2015-01-20 04:30:00</li><li>2015-12-31 23:59:59</li><li>2015-10-02 00:00:00</li></ul></div>
@@ -250,7 +256,7 @@ if(isset($_GET['act'])) require_once 'admin.config.scr.php';
 				</div>
 				<div class="small-2 columns">
 					<ul class="inline-list right">
-						<li><a href="#">Contact</a></li>
+						<li><a href="../contact.html">Contact</a></li>
 					</ul>
 				</div>
 			</div>

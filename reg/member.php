@@ -344,7 +344,7 @@ if(!$r):?>
 				</div>
 				<div class="small-2 columns">
 					<ul class="inline-list right">
-						<li><a href="#">Contact</a></li>
+						<li><a href="../contact.html">Contact</a></li>
 					</ul>
 				</div>
 			</div>

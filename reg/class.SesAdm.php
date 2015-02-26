@@ -27,12 +27,12 @@ class SesAdm extends Session{
 	public static function isPMS($myPMS,$testPMS){
 		return $testPMS===true?true:($myPMS&$testPMS)!=0;
 	}
-	public static function checkbox($pms=0){
+	public static function checkbox($pms=0, $disable=false){
 		ob_start();
 		$me=new ReflectionClass(__CLASS__);
 		foreach($me->getConstants() as $k=>$v):
 			if(strpos($k,'PMS_')===false) continue;
-			?><input name="permission[<?=$v?>]" type="checkbox" value="<?=$v?>"<? if(($pms&$v)!=0):?> checked="checked"<? endif;?> />
+			?><input name="permission[<?=$v?>]" type="checkbox" value="<?=$v?>"<? if(($pms&$v)!=0):?> checked="checked"<? endif;if($disable):?> disabled="disabled"<? endif;?> />
             <label for="pms_<?=$v?>"><?=self::pms($v)?></label><br/><?php
 		endforeach;
 		return ob_get_clean();
@@ -42,7 +42,7 @@ class SesAdm extends Session{
 			case self::PMS_ADMIN: return 'จัดการ Admin (กรรมการการแข่งขัน)';
 			case self::PMS_AUDIT: return 'ตรวจสอบหลักฐานการโอนเงิน';
 		//	case self::PMS_OBSRV: return 'แก้ไข, ตรวจสอบหลักฐานผู้สังเกตการ';
-			case self::PMS_GM: return 'ฝ่าย GM สามารถเข้าถึงข้อมูลผู้เข้าร่วมได้';
+			case self::PMS_GM: return 'ฝ่ายอื่นๆ สามารถเข้าถึงข้อมูลผู้เข้าร่วมได้';
 			case self::PMS_PARTC: return 'แก้ไข, ตรวจสอบหลักฐานการสมัคร';
 			case self::PMS_WEB: return "ตั้งค่าระบบ แก้ไขข้อมูลเว็บ ฐานข้อมูล และระบบรับสมัคร";
 			default: return '';

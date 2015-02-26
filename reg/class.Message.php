@@ -101,10 +101,11 @@ class Message extends SKeasySQL{
 		<? endforeach;?>
         <li class="accordion-navigation"><a href="#SinkanokLabs">About the CMU-IMC Registration system</a>
           <div id="SinkanokLabs" class="content active">
-          <p>Copyright &copy; 2015 <a href="http://labs.sinkanok.com">Sinkanok Labs</a>, <a href="http://sinkanok.com">Sinkanok Groups</a></p>
-          <p><strong>Programmer:</strong> Pahn - Sinkanok Labs          </p>
+          <p>Copyright &copy; 2015 <a href="http://labs.sinkanok.com">Sinkanok Labs</a>, <a href="http://sinkanok.com">Sinkanok Groups</a>          </p>
           <p>Powered by <strong>SKAjax Framwork</strong> and <strong>Modified Programming Architecture of Sinkanok Labs</strong>.</p>
-          <h4>Products of Sinkanok Labs: <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid</a>, <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid 2.0</a>, and <a href="http://labs.sinkanok.com/converter/total.html" target="_blank">Unit Converter</a></h4>
+          <h5>Products of Sinkanok Labs: <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid</a>,  <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid 2.0</a>, and <a href="http://labs.sinkanok.com/converter/total.html" target="_blank">Unit Converter</a></h5>
+          <div class="row"><div class="small-6 medium-3 columns"><a href="http://labs.sinkanok.com/sakodpid_mini.html" target="_blank" class="th"><img src="img/promotebanner_mini.png" alt="Sakodpid 1.0 mini" longdesc="http://labs.sinkanok.com/sakodpid_mini.html" /></a></div><div class="small-6 medium-3 columns"><a href="http://labs.sinkanok.com/converter/total.html" target="_blank" class="th"><img src="img/promotebanner_pro.png" alt="Sakodpid 1.0 mini" longdesc="http://labs.sinkanok.com/converter/total.html" /></a></div>
+          <div class="small-6 medium-3 columns"><a href="http://labs.sinkanok.com/converter/essential.html" target="_blank" class="th"><img src="img/essential_logo.png" alt="Essential Unit Converter" longdesc="http://labs.sinkanok.com/converter/essential.html" /></a></div><div class="small-6 medium-3 columns"><a href="http://labs.sinkanok.com/converter/total.html" target="_blank" class="th"><img src="img/total_logo.png" alt="Essential Unit Converter" longdesc="http://labs.sinkanok.com/converter/total.html" /></a></div></div>
           </div></li></ul><?php
 		return ob_get_clean();
 	}
