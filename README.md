@@ -2,7 +2,7 @@
 
 This README would normally document whatever steps are necessary to get your application up and running.
 
-CMU-IMC website is
+CMU-IMC website is written to perform information to visitors and to collect participants' information
 
 1. Static web pages - (c) Faculty of Medicine, CMU
 2. Registration System - (c) Sinkanok Labs, Sinkanok Groups
