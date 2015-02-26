@@ -53,8 +53,7 @@ abstract class Member extends SKeasySQL{
 			
 			self::ROW_GENDER=>':g',
 			self::ROW_BIRTH=>':bth',
-	//			self::ROW_PASSPORT_NO=>':pno',
-	//			self::ROW_PASSPORT_EXP=>':pexp',
+			
 			self::ROW_RELIGION=>':religion',
 			self::ROW_NATIONALITY=>':nationality',
 			
@@ -80,8 +79,6 @@ abstract class Member extends SKeasySQL{
 		
 		$stm->bindValue(':g',$this->gender,PDO::PARAM_BOOL);
 		$stm->bindValue(':bth',$this->birth?$this->birth:NULL);
-//		$stm->bindValue(':pno',$this->passport_no);
-//		$stm->bindValue(':pexp',$this->passport_exp);
 		$stm->bindValue(':religion',$this->religion);
 		$stm->bindValue(':nationality',$this->nationality);
 		
@@ -95,7 +92,6 @@ abstract class Member extends SKeasySQL{
 		$stm->bindValue(':allergy',$this->allergy);
 		$stm->bindValue(':disease',$this->disease);
 		$stm->bindValue(':oreq',$this->other_req);
-		//	return $stm;
 	}
 	
 	public function add(){
@@ -156,25 +152,79 @@ abstract class Member extends SKeasySQL{
 				if(property_exists($this, $k)) $this->$k=$v;
 		return $this;
 	}
-	protected function getPDOStm(){
+	
+	/**
+	  *$teamList=array(teamID1, teamID2, ...);
+	  *If $teamList=array(), Select WHERE $this->team_id
+	  *If $this->team_id, Select All
+	  *@return PDOStatement of Member list
+	  */
+	protected function getPDOStm($genderStr=false, $teamList=array()){
 		require_once 'class.Team.php';
+		$sql=array(NULL, array());
+		if(count($teamList)>0){
+			$sql[0]=self::IN($teamList);
+			$sql[1]=$teamList;
+		}elseif($this->team_id){
+			$sql[0]='=?';
+			$sql[1]=array($this->team_id);
+		}
 		$tmp=new Team(NULL);
 		$stm=$this->db->prepare(
 			'SELECT '.$this->TABLE.'.*, '
+				.($genderStr?self::genderSQL().', ':'')
 				.$tmp->TABLE.'.'.Team::ROW_TEAM_NAME.', '
 				.$tmp->TABLE.'.'.Team::ROW_INSTITUTION.', '
 				.$tmp->TABLE.'.'.Team::ROW_UNIVERSITY.', '
 				.$tmp->TABLE.'.'.Team::ROW_COUNTRY
 			.' FROM '.$this->TABLE
 			.' LEFT JOIN '.$tmp->TABLE.' ON '.$tmp->TABLE.'.'.Team::ROW_ID.'='.$this->TABLE.'.'.self::ROW_TEAM_ID
-			.($this->team_id?' WHERE '.self::ROW_TEAM_ID.'=?':'')
+			.($sql[0]?' WHERE '.self::ROW_TEAM_ID.$sql[0]:'')
 		);
-		if($this->team_id) $stm->bindValue(1,$this->team_id,PDO::PARAM_INT);
-		$stm->execute();
+		$stm->execute($sql[1]);
 		return $stm;
 	}
 	
 	//Miscellenous method
+	public static function forTableRow($small=false){
+		require_once 'class.Team.php';
+		$arr=array(
+			'title'=>self::ROW_TITLE,
+			'firstname'=>self::ROW_FIRSTNAME,
+			'middlename'=>self::ROW_MIDDLENAME,
+			'lastname'=>self::ROW_LASTNAME,
+			
+			'gender'=>self::ROW_GENDER,
+			
+			'team\'s name'=>Team::ROW_TEAM_NAME,
+			'medical school'=>Team::ROW_INSTITUTION,
+			'university'=>Team::ROW_UNIVERSITY,
+			'country'=>Team::ROW_COUNTRY
+		);
+		if($small) return $arr;
+		
+		$arr['birth']=self::ROW_BIRTH;
+		
+		$arr['religion']=self::ROW_RELIGION;
+		$arr['nationality']=self::ROW_NATIONALITY;
+		
+		$arr['phone']=self::ROW_PHONE;
+		$arr['email']=self::ROW_EMAIL;
+		$arr['facebook']=self::ROW_FB;
+		$arr['twitter']=self::ROW_TW;
+		
+		$arr['shirt size']=self::ROW_SHIRT_SIZE;
+		$arr['preferred cuisine']=self::ROW_CUISINE;
+		$arr['allergy']=self::ROW_ALLERGY;
+		$arr['underlying disease']=self::ROW_DISEASE;
+		$arr['other requirements']=self::ROW_OTHER_REQ;
+		
+		return $arr;
+	}
+	
+	public static function genderSQL(){
+		return ' (CASE '.self::ROW_GENDER.' WHEN 1 THEN "male" WHEN 0 THEN "female" ELSE "" END) AS '.self::ROW_GENDER.' ';
+	}
 	public static function gender(){
 		if(func_num_args()>0) $c=func_get_arg(0);
 		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['gender'];
@@ -208,22 +258,25 @@ abstract class Member extends SKeasySQL{
 
 class Observer extends Member{
 	// get unique observer
-	public function getList(){
-		return $this->getPDOStm()->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
+	public function getList($genderStr=false, $teamList=array()){
+		return $this->getPDOStm($genderStr, $teamList)->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
 	}
-	public function getDistinctList(){
+	public function getDistinctList($genderStr=false, $teamList=array()){
+		require_once 'class.Team.php';
 		$tmp=new Team(NULL);
 		$stm=$this->db->prepare(
 			'SELECT '.$this->TABLE.'.*, '
+				.($genderStr?self::genderSQL().', ':'')
 				.'GROUP_CONCAT('.$tmp->TABLE.'.'.Team::ROW_TEAM_NAME.' SEPARATOR \', \') AS '.Team::ROW_TEAM_NAME.', '
 				.$tmp->TABLE.'.'.Team::ROW_INSTITUTION.', '
 				.$tmp->TABLE.'.'.Team::ROW_UNIVERSITY.', '
 				.$tmp->TABLE.'.'.Team::ROW_COUNTRY
 			.' FROM '.$this->TABLE
 			.' LEFT JOIN '.$tmp->TABLE.' ON '.$tmp->TABLE.'.'.Team::ROW_ID.'='.$this->TABLE.'.'.self::ROW_TEAM_ID
+			.(count($teamList)>0?' WHERE '.self::ROW_TEAM_ID.self::IN($teamList):'')
 			.' GROUP BY '.$this->TABLE.'.'.self::ROW_FIRSTNAME.' ,'.$this->TABLE.'.'.self::ROW_MIDDLENAME.' ,'.$this->TABLE.'.'.self::ROW_LASTNAME
 		);
-		$stm->execute();
+		$stm->execute($teamList);
 		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
 	}
 }
@@ -233,6 +286,10 @@ class Participant extends Member{
 	
 	public $part_no,$emerg_contact,$std_y;
 	public $TABLE='participant_info';
+	
+	public static function forTableRow($small=false){
+		return array_merge(array('No.'=>self::ROW_PART_NO), parent::forTableRow($small));
+	}
 	
 	protected function rowArray(){
 		global $config;
@@ -274,8 +331,8 @@ class Participant extends Member{
 		return $this;
 	}
 	
-	public function getList(){
-		return $this->getPDOStm()->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
+	public function getList($genderStr=false, $teamList=array()){
+		return $this->getPDOStm($genderStr, $teamList)->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
 	}
 }
 ?>

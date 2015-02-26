@@ -1,9 +1,8 @@
 <?php
-//5.2.6-1+lenny16
 require_once 'class.MyConfig.php';
 class Config extends MyConfig{
-	const
-		DB_USER="root", DB_PW="053721872",
+	const // Config variables
+		DB_USER="root", DB_PW="DB_PW",
 		DB_NAME="imc", DB_HOST='localhost',
 		UPLOAD_FOLDER='images',
 		
@@ -24,12 +23,16 @@ class Config extends MyConfig{
 		;
 	
 	public function PDO($returnNullIfError=false){
-		$dbh=new PDO(
-			"mysql:host=".$this->DB_HOST.";dbname=".$this->DB_NAME.";", // DSN
-			$this->DB_USER,$this->DB_PW
-		);
-		if($returnNullIfError && !$dbh) return $dbh;
-		$dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+		try{
+			$dbh=new PDO(
+				"mysql:host=".$this->DB_HOST.";dbname=".$this->DB_NAME.";", // DSN
+				$this->DB_USER,$this->DB_PW
+			);
+			$dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+		}catch(Exception $e){
+			if($returnNullIfError && !$dbh) return $dbh;
+			else throw $e;
+		}
 		return $dbh;
 	}
 	

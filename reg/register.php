@@ -133,10 +133,13 @@ else{
   <div>
     <button type="submit" name="submit" id="submit" value="register">Register</button>
     <button type="reset" name="cancel" id="cancel" value="cancel">Cancel</button></div>
-  </div></fieldset>
+  </div><div>
+    <ul class="inline-list">
+      <li><a href="login.php" title="Log in">I have my account. Go to log in page.</a></li>
+      <li><a href="admin.php">For Administrator</a></li>
+    </ul></div></fieldset>
   </form><? endif;?>
   <?=$ajax->toMsg()?>
-    <h3><a href="login.php" title="Log in">I have my account. Go to log in page.</a></h3>
 <!-- InstanceEndEditable --></div>
 </div>
 </div><!--End Body-->
@@ -149,7 +152,7 @@ else{
 				</div>
 				<div class="small-2 columns">
 					<ul class="inline-list right">
-						<li><a href="#">Contact</a></li>
+						<li><a href="../contact.html">Contact</a></li>
 					</ul>
 				</div>
 			</div>

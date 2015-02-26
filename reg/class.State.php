@@ -36,6 +36,15 @@ class State{
 			default: return '';
 		}
 	}
+	public static function toSQL($col){
+		$sql='';
+		$r=new ReflectionClass(__CLASS__);
+		foreach($r->getConstants() as $state=>$v){
+			if(strpos($state,'ST_')===false) continue;
+			$sql.=' WHEN '.$v.' THEN "'.self::toClass($v).' (code: '.$v.')" ';
+		}
+		return ' (CASE '.$col.' '.$sql.' ELSE "" END) AS '.$col.' ';
+	}
 	
 	public static function toDivClass($state){
 		switch($state){
@@ -126,7 +135,7 @@ CSS;
 	
 	public static function stateList(){
 		ob_start();?>
-        <h3>The Status of each steps of the CMU-IMC Registration System</h3>
+        <h3 id="stateList">The Status of each steps of the CMU-IMC Registration System</h3>
         <div><?php	
 		$tmp=array('[start datetime]', '[end datetime]');
 		$r=new ReflectionClass(__CLASS__);

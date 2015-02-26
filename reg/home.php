@@ -30,6 +30,7 @@ if(Config::isPost()) require_once 'home.scr.php';
 <script src="js/ui.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
+<script src="../js/vendor/jquery.cookie.js"></script>
 <script src="js/change_pw.js"></script>
 <!-- InstanceEndEditable -->
 
@@ -121,23 +122,26 @@ if(Config::isPost()) require_once 'home.scr.php';
     <li class="accordion-navigation">
     	 <a href="#adminTask"><i class="fa fa-tasks"></i> Admin Task</a>
     	 <div class="content" id="adminTask"><ul class="side-nav">
-            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information">Edit teams', participants', and advisors' information</a></li>
+            <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information"><i class="fa fa-pencil-square-o fa-lg"></i> Edit teams', participants', and advisors' information</a></li>
+      		<li><a href="admin.participant.php" title="Summarize information"><i class="fa fa-bar-chart fa-lg"></i> Summarize information</a></li>
+      		<li><a href="admin.participant.php?view=team&order=0" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed teams (Order by Team's name)</a></li>
+      		<li><a href="admin.participant.php?view=team&order=1" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed teams (Order by Arrival time)</a></li>
+            <li><a href="admin.participant.php?view=obs&distinct=0" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed advisors</a></li>
+            <li><a href="admin.participant.php?view=obs&distinct=1" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed distinct advisors</a></li>
+            <li><a href="admin.participant.php?view=part" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed participant (Medical student)</a></li>
       		<li><hr></li>
-      		<li><a href="admin.info.php">Approve teams' information: step 1</a></li>
-      		<li><a href="admin.pay.php">Approve the transactions</a></li>
-      		<li><a href="admin.post_reg.php">Approve teams' information: step 2</a></li>
+      		<li><a href="admin.info.php"><i class="fa fa-check-square-o fa-lg"></i> Approve teams' information: step 1</a></li>
+      		<li><a href="admin.pay.php"><i class="fa fa-check-square-o fa-lg"></i> Approve the transactions</a></li>
+      		<li><a href="admin.post_reg.php"><i class="fa fa-check-square-o fa-lg"></i> Approve teams' information: step 2</a></li>
       		<li><hr></li>
-      		<li><a href="#" title="Participating teams">Participating teams</a></li>
-      		<li><a href="#" title="Summarize information">Summarize information</a></li>
-      		<li><hr></li>
-      		<li><a href="admin.edit.php" title="Edit administrator">Edit administrator</a></li>
-      		<li><a href="admin.config.php" title="System configuration">System configuration</a></li>
+      		<li><a href="admin.edit.php" title="Edit administrator"><i class="fa fa-users fa-lg"></i> Edit administrator</a></li>
+      		<li><a href="admin.config.php" title="System configuration"><span class="fa-stack"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-terminal fa-stack-1x fa-inverse"></i></span> System configuration</a></li>
 		</ul></div></li>
 </ul>
 </div>
 <div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
-<div><fieldset>
-      <legend>Your roles</legend><?=SesAdm::checkbox($sess->pms)?></fieldset></div>
+<h2>Welcome to the  Administration System of CMU-IMC Registration System</h2><fieldset>
+      <legend>Your roles</legend><div id="role"><?=SesAdm::checkbox($sess->pms, true)?></div></fieldset>
   <form action="home.php" method="post" name="editProfile" id="editProfile" data-action="home.scr.php" data-magellan-destination="editProfile">
     <fieldset>
       <legend>Edit profile</legend>
@@ -178,9 +182,10 @@ if(Config::isPost()) require_once 'home.scr.php';
     </fieldset>
     <div id="msgCP"><?=isset($elem->msgCP)?$elem->msgCP:''?></div>
   </form>
-  
-<h3>About CMU-IMC Registration System</h3>
-<p></p>
+ <?php
+ require_once 'class.State.php';
+ echo State::stateList();
+ ?>
 <!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
@@ -193,7 +198,7 @@ if(Config::isPost()) require_once 'home.scr.php';
 				</div>
 				<div class="small-2 columns">
 					<ul class="inline-list right">
-						<li><a href="#">Contact</a></li>
+						<li><a href="../contact.html">Contact</a></li>
 					</ul>
 				</div>
 			</div>

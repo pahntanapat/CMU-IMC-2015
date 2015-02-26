@@ -52,6 +52,47 @@ class Team extends SKeasySQL{
 			self::ROW_ROUTE=>':route'
 		);
 		
+
+	// functional method
+	protected function rowArray($withUniv=false,$withPostReg=false,$row=array()){
+		if($withUniv)
+			$row=array_merge($row,array(
+				self::ROW_INSTITUTION,
+				self::ROW_UNIVERSITY,
+				self::ROW_COUNTRY,
+				self::ROW_ADDRESS,
+				self::ROW_PHONE
+			));
+		if($withPostReg)
+			$row=array_merge($row,array(
+				self::ROW_ARRIVE_BY,
+				self::ROW_ARRIVE_TIME,
+				self::ROW_DEPART_BY,
+				self::ROW_DEPART_TIME,
+		
+				self::ROW_ROUTE
+			));
+		$rows=array();
+		foreach($row as $k)
+			if(array_key_exists($k,$this->rows)) $rows[$k]=$this->rows[$k];
+		return $rows;
+	}
+	protected function bindValue(PDOStatement $stm,$row){
+		foreach($row as $k=>$v){
+			switch($k){
+				case self::ROW_ARRIVE_TIME:
+				case self::ROW_DEPART_TIME:
+					$stm->bindValue($v,$this->$k?$this->$k:NULL);
+					break;
+				case self::ROW_ROUTE:
+					$stm->bindValue($v,$this->$k,PDO::PARAM_INT);
+					break;
+				default:
+					$stm->bindValue($v,$this->$k);
+			}
+		}
+	}
+	
 	/**
 	* Prepare SQL command for function that select data for session
 	*/
@@ -75,6 +116,7 @@ class Team extends SKeasySQL{
 		if($withID) $rows[$this->TABLE.'.'.self::ROW_ID]=self::ROW_ID;
 		return self::row($rows);
 	}
+	
 	// convert PDOStatement to $this
 	private function prepareSession(PDOStatement $stm){
 		require_once 'class.State.php';
@@ -127,6 +169,7 @@ class Team extends SKeasySQL{
 		return $this->prepareSession($stm);
 	}
 	
+	// Routine method
 	public function del($list){
 		$stm=$this->db->prepare('DELETE FROM '.$this->TABLE
 			.' WHERE '.self::ROW_ID.self::IN($list));
@@ -260,6 +303,7 @@ class Team extends SKeasySQL{
 		}else{
 			$sql=$type;
 			switch($type){
+				case self::ROW_ARRIVE_BY:
 				case self::ROW_ARRIVE_TIME: // All data approved
 					$sql=self::ROW_POST_REG_STATE;
 				case self::ROW_PAY_STATE:
@@ -268,64 +312,42 @@ class Team extends SKeasySQL{
 			}
 			$sql='SELECT '
 				.self::row(
-					self::ROW_ID, self::ROW_TEAM_NAME,
+				/*	self::ROW_ID, self::ROW_TEAM_NAME,
 					self::ROW_INSTITUTION, self::ROW_UNIVERSITY,
-					self::ROW_COUNTRY
+					self::ROW_COUNTRY*/
 				)
 				.' FROM '.$this->TABLE
-				.($type!=''?' WHERE '.$type.'=:s':'')
-				.' ORDER BY '.self::ROW_TEAM_NAME.', '.self::ROW_INSTITUTION.', '
-					.self::ROW_INSTITUTION.', '.self::ROW_UNIVERSITY.', '.self::ROW_COUNTRY
+				.($type!=''?' WHERE '.$sql.'=:s':'')
+				.' ORDER BY '.($type==self::ROW_ARRIVE_TIME?
+					self::ROW_DEPART_TIME.', '.self::ROW_ARRIVE_BY.', '.self::ROW_COUNTRY:
+					self::ROW_TEAM_NAME.', '.self::ROW_INSTITUTION.', '.self::ROW_UNIVERSITY.', '.self::ROW_COUNTRY)
 			;
 		}
 		$stm=$this->db->prepare($sql);
 		if($type!='') $stm->bindValue(':s',
-			$type==self::ROW_ARRIVE_TIME?State::ST_OK:State::ST_WAIT,
+			($type==self::ROW_ARRIVE_TIME||$type==self::ROW_ARRIVE_BY)
+				?State::ST_OK:State::ST_WAIT,
 			PDO::PARAM_INT);
 		$stm->execute();
 		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
 	}
-
-	// functional method
-	protected function rowArray($withUniv=false,$withPostReg=false,$row=array()){
-		if($withUniv)
-			$row=array_merge($row,array(
-				self::ROW_INSTITUTION,
-				self::ROW_UNIVERSITY,
-				self::ROW_COUNTRY,
-				self::ROW_ADDRESS,
-				self::ROW_PHONE
-			));
-		if($withPostReg)
-			$row=array_merge($row,array(
-				self::ROW_ARRIVE_BY,
-				self::ROW_ARRIVE_TIME,
-				self::ROW_DEPART_BY,
-				self::ROW_DEPART_TIME,
-		
-				self::ROW_ROUTE
-			));
-		$rows=array();
-		foreach($row as $k)
-			if(array_key_exists($k,$this->rows)) $rows[$k]=$this->rows[$k];
-		return $rows;
-	}
-	protected function bindValue(PDOStatement $stm,$row){
-		foreach($row as $k=>$v){
-			switch($k){
-				case self::ROW_ARRIVE_TIME:
-				case self::ROW_DEPART_TIME:
-					$stm->bindValue($v,$this->$k?$this->$k:NULL);
-					break;
-				case self::ROW_ROUTE:
-					$stm->bindValue($v,$this->$k,PDO::PARAM_INT);
-					break;
-				default:
-					$stm->bindValue($v,$this->$k);
-			}
-		}
+	
+	/**
+	  *@return array(ID1, ID2, ...) of team that state of post reg step = OK
+	  *
+	  */
+	public function getIDList(){
+		$stm=$this->db->prepare('SELECT '.self::ROW_ID
+			.' FROM '.$this->TABLE
+			.' WHERE '.self::ROW_POST_REG_STATE.'=?'
+		);
+		require_once 'class.State.php';
+		$stm->bindValue(1,State::ST_OK, PDO::PARAM_INT);
+		$stm->execute();
+		return $stm->fetchAll(PDO::FETCH_COLUMN, 0);
 	}
 	
+
 	// Miscellenous method
 	public function countPay(){
 		require_once 'class.State.php';
@@ -348,6 +370,7 @@ class Team extends SKeasySQL{
 	}
 		
 	// Route methods
+	// @ return array(RouteID1=>array(amount of team that select this route, amount of team that select this route except me), ..)
 	public function countRoute(){
 		$stm=$this->db->prepare('SELECT '
 			.self::ROW_ROUTE.' AS r, '
@@ -360,12 +383,14 @@ class Team extends SKeasySQL{
 		while($row=$stm->fetch(PDO::FETCH_ASSOC))
 			$a[$row['r']]=array($row['c'], $row['i']);
 		return $a;
-		//SELECT COUNT(DISTINCT gender) FROM 
 	}
+	// Max team per route
 	public function maxRoute(){
 		global $config;
 		return ceil(($config->REG_MAX_TEAM)/($this->getRoute(true)));
 	}
+	// @return amount of route if count = true
+	// @ return array of route name if count = false
 	public function getRoute($count=false){
 		global $config;
 		if($count) return 1+substr_count($config->INFO_ROUTE,"\n");
@@ -374,7 +399,6 @@ class Team extends SKeasySQL{
 			$a[$k]=trim($v);
 		return $a;
 	}
-	
 	public function routeForm(){
 		$d=func_num_args()>0?func_get_arg(0):false;
 		
@@ -390,6 +414,14 @@ class Team extends SKeasySQL{
 <? endforeach;?></div><?php
 		return ob_get_clean();
 	}
+	
+	public function routeSQL(){
+		$sql='';
+		foreach($this->getRoute() as $k=>$v)
+			$sql.=' WHEN '.$k.' THEN "'.$v.': code='.$k.'" ';
+		return ' (CASE '.self::ROW_ROUTE.' '.$sql.' ELSE '.self::ROW_ROUTE.' END) AS '.self::ROW_ROUTE.' ';
+	}
+	
 	public static function country(){
 		if(func_num_args()>0) $c=func_get_arg(0);
 		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['country'];

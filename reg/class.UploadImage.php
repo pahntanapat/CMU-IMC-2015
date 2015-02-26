@@ -56,11 +56,15 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 	$minFileSize=204800, $minResolutionArray=array(1754,1240), // A4 150dpi
 	$quality=25, $algorithmFit=true // true = Fit, false = FIll
 	;
-	public static function getFolder($team_id){
+	public static function rootFolder(){
 		global $config;
 		return $_SERVER['DOCUMENT_ROOT'].'/'.
-			$config->UPLOAD_FOLDER.'/'.
-			implode('/',str_split(sprintf("%020d",$team_id),2)).'/';
+			$config->UPLOAD_FOLDER.'/';
+	}
+	
+	public static function getFolder($team_id){
+		global $config;
+		return self::rootFolder().implode('/',str_split(sprintf("%020d",$team_id),2)).'/';
 	}
 		
 	protected function getFile($filename=false){
@@ -68,6 +72,10 @@ class UploadImageOriginal{ // Upload image and convert to jpg
 		if(!is_dir($dir))
 			mkdir($dir,0777,true);
 		return $dir.$filename.'.'.self::JPG;
+	}
+	
+	public function reset(){
+		return self::deleteDirectory(self::rootFolder());
 	}
 	
 	public function upload($filename){
@@ -206,10 +214,19 @@ HTML;
 		$i=0;
 		foreach($list as $v){
 			$v=self::getFolder($v);
-			if(!is_dir($v)) continue;
-			if(rmdir($v)) $i++;
+			if(self::deleteDirectory($v)) $i++;
 		}
 		return $i;
+	}
+	protected static function deleteDirectory($dir) {
+		if (!file_exists($dir)) return true;
+		if (!is_dir($dir)) return unlink($dir);
+	
+		foreach (scandir($dir) as $item) {
+			if ($item == '.' || $item == '..') continue;
+			if (!self::deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) return false;
+		}
+		return rmdir($dir);
 	}
 }
 

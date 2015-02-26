@@ -10,11 +10,11 @@ class Message extends SKeasySQL{
 		ROW_TIME='time',
 		
 		PAGE_INFO_TEAM=0,
-		PAGE_INFO_OBSERVER=1,
-		PAGE_PAY=2,
-		PAGE_POST_REG_TEAM=3,
+		PAGE_PAY=1,
+		PAGE_POST_REG_TEAM=2,
 		
-		PAGE_INFO_PART_=4
+		PAGE_INFO_OBSERVER=3,
+		PAGE_INFO_PART_=3
 		;
 		
 	public $team_id, $title, $detail, $time, $admin_id, $show_page;
@@ -67,19 +67,16 @@ class Message extends SKeasySQL{
 		$stm->bindValue(1,$this->team_id,PDO::PARAM_INT);
 		if($page) $stm->bindValue(2,$this->show_page,PDO::PARAM_INT);
 		$stm->execute();
-		$re=$stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));/*
-		if($page){
-			foreach(isset($re[0])?$re[0]:new self($this->db) as $k=>$v) $this->$k=$v;
-		}*/
 		
-		return $page?isset($re[0])?$re[0]:$this:$re;
+		$re=$stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
+		return $page?(isset($re[0])?$re[0]:$this):$re;
 	}
 	public function getList(){
 		return $this->load(false);
 	}
 	
 	public function __toString(){
-		return ($this->show_page==NULL)?self::msgList($this->getList()):self::msg($this->load(true));
+		return ($this->show_page===NULL)?self::msgList($this->getList()):self::msg($this->load());
 	}
 	
 	public function getDB(){
@@ -92,22 +89,28 @@ class Message extends SKeasySQL{
 	
 	public static function msgList($msg){
 		ob_start();?>
-        <div><h3>Messages from administrator <small>Last update: <?=date('Y-m-d H:i:s e')?></small></h3>
+        <div id="teamMsg"><h3>Messages from administrator <small>Last update: <?=date('Y-m-d H:i:s e')?></small></h3>
         <button id="reloadMsg" type="button">reload</button></div>
         <ul class="accordion" data-accordion>
 		<? foreach($msg as $i):?>
         <li class="accordion-navigation"><a href="#teamMessage<?=$i->id?>"><?=$i->title?></a>
         <div id="teamMessage<?=$i->id?>" class="content"><p><?=$i->detail?></p><h6><?=$i->time?></h6></div></li>
 		<? endforeach;?>
-        <li class="accordion-navigation"><a href="#SinkanokLabs">About the Registration system</a>
-        <div id="SinkanokLabs" class="content active"><p>Powered by SKAjax Framwork and Storage-Processor-Carrier-View Architecture of Sinkanok Groups</p><p>Copyright &copy; 2015 <a href="http://labs.sinkanok.com">Sinkanok Labs</a>, <a href="http://sinkanok.com">Sinkanok Groups</a></p></div></li></ul><?php
+        <li class="accordion-navigation"><a href="#SinkanokLabs">About the CMU-IMC Registration system</a>
+          <div id="SinkanokLabs" class="content active">
+          <p>Copyright &copy; 2015 <a href="http://labs.sinkanok.com">Sinkanok Labs</a>, <a href="http://sinkanok.com">Sinkanok Groups</a>          </p>
+          <p>Powered by <strong>SKAjax Framwork</strong> and <strong>Modified Programming Architecture of Sinkanok Labs</strong>.</p>
+          <h5>Products of Sinkanok Labs: <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid</a>,  <a href="http://labs.sinkanok.com/sakodpid.html" target="_blank">Sakodpid 2.0</a>, and <a href="http://labs.sinkanok.com/converter/total.html" target="_blank">Unit Converter</a></h5>
+          <div class="row"><div class="small-6 medium-3 columns"><a href="http://labs.sinkanok.com/sakodpid_mini.html" target="_blank" class="th"><img src="img/promotebanner_mini.png" alt="Sakodpid 1.0 mini" longdesc="http://labs.sinkanok.com/sakodpid_mini.html" /></a></div><div class="small-6 medium-3 columns"><a href="http://labs.sinkanok.com/converter/total.html" target="_blank" class="th"><img src="img/promotebanner_pro.png" alt="Sakodpid 1.0 mini" longdesc="http://labs.sinkanok.com/converter/total.html" /></a></div>
+          <div class="small-6 medium-3 columns"><a href="http://labs.sinkanok.com/converter/essential.html" target="_blank" class="th"><img src="img/essential_logo.png" alt="Essential Unit Converter" longdesc="http://labs.sinkanok.com/converter/essential.html" /></a></div><div class="small-6 medium-3 columns"><a href="http://labs.sinkanok.com/converter/total.html" target="_blank" class="th"><img src="img/total_logo.png" alt="Essential Unit Converter" longdesc="http://labs.sinkanok.com/converter/total.html" /></a></div></div>
+          </div></li></ul><?php
 		return ob_get_clean();
 	}
 	
 	public static function msg(self $i){
 		if($i->id<0||$i->id==NULL) return '';
 		ob_start();?>
-        <div id="teamMsg" data-id="<?=$i->id?>" class="round panel callout"><h3><?=$i->title?></h3><p><?=$i->detail?></p><h6><?=$i->time?></h6></div>
+<div id="teamMsg" data-id="<?=$i->id?>" class="round panel callout"><h3><?=$i->title?></h3><p><?=$i->detail?></p><h6>Last updated: <?=$i->time?> (timezone: Bangkok UTC+07:00)</h6></div>
 		<?php
 		return ob_get_clean();
 	}

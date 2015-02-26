@@ -9,14 +9,14 @@ require_once 'class.SKAjaxReg.php';
 $ajax=new SKAjaxReg();
 if(Config::isPost()||Config::isAjax()) require_once 'team.scr.php';
 
-require_once 'class.Message.php';
-require_once 'class.Team.php';
-
 $db=$config->PDO();
-
-$t=new Team($db);
-$t->id=$s->id;
-$t->submitLoad();
+if(!isset($t)){
+	require_once 'class.Team.php';
+	$t=new Team($db);
+	$t->id=$s->id;
+	$t->load();
+}
+require_once 'class.Message.php';
 ?>
 <!doctype html>
 <html><!-- InstanceBegin template="/Templates/IMC_reg.dwt.php" codeOutsideHTMLIsLocked="false" -->
@@ -41,6 +41,8 @@ $t->submitLoad();
 <script src="js/updateMenuState.js"></script>
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
+<script src="../js/vendor/jquery.cookie.js"></script>
+<script src="js/joyride.js"></script>
 <script src="js/save.js"></script>
 <!-- InstanceEndEditable -->
 
@@ -119,7 +121,7 @@ $t->submitLoad();
 <div class="small-12 columns" id="content"><div class="small-12 large-4 columns" id="sidebar">
 <ul class="accordion" data-accordion>
     <li class="accordion-navigation">
-        <a href="#sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
+        <a href="#sbTeamInfo" id="h-sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
         <div id="sbTeamInfo" class="content active">
             <b>Team's name:</b> <?=$s->teamName?><br>
             <b>Institution:</b> <?=$s->institution?><br>
@@ -130,7 +132,7 @@ $t->submitLoad();
         </div>
     </li>
     <li class="accordion-navigation">
-        <a href="#sbMenu"><i class="fa fa-bars"></i> Main menu</a>
+        <a href="#sbMenu" id="h-sbMenu"><i class="fa fa-bars"></i> Main menu</a>
         <div id="sbMenu" class="content"><ul class="side-nav">
   <li><a href="index.php" title="Main page"><i class="fa fa-home fa-lg"></i> Main page</a></li>
   <li><a href="index.php#changePW"><?=State::img(State::ST_EDITABLE)?>Change password</a></li>
@@ -138,7 +140,7 @@ $t->submitLoad();
         </div>
     </li>
     <li class="accordion-navigation">
-        <a href="#sbStep"><i class="fa fa-check-square"></i> Steps of Registration</a>
+        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Steps of Registration</a>
         <div id="sbStep" class="content">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
@@ -148,7 +150,7 @@ $t->submitLoad();
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transaction">Upload Transaction</a></li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transaction">Upload &amp; Confirm Transaction</a></li>
   <li><hr></li>
   <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="post_reg.php" title="Select route &amp; upload team's picture &amp; update arrival time">Update your journey</a></li>
   <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of the journey</a></li>
@@ -209,8 +211,15 @@ $r=!State::is($s->teamState,State::ST_EDITABLE,$config->REG_START_REG,$config->R
   <button type="submit" name="save" id="save" value="save">save</button>
   <button type="reset" name="cancel" id="button" value="cancel">cancel</button><? endif;?>
 </div></fieldset>
-</form>
-<?=$ajax->toMsg()?>
+</form><?=$ajax->toMsg()?>
+<button type="button" class="right" id="loadJR"><i class="fa fa-question-circle"></i> Help</button><ol class="joyride-list" data-joyride>
+  <li data-text="Next" data-options="prev_button:false;tip_location:top"><h4>Application form</h4><p>Let's move to the application form.</p><input type="checkbox" id="hideJR" name="hideJR" value="1"><label for="hideJR">Don't show it again.</label></li>
+  <li data-id="h-sbStep" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4>Before that..</h4><p>If the steps of registration is hidden, please click it to expand them.</p></li>
+  <li data-id="save" data-text="Next" data-prev-text="Prev"><h4>Save &ne; Submit</h4><p>You don't have to fill out every form in one time before save. You can edit your information and save it anytime until...</p></li>
+  <li data-id="menuCfInfo" data-text="Next" data-prev-text="Prev"><h4>Confirmation</h4><p>... until you <b>confirm</b> your information in confirmation step.<br>After that, All information in this sections is sent to Admin to be approve.<small><br><br><i class="fa fa-exclamation-triangle fa-2x"></i> If the steps of registration is hidden, the instruction will show on wrong position. Please go back to the first step and do it again.</small></p></li>
+  <li data-id="email" data-text="Next" data-prev-text="Prev"><h4>Required form</h4><p>Before comfirmation, you must <b>fill out all required forms</b> that are beginnig with red asterisks. (But <i><b>you don't have to fill out them in first time</b></i> before save.)</p></li>
+  <li data-id="loadJR" data-text="Go!" data-prev-text="Prev" data-options="tip_location:right"><h4>Are you ready?</h4><p>The competition is beginning. <b>Let's go!</b></p></li>
+</ol>
 <!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
@@ -223,7 +232,7 @@ $r=!State::is($s->teamState,State::ST_EDITABLE,$config->REG_START_REG,$config->R
 				</div>
 				<div class="small-2 columns">
 					<ul class="inline-list right">
-						<li><a href="#">Contact</a></li>
+						<li><a href="../contact.html">Contact</a></li>
 					</ul>
 				</div>
 			</div>

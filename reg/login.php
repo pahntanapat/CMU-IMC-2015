@@ -112,11 +112,14 @@ else{
     <label>Password<input name="pw" type="password" id="pw" maxlength="32" required></label></div>
       <? require 'captcha.php'; ?><div>
     <button type="submit" name="submit" id="submit" value="log in">Log in</button>
-    <button type="reset" name="cancel" id="cancel" value="cancel">Cancel</button></div></fieldset>
+    <button type="reset" name="cancel" id="cancel" value="cancel">Cancel</button></div><div> <ul class="inline-list">
+    <li><a href="register.php" title="create new account">I don't have any account. Create new account.</a></li>
+    <li><a href="admin.php">For Administrator</a></li>
+  </ul></div></fieldset>
   </form>
   <?=$ajax->toMsg()?>
-  <h3><a href="register.php" title="create new account">I don't have any account. Create new account.</a></h3>
-<!-- InstanceEndEditable --></div>
+ 
+  <!-- InstanceEndEditable --></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">
@@ -128,7 +131,7 @@ else{
 				</div>
 				<div class="small-2 columns">
 					<ul class="inline-list right">
-						<li><a href="#">Contact</a></li>
+						<li><a href="../contact.html">Contact</a></li>
 					</ul>
 				</div>
 			</div>

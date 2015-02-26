@@ -5,7 +5,8 @@ $(document).ready(function(e) {
     });
 	$('a.reset').click(function(e) {
 		e.preventDefault();
-        return $(this).loadSK('admin.config.scr.php?'+$(this).act().split('?')[1]+'&'+$.SK());
+		if(confirm('Do you really want to '+$(this).text()+'?'))
+        	return $(this).loadSK('admin.config.scr.php?'+$(this).act().split('?')[1]+'&'+$.SK());
     });
 	$.datetimepicker();
 });
