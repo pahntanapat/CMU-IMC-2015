@@ -10,11 +10,11 @@ class Message extends SKeasySQL{
 		ROW_TIME='time',
 		
 		PAGE_INFO_TEAM=0,
-		PAGE_INFO_OBSERVER=1,
-		PAGE_PAY=2,
-		PAGE_POST_REG_TEAM=3,
+		PAGE_PAY=1,
+		PAGE_POST_REG_TEAM=2,
 		
-		PAGE_INFO_PART_=4
+		PAGE_INFO_OBSERVER=3,
+		PAGE_INFO_PART_=3
 		;
 		
 	public $team_id, $title, $detail, $time, $admin_id, $show_page;
@@ -67,19 +67,16 @@ class Message extends SKeasySQL{
 		$stm->bindValue(1,$this->team_id,PDO::PARAM_INT);
 		if($page) $stm->bindValue(2,$this->show_page,PDO::PARAM_INT);
 		$stm->execute();
-		$re=$stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));/*
-		if($page){
-			foreach(isset($re[0])?$re[0]:new self($this->db) as $k=>$v) $this->$k=$v;
-		}*/
 		
-		return $page?isset($re[0])?$re[0]:$this:$re;
+		$re=$stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
+		return $page?(isset($re[0])?$re[0]:$this):$re;
 	}
 	public function getList(){
 		return $this->load(false);
 	}
 	
 	public function __toString(){
-		return ($this->show_page==NULL)?self::msgList($this->getList()):self::msg($this->load(true));
+		return ($this->show_page===NULL)?self::msgList($this->getList()):self::msg($this->load());
 	}
 	
 	public function getDB(){
@@ -113,7 +110,7 @@ class Message extends SKeasySQL{
 	public static function msg(self $i){
 		if($i->id<0||$i->id==NULL) return '';
 		ob_start();?>
-<div id="teamMsg" data-id="<?=$i->id?>" class="round panel callout"><h3><?=$i->title?></h3><p><?=$i->detail?></p><h6><?=$i->time?></h6></div>
+<div id="teamMsg" data-id="<?=$i->id?>" class="round panel callout"><h3><?=$i->title?></h3><p><?=$i->detail?></p><h6>Last updated: <?=$i->time?> (timezone: Bangkok UTC+07:00)</h6></div>
 		<?php
 		return ob_get_clean();
 	}

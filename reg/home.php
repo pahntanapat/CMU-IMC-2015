@@ -31,7 +31,6 @@ if(Config::isPost()) require_once 'home.scr.php';
 <link href="class.State.php?css=1" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
 <script src="../js/vendor/jquery.cookie.js"></script>
-<script src="js/joyride.js"></script>
 <script src="js/change_pw.js"></script>
 <!-- InstanceEndEditable -->
 
@@ -141,8 +140,8 @@ if(Config::isPost()) require_once 'home.scr.php';
 </ul>
 </div>
 <div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
-<div><h2>Welcome to the  Administration System of CMU-IMC Registration System</h2><fieldset>
-      <legend>Your roles</legend><?=SesAdm::checkbox($sess->pms, true)?></fieldset></div>
+<h2>Welcome to the  Administration System of CMU-IMC Registration System</h2><fieldset>
+      <legend>Your roles</legend><div id="role"><?=SesAdm::checkbox($sess->pms, true)?></div></fieldset>
   <form action="home.php" method="post" name="editProfile" id="editProfile" data-action="home.scr.php" data-magellan-destination="editProfile">
     <fieldset>
       <legend>Edit profile</legend>

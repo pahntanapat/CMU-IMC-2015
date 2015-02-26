@@ -179,7 +179,7 @@ echo State::toHTML(
 
 $msg=new Message($db);
 $msg->team_id=$s->id;
-$msg->show_page=Message::PAGE_INFO_TEAM;
+$msg->show_page=Message::PAGE_INFO_PART($no);
 echo $msg;
 unset($msg);
 

@@ -211,13 +211,15 @@ $r=!State::is($s->teamState,State::ST_EDITABLE,$config->REG_START_REG,$config->R
   <button type="submit" name="save" id="save" value="save">save</button>
   <button type="reset" name="cancel" id="button" value="cancel">cancel</button><? endif;?>
 </div></fieldset>
-</form>
-<?=$ajax->toMsg()?>
-<p>Let's move to the application form.</p>
-<p>You don't have to fill out every form in one time before submission. You can edit your information and save it anytime until...</p>
-<p>Until you confirm your information in confirmation step.</p>
-<p>Before comfirmation, you must fill out all required forms that are beginnig with red asterisks. (But you don't have to fill out it in first time before submission.)</p>
-<p>The competition begins here. Let's go!</p>
+</form><?=$ajax->toMsg()?>
+<button type="button" class="right" id="loadJR"><i class="fa fa-question-circle"></i> Help</button><ol class="joyride-list" data-joyride>
+  <li data-text="Next" data-options="prev_button:false;tip_location:top"><h4>Application form</h4><p>Let's move to the application form.</p><input type="checkbox" id="hideJR" name="hideJR" value="1"><label for="hideJR">Don't show it again.</label></li>
+  <li data-id="h-sbStep" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4>Before that..</h4><p>If the steps of registration is hidden, please click it to expand them.</p></li>
+  <li data-id="save" data-text="Next" data-prev-text="Prev"><h4>Save &ne; Submit</h4><p>You don't have to fill out every form in one time before save. You can edit your information and save it anytime until...</p></li>
+  <li data-id="menuCfInfo" data-text="Next" data-prev-text="Prev"><h4>Confirmation</h4><p>... until you <b>confirm</b> your information in confirmation step.<br>After that, All information in this sections is sent to Admin to be approve.<small><br><br><i class="fa fa-exclamation-triangle fa-2x"></i> If the steps of registration is hidden, the instruction will show on wrong position. Please go back to the first step and do it again.</small></p></li>
+  <li data-id="email" data-text="Next" data-prev-text="Prev"><h4>Required form</h4><p>Before comfirmation, you must <b>fill out all required forms</b> that are beginnig with red asterisks. (But <i><b>you don't have to fill out them in first time</b></i> before save.)</p></li>
+  <li data-id="loadJR" data-text="Go!" data-prev-text="Prev" data-options="tip_location:right"><h4>Are you ready?</h4><p>The competition is beginning. <b>Let's go!</b></p></li>
+</ol>
 <!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
