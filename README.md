@@ -48,17 +48,24 @@ class Config extends MyConfig{
 
 1. Go to Menu **Admin Task > System Configuration**
 2. The config is divided in each tabs. Click the tabs to see them.
-  * Edit the configuration and **Save** or **Cancel**
-  * Click **Reset Config** to reset all configurations
-  * Click **Reset Database & Upload directory** to delete all participants' information
+    * Edit the configuration and **Save** or **Cancel**
+    * Click **Reset Config** to reset all configurations
+    * Click **Reset Database & Upload directory** to delete all participants' information
 
 ### How to Edit the System ###
 
 * The templates is located at /Template/
- 1. IMC_Main.dwt - the main template for whole page in the System
- 2. IMC_reg.dwt.php - the template of front-end, it inherits (create and under control) from IMC_Main.dwt. Moreover, it contains PHP script `<?php ... ?> <? ... ?>`.
- 3. IMC_admin.dwt.php - the back-end template, it also inherits from IMC_Main.dwt and contains PHP script.
-  * We require PHP programming skill (in Object-oriented programming) to edit the PHP script!
-  * All filenames of back-end pages (except home.php, home.scr.php) begin with admin.
-  * All classes in this System use for connect DB, [session](http://php.net/manual/en/intro.session.php) processing, or other functions.
-  * Learn more about [SKAjax and Modified Sinkanok Architecture here](http://labs.sinkanok.com/)
+    1. IMC_Main.dwt - the main template for whole page in the System
+    2. IMC_reg.dwt.php - the template of front-end, it inherits (create and under control) from IMC_Main.dwt. Moreover, it contains PHP script `<?php ... ?> <? ... ?>`.
+    3. IMC_admin.dwt.php - the back-end template, it also inherits from IMC_Main.dwt and contains PHP script.
+* We require PHP programming skill (in Object-oriented programming) to edit the PHP script!
+* All filenames of back-end pages (except home.php, home.scr.php) begin with admin.
+* All classes in this System use for connect DB, [session](http://php.net/manual/en/intro.session.php) processing, or other functions.
+* Learn more about [SKAjax and Modified Sinkanok Architecture here](http://labs.sinkanok.com/)
+
+### Copyright ###
+
+* The static page - copyright 2015 by Faculty of Medicine, Chiang Mai University
+* The Registration System - copyright 2015 by [Sinkanok Labs](http://labs.sinkanok.com), [Sinkanok Groups](http://sinkanok.com)
+
+All right reserve
