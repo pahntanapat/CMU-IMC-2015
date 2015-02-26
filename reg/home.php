@@ -139,7 +139,7 @@ if(Config::isPost()) require_once 'home.scr.php';
 </ul>
 </div>
 <div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" -->
-<div><fieldset>
+<div><h2>Welcome to the  Administration System of CMU-IMC Registration System</h2><fieldset>
       <legend>Your roles</legend><?=SesAdm::checkbox($sess->pms, true)?></fieldset></div>
   <form action="home.php" method="post" name="editProfile" id="editProfile" data-action="home.scr.php" data-magellan-destination="editProfile">
     <fieldset>
@@ -181,6 +181,10 @@ if(Config::isPost()) require_once 'home.scr.php';
     </fieldset>
     <div id="msgCP"><?=isset($elem->msgCP)?$elem->msgCP:''?></div>
   </form>
+ <?php
+ require_once 'class.State.php';
+ echo State::stateList();
+ ?>
 <!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->

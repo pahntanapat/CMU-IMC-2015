@@ -28,7 +28,7 @@ class Admin extends SKeasySQL{
 				if($stm->fetchColumn()>0) return false;
 			}
 			$this->permission=SesAdm::PMS_ADMIN|SesAdm::PMS_WEB;
-			$this->nickname='Root';
+			$this->nickname='Root: '.$this->student_id;
 			$this->student_id=0;
 			return true;
 		}
