@@ -79,9 +79,11 @@ function approveTeam(Message $msg, $message=''){
 </div>
 <?php
 for($no=0;$no<=$config->REG_PARTICIPANT_NUM;$no++):
-	$msg->show_page=Message::PAGE_INFO_PART($no);
-?>
+	$msg->show_page=Message::PAGE_INFO_PART($no);?>
 <div class="content" id="p<?=$no?>"><div>
+<?	if($m[$no]->id===NULL):?>
+    <h3>There isn't information of this person.</h3>
+<? else:?>
   <table width="100%" border="0">
     <tr>
       <th scope="col">Form</th>
@@ -171,6 +173,7 @@ for($no=0;$no<=$config->REG_PARTICIPANT_NUM;$no++):
 <?php
 if($no>0) echo $img->toImgPartStudentCard($no);
 echo $msg->load()->toForm('admin.info.php?id='.$msg->team_id, array(State::ST_WAIT, State::ST_PASS, State::ST_NOT_PASS), $m[$no]->info_state, '['.$m[$no]->id.', '.$no.']');
+endif;
 ?></div></div>
 <?	endfor;?>
 </div>
