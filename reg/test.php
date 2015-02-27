@@ -1,5 +1,6 @@
 <?
 require_once 'config.inc.php';
+require_once 'class.Team.php';
 require_once 'class.Member.php';
 ?><!doctype html>
 <html>
@@ -11,14 +12,10 @@ require_once 'class.Member.php';
 <body>
 <pre>
 <?
-	$m=array();
-	for($no=0;$no<=$config->REG_PARTICIPANT_NUM;$no++){
-		$m[$no]=$no>0?new Participant($config->PDO()):new Observer($config->PDO());
-		$m[$no]->team_id=17;
-		if($no>0) $m[$no]->part_no=$no;
-		$m[$no]->load();
-	}
-var_dump($m);
+$t=new Team($config->PDO());
+		$t->id=17;
+		$t->auth(false);
+var_dump($t);
 ?>
 </pre>
 </body>

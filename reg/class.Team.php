@@ -123,6 +123,28 @@ class Team extends SKeasySQL{
 		return self::row($rows);
 	}
 	
+	public function auth($checkPW=false){
+		require_once 'class.Member.php';
+		$tmp=array(new Observer(NULL),new Participant(NULL));
+		
+		$stm=($this->db->prepare(
+			'SELECT '.$this->SQLforSession($checkPW)
+			.' FROM '.$this->TABLE
+			.' LEFT JOIN '.$tmp[0]->TABLE.' ON '.$tmp[0]->TABLE.'.'.Observer::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
+			.' LEFT JOIN '.$tmp[1]->TABLE.' ON '.$tmp[1]->TABLE.'.'.Participant::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
+			.' WHERE '.$this->TABLE.'.'.($checkPW?self::ROW_EMAIL.' = :e AND '.$this->TABLE.'.'.self::ROW_PW.' = :pw':self::ROW_ID.' = :i')
+		));
+		if($checkPW){
+			$stm->bindValue(':e',$this->email);
+			$stm->bindValue(':pw',$this->pw);
+		}else{
+			$stm->bindValue(':i',$this->id);
+		}
+		$stm->execute();
+		
+		return $this->prepareSession($stm);
+	}
+	
 	// convert PDOStatement to $this
 	private function prepareSession(PDOStatement $stm){
 		require_once 'class.State.php';
@@ -146,35 +168,14 @@ class Team extends SKeasySQL{
 	public function getParticipantInfoState($i){
 		global $config;
 		if($i<0 || $i>$config->REG_PARTICIPANT_NUM) return false;
+		if($i>=count($this->memberInfoState)) return $this->getParticipantInfoState($i-1);
 		return $this->memberInfoState[$i];
 	}
 	// Get Observer's Info State after auth()
 	public function getObserverInfoState(){
 		return $this->memberInfoState[0];
 	}
-	
-	public function auth($checkPW=false){
-		require_once 'class.Member.php';
-		$tmp=array(new Observer(NULL),new Participant(NULL));
 		
-		$stm=($this->db->prepare(
-			'SELECT '.$this->SQLforSession($checkPW)
-			.' FROM '.$this->TABLE
-			.' LEFT JOIN '.$tmp[0]->TABLE.' ON '.$tmp[0]->TABLE.'.'.Observer::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
-			.' LEFT JOIN '.$tmp[1]->TABLE.' ON '.$tmp[1]->TABLE.'.'.Participant::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
-			.' WHERE '.$this->TABLE.'.'.($checkPW?self::ROW_EMAIL.' = :e AND '.$this->TABLE.'.'.self::ROW_PW.' = :pw':self::ROW_ID.' = :i')
-		));
-		if($checkPW){
-			$stm->bindValue(':e',$this->email);
-			$stm->bindValue(':pw',$this->pw);
-		}else{
-			$stm->bindValue(':i',$this->id);
-		}
-		$stm->execute();
-		
-		return $this->prepareSession($stm);
-	}
-	
 	// Routine method
 	public function del($list){
 		$stm=$this->db->prepare('DELETE FROM '.$this->TABLE

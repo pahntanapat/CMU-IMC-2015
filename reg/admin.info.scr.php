@@ -61,7 +61,7 @@ if(Config::isPost()){ // Submit
 		$m=true;
 		$m&=$t->team_state==State::ST_PASS;
 		for($i=0;$i<=$config->REG_PARTICIPANT_NUM;$i++)
-			$m&=$t->getParticipantInfoState($i)==State::ST_PASS;
+			$m&=($t->getParticipantInfoState($i)==State::ST_PASS || $t->getParticipantInfoState($i)==NULL);
 		
 		if($m){
 			$t->pay_state=State::ST_EDITABLE;
