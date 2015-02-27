@@ -64,15 +64,22 @@ class Team extends SKeasySQL{
 				self::ROW_ADDRESS,
 				self::ROW_PHONE
 			));
-		if($withPostReg)
-			$row=array_merge($row,array(
-				self::ROW_ARRIVE_BY,
-				self::ROW_ARRIVE_TIME,
-				self::ROW_DEPART_BY,
-				self::ROW_DEPART_TIME,
-		
-				self::ROW_ROUTE
-			));
+		switch($withPostReg){
+			case 1:
+				$row=array_merge($row,array(
+					self::ROW_ARRIVE_BY,
+					self::ROW_ARRIVE_TIME,
+					self::ROW_DEPART_BY,
+					self::ROW_DEPART_TIME
+			
+			//		,self::ROW_ROUTE
+				));
+				break;
+			case 2:
+				$row[]=self::ROW_ROUTE;
+				break;
+			default:
+		}
 		$rows=array();
 		foreach($row as $k)
 			if(array_key_exists($k,$this->rows)) $rows[$k]=$this->rows[$k];
@@ -228,10 +235,10 @@ class Team extends SKeasySQL{
 		return $stm->rowCount();
 	}
 	
-	public function updatePostReg(){ //for participant
+	public function updatePostReg($ticket){ //for participant
 		require_once 'class.State.php';
 		
-		$row=array_merge($this->rowArray(false,true),array(self::ROW_POST_REG_STATE=>':s'));
+		$row=array_merge($this->rowArray(false,$ticket?1:2),array(self::ROW_POST_REG_STATE=>':s'));
 		$stm=$this->db->prepare('UPDATE '.$this->TABLE
 			.' SET '.	self::equal($row)
 			.' WHERE '.self::ROW_ID.'=:i');

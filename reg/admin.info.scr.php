@@ -79,7 +79,7 @@ if(Config::isPost()){ // Submit
 		$ajax->msgID='apMsg';
 	}else{
 		$ajax->msgID='approveForm';
-		$ajax->message=approveTeam($msg,$ajax->message);
+		$ajax->message=approveTeam($msg, $ajax->message);
 	}
 }elseif(isset($_GET['id'])){ //Show info of team ID: $_GET['id']
 	require_once 'class.Message.php';

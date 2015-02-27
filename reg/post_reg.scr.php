@@ -79,28 +79,37 @@ if(Config::isPost() && !State::is($s->postRegState,State::ST_EDITABLE,$config->R
 		$t=Config::assocToObjProp(Config::trimArray($_POST), new Team($config->PDO()));
 		$t->id=$s->id;
 		
-		$route=$t->countRoute();
-		if($route[$t->route][1]>=$t->maxRoute()){
-			$ajax->message="<b>Your chosen route is full. Please select the others.</b>";
-		}else{
-			$t->updatePostReg();
-			$s->postRegState=$t->team_state;
-			$s->setProgression();
-			if(Config::isAjax()){
-				$ajax->updateMenuState($s);
-				$ajax->setFormDefault((array) $t, array(Team::ROW_ROUTE));
-			}
-			$ajax->result=true;
-			$ajax->message="<b>Update your information success</b>";
+		switch($_POST['form']){
+			case 'ticket':
+				$route=$t->countRoute();
+				if($route[$t->route][1]>=$t->maxRoute()){
+					$ajax->message="<b>Your chosen route is full. Please select the others.</b>";
+					break;
+				}
+				$t->updatePostReg(true);
+				if(Config::isAjax())
+					$ajax->setFormDefault((array) $t);
+				break;
+			case 'route':
+				$t->updatePostReg(false);
+				if(Config::isAjax()){
+					if($ajax->result=true) $route=$t->countRoute();
+					$name=$t->getRoute();
+					$mx=$t->maxRoute();
+					foreach($route as $k=>$v)
+						if(isset($name[$k]))
+							$ajax->addHtmlTextVal(SKAjaxReg::SET_HTML, 'label[for="route_'.$k.'"]', $name[$k].' ('.$v[0].'/'.$mx.')');
+				}
+				break;
 		}
-		if(Config::isAjax()){
-			if($ajax->result=true) $route=$t->countRoute();
-			$name=$t->getRoute();
-			$mx=$t->maxRoute();
-			foreach($route as $k=>$v)
-				if(isset($name[$k]))
-					$ajax->addHtmlTextVal(SKAjaxReg::SET_HTML, 'label[for="route_'.$k.'"]', $name[$k].' ('.$v[0].'/'.$mx.')');
-		}
+
+		require_once 'class.State.php';
+		$s->postRegState=State::ST_EDITABLE;
+		$s->setProgression();
+		if(Config::isAjax()) $ajax->updateMenuState($s);
+		
+		$ajax->result=true;
+		$ajax->message="<b>Update your information success</b>";
 	}catch(Exception $e){
 		$ajax->result=false;
 		$ajax->message=Config::e($e);
