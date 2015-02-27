@@ -63,11 +63,12 @@ if(Config::isPost()){ // Submit
 		for($i=0;$i<=$config->REG_PARTICIPANT_NUM;$i++)
 			$m&=($t->getParticipantInfoState($i)==State::ST_PASS || $t->getParticipantInfoState($i)==NULL);
 		
-		if($m){
+		if($m)
 			$t->pay_state=State::ST_EDITABLE;
-			$t->setState(Team::ROW_PAY_STATE);
-		}
+		else
+			$t->pay_state=State::ST_LOCKED;
 		
+		$t->setState(Team::ROW_PAY_STATE);
 		$ajax->result=true;
 		$db->commit();
 	}catch(Exception $e){

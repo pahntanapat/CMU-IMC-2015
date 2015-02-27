@@ -2,6 +2,8 @@
 require_once 'config.inc.php';
 require_once 'class.Team.php';
 require_once 'class.Member.php';
+require_once 'class.SesPrt.php';
+$s=new SesPrt();
 ?><!doctype html>
 <html>
 <head>
@@ -15,7 +17,7 @@ require_once 'class.Member.php';
 $t=new Team($config->PDO());
 		$t->id=17;
 		$t->auth(false);
-var_dump($t);
+var_dump($t, $s);
 ?>
 </pre>
 </body>
