@@ -229,7 +229,7 @@ if($no>0):?>
           </label></div><? endif;?>
            <div>
              <label class="require">Date of Birth <small>Click on the form to show calendar, and click on title bar of calendar to change month, or double click it to select year.</small>
-               <input name="birth" type="text" id="birth" value="<?=$member->birth?>"<?=Config::readonly($r)?>>
+               <input name="birth" type="text" class="date" id="birth" value="<?=$member->birth?>"<?=Config::readonly($r)?>>
           </label></div>
            <div>
              <label class="require">Nationality

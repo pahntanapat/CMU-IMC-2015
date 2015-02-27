@@ -246,7 +246,7 @@ if($sec==3):
   <div>
     <label class="require">Arrival time (to Chiang Mai) <small><a href="../local_information.html#other" target="_blank">In Thailand timezone (UTC+07:00)</a></small>
       <input name="form" type="hidden" id="form" value="ticket">
-      <input name="arrive_time" type="datetime" id="arrive_time" value="<?=$t->arrive_time?>"<?=Config::readonly($r)?>>
+      <input name="arrive_time" type="text" class="datetime" id="arrive_time" value="<?=$t->arrive_time?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
@@ -255,7 +255,7 @@ if($sec==3):
 </div>
 <div>
   <label>Departure time (from Chiang Mai) <small><a href="../local_information.html#other" target="_blank">In Thailand timezone (UTC+07:00)</a></small>
-    <input name="depart_time" type="datetime" id="depart_time" value="<?=$t->depart_time?>"<?=Config::readonly($r)?>>
+    <input name="depart_time" type="text" class="datetime" id="depart_time" value="<?=$t->depart_time?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
