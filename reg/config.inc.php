@@ -1,6 +1,6 @@
 <?php
-require_once 'class.MyConfig.php';
-class Config extends MyConfig{
+// require_once 'class.MyConfig.php'; // comment this line to avoid late state binding problem debug for PHP version <5.3.0
+class Config extends stdClass /* MyConfig*/{
 	const // Config variables
 		DB_USER="root", DB_PW="DB_PW",
 		DB_NAME="imc", DB_HOST='localhost',
@@ -22,9 +22,14 @@ class Config extends MyConfig{
 		INFO_SHIRT_SIZE="SS\nS\nM\nL\nXL\nXXL"
 		;
 	
-	// For PHP version that < 5.3.0 (not support last state binding
+	// For PHP version that < 5.3.0 (not support last state binding)
+	// If PHP version >=5.3.0 you can remove this line until ..
 	public static $SAVE_CONFIG='config.save.php';
 	
+	public function __get($n){
+		if(defined("self::$n")) return constant("self::$n");
+		else throw new Exception('No property named '.$n.' in config');
+	}
 	public function save(){
 		return file_put_contents(self::$SAVE_CONFIG, '<?php return '.var_export($this,true).' ; ?>');
 	}
@@ -37,7 +42,16 @@ class Config extends MyConfig{
 			$obj->$k=$v;
 		return $obj;
 	}
-	
+	public static function load(){
+		try{
+			return require self::$SAVE_CONFIG;
+		}catch(Exception $e){
+			$obj=new self();
+			$obj->reset();
+			return self::load();
+		}
+	}
+	// Remove until this line;
 	
 	public function PDO($returnNullIfError=false){
 		try{
