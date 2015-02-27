@@ -17,7 +17,7 @@ function fullList(PDO $db, $msg=''){
  <li class="tab-title"><a href="#panel4">Participants</a></li>
 </ul>
 <div class="tabs-content">
- <div class="content active" id="panel1"><?php $tmp=new Team($db); echo teamList($tmp, 'admin.team.php');?></div>
+ <div class="content active" id="panel1"><?php $tmp=new Team($db); echo teamList($tmp, 'admin.team.php','',$msg);?></div>
  <div class="content" id="panel2"><?php $tmp=new Observer($db); echo Config::toTable($tmp->getList(true), Observer::forTableRow(true));?></div>
   <div class="content" id="panel3"><?=Config::toTable($tmp->getDistinctList(true), Observer::forTableRow(true));?></div>
  <div class="content" id="panel4"><?php $tmp=new Participant($db); echo Config::toTable($tmp->getList(true), Participant::forTableRow(true));?></div>

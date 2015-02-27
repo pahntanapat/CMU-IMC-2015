@@ -38,8 +38,9 @@ if(Config::isPost()){
 					$i->deleteFolder($_POST['del']);
 					
 					$ajax->result=true;
-					$ajax->msgID='divTeamList';
-					$ajax->message=fullList($db,'Delete Participants\' teams success');
+					//$ajax->msgID='divTeamList';
+					//$ajax->message=fullList($db,'Delete Participants\' teams success');
+					$ajax->message='Delete Participants\' teams success';
 					break;
 				case 'team':
 					$t=Config::assocToObjProp(Config::trimArray($_POST),new Team($db));
