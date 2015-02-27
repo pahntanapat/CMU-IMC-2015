@@ -90,8 +90,12 @@ if(Config::isPost() && !State::is($s->getParticipantInfoState($_POST['part_no'])
 			}
 			if($ajax->result){
 				$ajax->setFormDefault((array) $member, array(Observer::ROW_GENDER, Observer::ROW_SHIRT_SIZE));
-				$s->setParticipantInfoState($_POST['part_no'], $member->info_state);
+				$s->setParticipantInfoState($_POST['part_no'], State::ST_EDITABLE);
+				
+		//		$ajax->message.=PHP_EOL."<pre>".var_export($s,true).PHP_EOL;
 				$s->setProgression();
+				
+		//		$ajax->message.=var_export($s,true).PHP_EOL."</pre>";
 				$ajax->updateMenuState($s);
 			}
 			$member->commit();
