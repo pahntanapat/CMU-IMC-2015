@@ -78,7 +78,7 @@ class SKAjaxOriginal{
 			'result'=>$this->result,
 			'message'=>$this->message,
 			'action'=>$this->arrayAction
-		),$option,$depth);
+		));
 	}
 	public function fromJSON($json,$assoc=false){
 		$r=json_decode($json,$assoc);
