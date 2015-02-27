@@ -136,27 +136,27 @@ require_once 'class.UploadImage.php';
     </li>
     <li class="accordion-navigation">
         <a href="#sbMenu" id="h-sbMenu"><i class="fa fa-bars"></i> Main menu</a>
-        <div id="sbMenu" class="content"><ul class="side-nav">
+        <div id="sbMenu" class="content active"><ul class="side-nav">
   <li><a href="index.php" title="Main page"><i class="fa fa-home fa-lg"></i> Main page</a></li>
   <li><a href="index.php#changePW"><?=State::img(State::ST_EDITABLE)?>Change password</a></li>
   <li><a href="logout.php" title="Log out"><i class="fa fa-sign-out fa-lg"></i> Log out</a></li></ul>
         </div>
     </li>
     <li class="accordion-navigation">
-        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Steps of Registration</a>
-        <div id="sbStep" class="content">
+        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Edit information</a>
+        <div id="sbStep" class="content active">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
   <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
+  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's information</a></li>
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transaction">Upload &amp; Confirm Transaction</a></li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload transfer slip">Upload &amp; Confirm transfer slip</a></li>
   <li><hr></li>
   <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="post_reg.php" title="Select route &amp; upload team's picture &amp; update arrival time">Update your journey</a></li>
-  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of the journey</a></li>
+  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of trip selection</a></li>
 </ul>
         </div>
     </li>
@@ -188,23 +188,22 @@ $r=!State::is($s->postRegState,State::ST_EDITABLE,$config->REG_START_PAY,$config
 <?=$t->routeForm($r)?>
 </fieldset>
 <fieldset><legend>Type/Time of Arrival &amp; Departure</legend>
-
-<div>
-  <label class="require">Arrival time <small><a href="../local_information.html#other" target="_blank">In Thailand timezone (UTC+07:00)</a></small>
+  <div>
+  <label class="require">Arrival time (to Chiang Mai) <small><a href="../local_information.html#other" target="_blank">In Thailand timezone (UTC+07:00)</a></small>
     <input name="arrive_time" type="datetime" id="arrive_time" value="<?=$t->arrive_time?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
-  <label class="require">Expected type of arrival (to Chiang Mai) <small> Airplane, Bus, Train, Van</small>
+  <label class="require">Expected type of arrival <small> Airplane, Bus, Train, Van</small>
     <input name="arrive_by" type="text" id="arrive_by" value="<?=$t->arrive_by?>"<?=Config::readonly($r)?>></label>
 </div>
 <div>
-  <label>Departure time <small><a href="../local_information.html#other" target="_blank">In Thailand timezone (UTC+07:00)</a></small>
+  <label>Departure time (from Chiang Mai) <small><a href="../local_information.html#other" target="_blank">In Thailand timezone (UTC+07:00)</a></small>
     <input name="depart_time" type="datetime" id="depart_time" value="<?=$t->depart_time?>"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
-  <label>Expected type of departure (from Chiang Mai) <small>Airplane, Bus, Train, Van</small>
+  <label>Expected type of departure <small>Airplane, Bus, Train, Van</small>
     <input name="depart_by" type="text" id="depart_by" value="<?=$t->depart_by?>"<?=Config::readonly($r)?>>
   </label>
 </div>

@@ -57,6 +57,7 @@ class Team extends SKeasySQL{
 	protected function rowArray($withUniv=false,$withPostReg=false,$row=array()){
 		if($withUniv)
 			$row=array_merge($row,array(
+				self::ROW_TEAM_NAME,
 				self::ROW_INSTITUTION,
 				self::ROW_UNIVERSITY,
 				self::ROW_COUNTRY,
@@ -109,9 +110,7 @@ class Team extends SKeasySQL{
 			$this->TABLE.'.'.self::ROW_PAY_STATE=>self::ROW_PAY_STATE,
 			$this->TABLE.'.'.self::ROW_POST_REG_STATE=>self::ROW_POST_REG_STATE,
 			$tmp[0]->TABLE.'.'.Observer::ROW_INFO_STATE=>'obsv_info',
-		//	$tmp[0]->TABLE.'.'.Observer::ROW_POST_REG_STATE=>'obsv_prs',
 			$tmp[1]->TABLE.'.'.Participant::ROW_INFO_STATE=>'part_info',
-		//	$tmp[1]->TABLE.'.'.Participant::ROW_POST_REG_STATE=>'part_prs',
 		);
 		if($withID) $rows[$this->TABLE.'.'.self::ROW_ID]=self::ROW_ID;
 		return self::row($rows);
@@ -216,7 +215,7 @@ class Team extends SKeasySQL{
 		require_once 'class.State.php';
 		$this->team_state=State::ST_EDITABLE;
 		
-		$row=array_merge($this->rowArray(true,false,array(self::ROW_EMAIL)),array(self::ROW_TEAM_STATE=>':s'));
+		$row=array_merge($this->rowArray(true,false,array(self::ROW_EMAIL)), array(self::ROW_TEAM_STATE=>':s'));
 		$stm=$this->db->prepare('UPDATE '.$this->TABLE
 			.' SET '.	self::equal($row)
 			.' WHERE '.self::ROW_ID.'=:i');
@@ -286,7 +285,7 @@ class Team extends SKeasySQL{
 					'COUNT(*)'=>'c'
 				))
 				.' FROM '.$this->TABLE
-				.' INNER JOIN '.$t[0]->TABLE
+				.' LEFT JOIN '.$t[0]->TABLE
 					.' ON '.$t[0]->TABLE.'.'.Observer::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
 				.' INNER JOIN '.$t[1]->TABLE
 					.' ON '.$t[1]->TABLE.'.'.Participant::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
@@ -406,7 +405,8 @@ class Team extends SKeasySQL{
 		$cr=$this->countRoute();
 		$mx=$this->maxRoute();
 		
-		ob_start();?><div><label class="require">Route of Chiang Mai Tour</label>
+		ob_start();?><div>
+<label class="require">Routes of Chiang Mai Tour</label>
 <?php
 		  foreach($this->getRoute() as $k=>$v):
 			$v=trim($v);?>

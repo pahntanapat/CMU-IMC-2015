@@ -134,7 +134,7 @@ if(isset($_GET['act'])) require_once 'admin.config.scr.php';
             <li><a href="admin.participant.php?view=part" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed participant (Medical student)</a></li>
       		<li><hr></li>
       		<li><a href="admin.info.php"><i class="fa fa-check-square-o fa-lg"></i> Approve teams' information: step 1</a></li>
-      		<li><a href="admin.pay.php"><i class="fa fa-check-square-o fa-lg"></i> Approve the transactions</a></li>
+      		<li><a href="admin.pay.php"><i class="fa fa-check-square-o fa-lg"></i> Approve the transfer slip</a></li>
       		<li><a href="admin.post_reg.php"><i class="fa fa-check-square-o fa-lg"></i> Approve teams' information: step 2</a></li>
       		<li><hr></li>
       		<li><a href="admin.edit.php" title="Edit administrator"><i class="fa fa-users fa-lg"></i> Edit administrator</a></li>

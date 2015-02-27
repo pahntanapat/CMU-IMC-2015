@@ -30,6 +30,10 @@ if(!Config::isPost()){
 			$ajax->message='Update Team\'s information sucess.';
 			$ajax->result=true;
 
+			$s->teamName=$t->team_name;
+			$s->institution=$t->institution;
+			$s->university=$t->university;
+			$s->country=$t->country;
 			$s->teamState=$t->team_state;
 			$s->setProgression();
 			$ajax->updateMenuState($s);

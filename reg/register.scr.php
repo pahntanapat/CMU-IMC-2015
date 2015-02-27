@@ -28,7 +28,6 @@ if(Config::isPost()){
 			$team=Config::assocToObjProp(Config::trimArray($_POST),$team);
 			if($team->add()===false){
 				$ajax->message='Error: Can not regist new team';
-				$json->addAction(SKAjax::RELOAD_CAPTCHA);
 			}else{
 				$ajax->result=true;
 				$ajax->message='Register: Create new account success. Please go to '."<a href=\"login.php\" title=\"Log in page\">Log in page</a>";
@@ -42,6 +41,7 @@ if(Config::isPost()){
 			$ajax->message=Config::e($e);
 		}
 	}
+	if(!$ajax->result) $ajax->addAction(SKAjax::RELOAD_CAPTCHA);
 	if(Config::isAjax()) Config::JSON($ajax);
 }
 ?>
