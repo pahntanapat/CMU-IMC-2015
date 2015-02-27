@@ -23,7 +23,7 @@ class MyConfig extends stdClass{
 		}catch(Exception $e){
 			$obj=new static();
 			$obj->reset();
-			return static::load();
+			return $obj;
 		}
 	}
 }

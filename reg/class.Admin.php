@@ -32,7 +32,7 @@ class Admin extends SKeasySQL{
 			$this->student_id=0;
 			return true;
 		}
-		
+		if(!$this->db) return false;
 		$stm=($this->db->prepare('SELECT'.self::row(self::ROW_ID,self::ROW_NICK,self::ROW_PERMISSION)
 			.'FROM '.$this->TABLE.' WHERE '.self::ROW_STD_ID.' = :stid AND '.self::ROW_PW.' = :pw'));
 		$stm->bindValue(':stid',$this->student_id);

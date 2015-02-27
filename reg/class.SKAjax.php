@@ -73,15 +73,15 @@ class SKAjaxOriginal{
 		return count($this->arrayAction);
 	}
 	
-	public function toJSON($option=0,$depth=512){
+	public function toJSON(){
 		return json_encode(array(
 			'result'=>$this->result,
 			'message'=>$this->message,
 			'action'=>$this->arrayAction
-		),$option,$depth);
+		));
 	}
-	public function fromJSON($json,$assoc=false,$depth=512,$option=0){
-		$r=json_decode($json,$assoc,$depth,$option);
+	public function fromJSON($json,$assoc=false){
+		$r=json_decode($json,$assoc);
 		$this->result=$r['result'];
 		$this->message=$r['message'];
 		$this->arrayAction=$r['action'];

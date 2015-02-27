@@ -48,7 +48,7 @@ class Config extends stdClass /* MyConfig*/{
 		}catch(Exception $e){
 			$obj=new self();
 			$obj->reset();
-			return self::load();
+			return $obj;
 		}
 	}
 	// Remove until this line;
