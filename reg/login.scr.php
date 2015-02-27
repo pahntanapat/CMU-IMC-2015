@@ -40,7 +40,7 @@ if(Config::isPost()){
 			if(Config::isAjax()) $ajax->addAction(SKAjax::REDIRECT,'./');
 			$ajax->result=true;
 		}else{
-			$ajax->message='Log in fail, there is not email or password in database.';
+			$ajax->message="Log in fail, there is not email or password in database.<br/>\nIf you forget password, please contact administrator.";
 			$ajax->addAction(SKAjax::RELOAD_CAPTCHA);
 		}
 	}
