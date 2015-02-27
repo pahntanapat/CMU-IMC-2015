@@ -295,7 +295,7 @@ class Team extends SKeasySQL{
 				.' FROM '.$this->TABLE
 				.' LEFT JOIN '.$t[0]->TABLE
 					.' ON '.$t[0]->TABLE.'.'.Observer::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
-				.' INNER JOIN '.$t[1]->TABLE
+				.' LEFT JOIN '.$t[1]->TABLE
 					.' ON '.$t[1]->TABLE.'.'.Participant::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
 				.' WHERE '.$this->TABLE.'.'.self::ROW_TEAM_STATE.'=:s OR '
 					.$t[0]->TABLE.'.'.Observer::ROW_INFO_STATE.'=:s OR '
