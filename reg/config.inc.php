@@ -22,6 +22,7 @@ class Config extends MyConfig{
 		INFO_SHIRT_SIZE="SS\nS\nM\nL\nXL\nXXL"
 		;
 	
+	// For PHP version that < 5.3.0 (not support last state binding
 	public static $SAVE_CONFIG='config.save.php';
 	
 	public function save(){
@@ -36,6 +37,8 @@ class Config extends MyConfig{
 			$obj->$k=$v;
 		return $obj;
 	}
+	
+	
 	public function PDO($returnNullIfError=false){
 		try{
 			$dbh=new PDO(
