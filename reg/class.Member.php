@@ -87,7 +87,7 @@ abstract class Member extends SKeasySQL{
 		$stm->bindValue(':fb',$this->fb);
 		$stm->bindValue(':tw',$this->tw);
 		
-		$stm->bindValue(':ss',$this->shirt_size);
+		$stm->bindValue(':ss',$this->shirt_size?$this->shirt_size:NULL);
 		$stm->bindValue(':cuisine',$this->cuisine);
 		$stm->bindValue(':allergy',$this->allergy);
 		$stm->bindValue(':disease',$this->disease);

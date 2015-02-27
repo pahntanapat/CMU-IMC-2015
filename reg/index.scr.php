@@ -24,7 +24,7 @@ if(Config::isPost()){ //Change Password
 			$t->id=$sess->id;
 			$t->pw=$_POST['pw'];
 			$ajax->result=$t->changePW($_POST['oldPassword']);
-			$ajax->message='Change password '.($elem->result?' success':'fail');
+			$ajax->message='Change password '.($ajax->result?'success':'fail');
 			if($ajax->result && Config::isAjax()) $ajax->addHtmlTextVal(SKAjax::SET_VAL,':password','');
 		}catch(Exception $e){
 			$ajax->result=false;
