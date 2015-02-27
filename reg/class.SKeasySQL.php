@@ -43,7 +43,8 @@ abstract class SKeasySQL{
 				$args[]=$k.' AS '.$v;
 			return ' '.implode(', ',$args).' ';
 		}
-		return ' '.implode(', ',func_get_args()).' '; // eg. row(self::ROW_ID,....), this function will return id,...
+		$args=func_get_args(); //For PHP<5.3.0
+		return ' '.implode(', ',$args).' '; // eg. row(self::ROW_ID,....), this function will return id,...
 	}
 	
 	public static function equal($rowList,$table=false){ //$rowList=array('row'=>':arg', ...)

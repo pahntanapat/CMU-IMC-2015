@@ -226,8 +226,8 @@ if(isset($_GET['act'])) require_once 'admin.config.scr.php';
         <input type="text" name="DB_NAME" id="DB_NAME"  value="<?=$config->DB_NAME?>" required>
       </div>
       <div>
-        <label for="DB_USERNAME">Username: </label>
-        <input type="text" name="DB_USERNAME" id="DB_USERNAME"  value="<?=$config->DB_USER?>" required></div>
+        <label for="DB_USER">Username: </label>
+        <input type="text" name="DB_USER" id="DB_USER"  value="<?=$config->DB_USER?>" required></div>
       <div><label for="DB_PW">Password: </label>
         <input type="text" name="DB_PW" id="DB_PW" value="<?=$config->DB_PW?>" required></div>
         <div><label for="DB_PW">Upload folder: </label>
