@@ -235,8 +235,7 @@ if(isset($_GET['act'])) require_once 'admin.config.scr.php';
         <div data-alert class="alert-box alert radius"><i class="fa fa-2x pull-left fa-exclamation-triangle"></i>ถ้าเปลี่ยน upload folder แต่ระบบไม่สามารถย้าย folder ได้ เมื่อมีคน upload ไฟล์ขึ้นไปแล้ว จำทำให้ระบบไม่สามารถหาไฟล์ได้ แม้ว่าจะมีไฟล์อยู่บน host ดังนั้น ผู้ที่แก้ไขต้องไปย้ายไฟล์บน host ด้วย FTP เองด้วย</div>
         </div>
       </div>
-      <div class="btnset"><button type="submit">บันทึก</button><button type="reset">ยกเลิก</button>
-      <a href="admin.config.php?act=rc" title="reset" class="reset button">Reset Config</a><a href="admin.config.php?act=rdb" title="reset" class="reset button">Reset Database &amp; Upload directory</a></div>
+      <div class="btnset"><button type="submit">บันทึก</button><button type="reset">ยกเลิก</button><a href="admin.config.php?act=rc" title="reset" class="reset button">Reset Config</a><a href="admin.config.php?act=rpd" title="reset" class="reset button">Reset participants' information &amp; Upload directory</a><a href="admin.config.php?act=rdb" title="reset" class="reset button">Reset database &amp; Upload directory (Factory reset)</a></div>
         </div>
     </fieldset>
   </form>
