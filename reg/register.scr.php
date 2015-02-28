@@ -30,7 +30,7 @@ if(Config::isPost()){
 				$ajax->message='Error: Can not regist new team';
 			}else{
 				$ajax->result=true;
-				$ajax->message='Register: Create new account success. Please go to '."<a href=\"login.php\" title=\"Log in page\">Log in page</a>";
+				$ajax->message='Register: Create new account successfully. Please go to '."<a href=\"login.php\" title=\"Log in page\">Log in page</a>";
 				$ajax->addHtmlTextVal(SKAjax::SET_HTML,'#reg',NULL);
 			}
 			

@@ -101,7 +101,7 @@ class Config extends stdClass /* MyConfig*/{
 	}
 	public static function checkPW($password,&$msg){
 		if(preg_match_all('/^[[:alnum:]_:;]{6,32}$/',$password,$msg)==0){
-			$msg='Password must contains a - z, A - Z, 0-9, _ (underscore), : (colon), and ; (semicolon) in 6 to 32 letters.';
+			$msg='Password must be 6-32 characters with letters, digits, _ (underscore), : (colon), or ; (semicolon).';
 			return false;
 		}else return true;
 	}

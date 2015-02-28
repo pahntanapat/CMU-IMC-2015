@@ -15,7 +15,7 @@ if(isset($_POST['del'])){ // Delete Admin
 	$ajax->msgID="adminList";
 	try{
 		$adm->beginTransaction();
-		$ajax->message='Delete '.$adm->del($_POST['del']).' administrator(s) success';
+		$ajax->message='Successfully delete '.$adm->del($_POST['del']).' administrator(s)';
 		$ajax->result=true;
 		$adm->commit();
 	}catch(Exception $e){

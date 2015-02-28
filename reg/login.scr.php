@@ -36,11 +36,11 @@ if(Config::isPost()){
 			$sess->setProgression();
 			$sess->write();
 			
-			$ajax->message='Log in success. You are redirected to main page.';
+			$ajax->message='Log in successfully. You are redirected to main page.';
 			if(Config::isAjax()) $ajax->addAction(SKAjax::REDIRECT,'./');
 			$ajax->result=true;
 		}else{
-			$ajax->message="Log in fail, there is not email or password in database.<br/>\nIf you forget password, please contact administrator.";
+			$ajax->message="Fail to log in, there is not email or password in database.<br/>\nIf you forget password, please contact administrator.";
 			$ajax->addAction(SKAjax::RELOAD_CAPTCHA);
 		}
 	}

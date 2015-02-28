@@ -59,7 +59,7 @@ try{
 			$json->result=$json->message!==false;
 			$json->message=$json->result?'Save custom system configuration complete; filesize = '.$json->message.' B':'Unable to save custom system configuration';
 			if($json->result && $UPLOAD_FOLDER!=UploadImage::rootFolder()){
-				$json->message=' and move uploaded directory '.(rename($UPLOAD_FOLDER,UploadImage::rootFolder())?'success':' fail').'.';
+				$json->message=' and move uploaded directory '.(rename($UPLOAD_FOLDER,UploadImage::rootFolder())?'successfully':' fail').'.';
 			}
 			break;
 	}

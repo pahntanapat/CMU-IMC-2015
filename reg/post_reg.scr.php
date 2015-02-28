@@ -51,7 +51,7 @@ if(Config::isPost() && !State::is($s->postRegState,State::ST_EDITABLE,$config->R
 		$s->postRegState=$t->post_reg_state;
 		$s->setProgression();
 		$ajax->result=true;
-		$ajax->message="<b>Upload image success</b><br/>".$ajax->message;
+		$ajax->message="<b>Upload complete</b><br/>".$ajax->message;
 	}catch(UploadImageException $e){
 		$ajax->result=false;
 		$uploadAjax->message=$e->getMessage();
@@ -109,7 +109,7 @@ if(Config::isPost() && !State::is($s->postRegState,State::ST_EDITABLE,$config->R
 		if(Config::isAjax()) $ajax->updateMenuState($s);
 		
 		$ajax->result=true;
-		$ajax->message="<b>Update your information success</b>";
+		$ajax->message="<b>Successfully update the information</b>";
 	}catch(Exception $e){
 		$ajax->result=false;
 		$ajax->message=Config::e($e);

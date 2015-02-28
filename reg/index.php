@@ -161,7 +161,7 @@ require_once 'index.scr.php';
         <input type="password" name="oldPassword" id="oldPassword"></label>
       </div>
       <div>
-        <label class="require">new password
+        <label class="require">new password <small>Password must be 6-32 characters with letters, digits, _ (underscore), : (colon), or ; (semicolon).</small>
         <input type="password" name="pw" id="pw"></label>
       </div>
       <div>

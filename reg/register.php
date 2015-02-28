@@ -115,7 +115,7 @@ else{
   <div>
     <label>E-mail<input name="email" type="email" required id="email" value="<?=$t->email?>" maxlength="127"></label></div>
   <div>
-    <label>Password<input name="pw" type="password" id="pw" maxlength="32" required></label></div>
+    <label>Password <small>Password must be 6-32 characters with letters, digits, _ (underscore), : (colon), or ; (semicolon).</small><input name="pw" type="password" id="pw" maxlength="32" required></label></div>
     <div>
     <label>Comfirm password
       <input name="cpw" type="password" id="cpw" maxlength="32" required></label></div>

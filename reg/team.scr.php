@@ -36,7 +36,7 @@ if(!Config::isPost()){
 			$ajax->updateMenuState($s);
 			$ajax->setFormDefault();
 		}
-		$ajax->message='Update Team\'s information success.';
+		$ajax->message='Successfully update Team\'s information';
 		$ajax->result=true;
 		$t->commit();
 	}catch(Exception $e){

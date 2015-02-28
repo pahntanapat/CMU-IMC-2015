@@ -12,9 +12,9 @@ require_once 'class.Admin.php';
 if(isset($_POST['oldPassword'])){ //Change password
 	$_POST=Config::trimArray($_POST);
 	if(Config::isBlank($_POST,'password','cfPW','oldPassword')){
-		$elem->msgCP='Password must not leave blank.';
+		$elem->msgCP='Please fill out password';
 	}else	if($_POST['password']!=$_POST['cfPW']){
-		$elem->msgCP='Confirm password must same new password!';
+		$elem->msgCP='Please fill out the same password in "new password" and "confirm password".';
 	}elseif(!Config::checkPW($_POST['cfPW'],$adm)){
 		$elem->msgCP=$adm;
 	}else{
@@ -25,7 +25,7 @@ if(isset($_POST['oldPassword'])){ //Change password
 			$adm->password=$_POST['password'];
 			$elem->result=$adm->changePW($_POST['oldPassword']);
 			
-			$elem->msgCP='Change password '.($elem->result?' success':'fail');
+			$elem->msgCP=($elem->result?' Successfully':'Fail to').' change password ';
 			$adm->commit();
 		}catch(Exception $e){
 			$adm->rollBack();
@@ -43,7 +43,7 @@ if(isset($_POST['oldPassword'])){ //Change password
 			$adm->id=$sess->id;
 			$elem->result=$adm->updateInfo();
 			
-			$elem->msgEP='Change profile '.($elem->result?' success':'fail');
+			$elem->msgEP=($elem->result?'Successfully ':'Fail to').' change profile';
 			$adm->commit();
 		}catch(Exception $e){
 			$adm->rollBack();
