@@ -1,0 +1,7 @@
+﻿User-agent: *
+Disallow: /xxx-cant del/
+Disallow: /v2014/
+Disallow: /v2015/
+Disallow: /stat/
+Disallow: /not_used/
+Disallow: /reg/
