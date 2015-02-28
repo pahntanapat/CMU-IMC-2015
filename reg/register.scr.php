@@ -7,9 +7,12 @@ if($sess->checkSession()) Config::redirect('./','You have already logged in.');
 
 if(Config::isPost()){
 	require_once 'class.SKAjax.php';
+	require_once 'class.State.php';
 	$ajax=new SKAjax();
 	$ajax->result=false;
-	if(!Config::checkCAPTCHA()){
+	if(!State::is(State::ST_EDITABLE, State::ST_EDITABLE, $config->REG_START_REG, $config->REG_END_REG)){
+		$ajax->message='You are not allowed to register now.';
+	}elseif(!Config::checkCAPTCHA()){
 		$ajax->message='The CAPTCHA Answer is wrong. Please try again.';
 	}elseif(Config::isBlank($_POST,'email','pw','country','institution','university')){
 		$ajax->message='You must fill out all fields';
