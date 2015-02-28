@@ -13,15 +13,22 @@ $json->result=false;
 try{
 	switch(@$_GET['act']){
 		case 'rdb':
-			require_once 'class.Team.php';
 			require_once 'class.Admin.php';
-			require_once 'class.Member.php';
-			require_once 'class.UploadImage.php';
 			$db=$config->PDO();
 			$db->beginTransaction();
+			
 			$tmp=new Admin($db);
 			$tmp->reset();
+		case 'rpd':
+			require_once 'class.Team.php';
+			require_once 'class.Member.php';
+			require_once 'class.Message.php';
+			require_once 'class.UploadImage.php';
 			
+			if(!isset($db)){
+				$db=$config->PDO();
+				$db->beginTransaction();
+			}
 			$tmp=new Team($db);
 			$tmp->reset();
 			
@@ -29,6 +36,9 @@ try{
 			$tmp->reset();
 			
 			$tmp=new Observer($db);
+			$tmp->reset();
+			
+			$tmp=new Message($db);
 			$tmp->reset();
 			
 			$tmp=new UploadImage();

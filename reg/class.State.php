@@ -61,7 +61,7 @@ class State{
 	}
 	
 	public static function toHTML($state, $addInfo=NULL){
-		$html=self::img($state, false).'This section';
+		$html=self::img($state, false).'This section ';
 		switch($state){
 			case self::ST_NOT_START:
 				$html.='is "not opened" to be edited. Please visit this page at "'.(is_array($addInfo)?$addInfo[0]:$addInfo).'".';
