@@ -37,12 +37,14 @@ class Config extends MyConfig{
 ### Installation ###
 
 1. Create MySQL database and tables for Reg System by SQL in /sql/imc-db-table.sql. If you want to create the tables only, execute SQL in /sql/imc-table.sql.
-2. Config the Reg system before uploading (see *Pre-installed Configuration*)
-3. Upload all directories to hosting. **EXCEPT** /sql/ and /Template/
-4. Log in with DB_USER, DB_PW in config.inc.php, this account is called *'Root'*.
-5. Go to Menu **Admin Task > System Configuration** and Edit the configuration
-6. Go to Menu **Admin Task > Edit administrator** and Add new administrators who can 'Edit the admin' and 'Config the System'
-7. After you add admins who have permissions in the previous step, Root account is automatically deactivated.
+2. Remove config.inc.php and config.save.php
+3. Rename **"config.inc - for use.php"** to **"config.inc.php"** and **"config.save - for use.php"** to **"config.save.php"**
+4. Config the Reg system before uploading (see *Pre-installed Configuration*)
+5. Upload all directories to hosting. **EXCEPT** /sql/ and /Template/
+6. Log in with DB_USER, DB_PW in config.inc.php, this account is called *'Root'*.
+7. Go to Menu **Admin Task > System Configuration** and Edit the configuration
+8. Go to Menu **Admin Task > Edit administrator** and Add new administrators who can 'Edit the admin' and 'Config the System'
+9. After you add admins who have permissions in the previous step, Root account is automatically deactivated.
 
 ### Post-installed Configuration ###
 
