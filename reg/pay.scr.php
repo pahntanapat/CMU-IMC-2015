@@ -43,7 +43,7 @@ if(Config::isFile()){
 				$ajax->updateMenuState($s);
 				
 				$ajax->result=true;
-				$ajax->message="<div class=\"alert-box success radius\">Upload your transfer slip complete. Please wait for transfer slip approval.</div>";
+				$ajax->message="<div class=\"alert-box success radius\">Upload your transfer slip completed. Please wait for transfer slip approval.</div>";
 				$ajax->addHtmlTextVal(SKAjaxReg::SET_HTML,'#uploadForm','');
 			}
 		}catch(UploadImageException $e){

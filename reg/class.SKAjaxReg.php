@@ -25,6 +25,12 @@ class SKAjaxReg extends SKAjax{
 			$param[1]["#menuPartInfo".$i]=State::toClass($s->getParticipantInfoState($i));
 		
 		$param[2]=$s->getProgression();
+		
+		$this->addHtmlTextVal(self::SET_HTML, '#teamNamePf', $s->teamName);
+		$this->addHtmlTextVal(self::SET_HTML, '#institutionPf', $s->institution);
+		$this->addHtmlTextVal(self::SET_HTML, '#universityPf', $s->university);
+		$this->addHtmlTextVal(self::SET_HTML, '#countryPf', $s->country);
+		
 		return $this->addAction(self::EVALUTE,'$.updateMenuState('.json_encode($param).');');
 	}
 }

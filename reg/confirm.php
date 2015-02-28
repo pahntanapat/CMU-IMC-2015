@@ -168,10 +168,10 @@ if(Config::isPost()||Config::isAjax()){
     <li class="accordion-navigation">
         <a href="#sbTeamInfo" id="h-sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
         <div id="sbTeamInfo" class="content active">
-            <b>Team's name:</b> <?=$s->teamName?><br>
-            <b>Institution:</b> <?=$s->institution?><br>
-            <b>University:</b> <?=$s->university?><br>
-            <b>Country:</b> <?=$s->country?><br><br>
+            <b>Team's name:</b> <span id="teamNamePf"><?=$s->teamName?></span><br>
+            <b>Institution:</b> <span id="institutionPf"><?=$s->institution?></span><br>
+            <b>University:</b> <span id="universityPf"><?=$s->university?></span><br>
+            <b>Country:</b> <span id="countryPf"><?=$s->country?><br></span><br>
             <b>Progression</b>
             <div id="progression" class="progress round"><span class="meter" style="width:<?=$s->getProgression()?>%"></span></div>
         </div>
@@ -237,7 +237,7 @@ if(($step==1 && State::is($s->cfInfoState, State::ST_EDITABLE, $config->REG_STAR
 <input type="checkbox" name="cf[]" value="1" id="cf_0">
       <label for="cf_0">I have completed <a href="post_reg.php">all application forms in the previous steps</a>.</label><br>
       <input type="checkbox" name="cf[]" value="1" id="cf_1">
-      <label for="cf_1">I am ready to go to <a href="http://cmu-imc.med.cmu.ac.thl" title="CMU-IMC" target="_blank">CMU-IMC</a>.</label>
+      <label for="cf_1">I am ready to go to <a href="http://cmu-imc.med.cmu.ac.th" title="CMU-IMC" target="_blank">CMU-IMC</a>.</label>
       <? endif;?>
 </div><div><button type="submit" class="button alert">Confirm</button><button type="reset">Cancel</button></div></fieldset>
 </form>

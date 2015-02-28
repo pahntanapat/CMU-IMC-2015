@@ -10,40 +10,40 @@ class UploadImageException extends Exception{
 			CODE_UNWRITTABLE=3;
 	public function __construct($filename='',$code=0,$type=0){
 		if($type==self::TYPE_IMG_ERROR){
-			$message="Fail to process ".$filename." because ";
+			$message="Fail to process ".$filename." : ";
 			switch($code){
 				case self::CODE_UNSUPPORT_EXT:
-					$message.="uploaded file is not supported. Please upload JPEG (*.jpg, *.jpeg), PNG (*.png), or GIF (*.gif)  image only.";
+					$message.="type of uploaded file is not supported. Please upload JPEG (*.jpg, *.jpeg), PNG (*.png), or GIF (*.gif) image only.";
 					break;
 				case self::CODE_WRONG_FORMAT:
-					$message.="upload file format does not match its filetype (extension). Please check your image whether it is damage.";
+					$message.="upload file format does not match its file type (file extension). Please check your image whether it is damaged.";
 					break;
 				case self::CODE_UNWRITTABLE:
-					$message.="the registration system cannot save uploaded file on server. Please contact administrator.";
+					$message.="the registration system cannot save uploaded file to server. Please contact administrator.";
 					break;
 				default:
 			}
 		}elseif($type==self::TYPE_UPLOAD_ERROR){
-			$message="Unable to upload file $filename because ";
+			$message="Unable to upload file $filename : ";
 			switch($code){
 				case UPLOAD_ERR_INI_SIZE:
 				case UPLOAD_ERR_FORM_SIZE:
-					$message.="uploaded filesize is too large. Please compress your image, change to other filetypes, or reduce its resolution.";
+					$message.="uploaded file size is too large. Please compress your image, change to other file types, or reduce its resolution.";
 					break;
 				case UPLOAD_ERR_PARTIAL:
-					$message.="some part of file was not uploaded. Please check your internet connection and try to upload the image again."
+					$message.="some parts of the file failed to be uploaded. Please check your internet connection and try uploading the image again."
 					;break;
 				case UPLOAD_ERR_NO_FILE:
-					$message.="there was not uploaded file. Please check your internet connection and your web browser. After solving the problems, try to upload the image again.";
+					$message.="no file uploaded. Please check your internet connection and your web browser. After solving the problems, try uploading the image again.";
 					break;
 				case UPLOAD_ERR_NO_TMP_DIR:
 					$message.="temporary directory on web server is not found (Code: UPLOAD_ERR_NO_TMP_DIR). Please contact administrator.";
 					break;
 				case UPLOAD_ERR_CANT_WRITE:
-					$message.="the registration system cannot write any file to the server (Code: UPLOAD_ERR_CANT_WRITE). Please contact administrator.";
+					$message.="the registration system could not write any file to the server (Code: UPLOAD_ERR_CANT_WRITE). Please contact administrator.";
 					break;
 				case UPLOAD_ERR_EXTENSION:
-					$message.="unknown problem occurs in the registration system (Code: UPLOAD_ERR_EXTENSION). Please contact administrator.";
+					$message.="A problem occurred in the registration system or PHP Extension (Code: UPLOAD_ERR_EXTENSION). Please contact administrator.";
 			}
 		}
 		parent::__construct($message,$code);

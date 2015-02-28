@@ -27,9 +27,6 @@ if(!Config::isPost()){
 		$t->beginTransaction();
 		
 		if($t->updateInfo()){
-			$ajax->message='Update Team\'s information sucess.';
-			$ajax->result=true;
-
 			$s->teamName=$t->team_name;
 			$s->institution=$t->institution;
 			$s->university=$t->university;
@@ -38,9 +35,9 @@ if(!Config::isPost()){
 			$s->setProgression();
 			$ajax->updateMenuState($s);
 			$ajax->setFormDefault();
-		}else{
-			$ajax->message='No information changed.';
 		}
+		$ajax->message='Update Team\'s information success.';
+		$ajax->result=true;
 		$t->commit();
 	}catch(Exception $e){
 		$ajax->result=false;

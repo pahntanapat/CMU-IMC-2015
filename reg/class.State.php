@@ -61,31 +61,31 @@ class State{
 	}
 	
 	public static function toHTML($state, $addInfo=NULL){
-		$html=self::img($state, false).'This section is ';
+		$html=self::img($state, false).'This section ';
 		switch($state){
 			case self::ST_NOT_START:
-				$html.='"not ready" to edit. Please visit this page in "'.(is_array($addInfo)?$addInfo[0]:$addInfo).'".';
+				$html.='is not ready to edit. Please visit this page in "'.(is_array($addInfo)?$addInfo[0]:$addInfo).'".';
 				break;
 			case self::ST_TIME_UP:
-				$html.='"over the deadline" at "'.(is_array($addInfo)?$addInfo[1]:$addInfo).'", so you cannot edit any information.';
+				$html.='was over the deadline at "'.(is_array($addInfo)?$addInfo[1]:$addInfo).'", so you cannot edit any information.';
 				break;
 			case self::ST_LOCKED:
-				$html.='"locked". You are not allowed to edit any information.';
+				$html.='is locked. You are not allowed to edit any information.';
 				break;
 			case self::ST_EDITABLE:
-				$html.='"editable". You can change your information.';
+				$html.='is "editable". You can change your information.';
 				break;
 			case self::ST_WAIT:
-				$html.='"waiting" for approval.';
+				$html.='is waiting for approval.';
 				break;
 			case self::ST_NOT_PASS:
-				$html.='"not pass" because of some reasons.';
+				$html.='could not pass because of some reasons.';
 				break;
 			case self::ST_PASS:
-				$html.='"pass". If you want edit your information, please contact administrator.';
+				$html.='is pass. If you want edit your information, please contact administrator.';
 				break;
 			case self::ST_OK:
-				$html.='"pass" and "editable", so you can change it anytime.';
+				$html.='is pass and editable, so you can change it anytime.';
 				break;
 			//default: return '';
 		}
