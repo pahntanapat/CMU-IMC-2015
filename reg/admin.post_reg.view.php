@@ -36,19 +36,19 @@ function showPostReg(Message $msg, $message=''){
 <?=$img->toImgTeamPhoto()?>
 <table width="100%" border="0">
   <tr>
-    <th scope="col">Form</th>
+    <th scope="col" class="require">Form</th>
     <th scope="col">Detail</th>
   </tr>
   <tr>
-    <th scope="col">Route</th>
+    <th scope="row" class="require">Route</th>
     <td><?=$route[$t->route]?> (routeCode = <?=$t->route?>)</td>
   </tr>
   <tr>
-    <th scope="col">Arrival time</th>
+    <th scope="row" class="require">Arrival time</th>
     <td><?=$t->arrive_time?></td>
   </tr>
   <tr>
-    <th scope="row">Method to Arrive</th>
+    <th scope="row" class="require">Method to Arrive</th>
     <td><?=$t->arrive_by?></td>
   </tr>
   <tr>

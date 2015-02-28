@@ -120,7 +120,7 @@ else{
     <label>Comfirm password
       <input name="cpw" type="password" id="cpw" maxlength="32" required></label></div>
       <div>
-    <label>Team's name
+    <label>Team's name <small>Avoid using ' (Single quote), " (Double quote), ` (Back quote) and \ (Backslash) because they cause database problems.</small>
       <input name="team_name" type="text" required id="team_name" value="<?=$t->team_name?>" maxlength="100"></label></div>
   <div>
     <label>Medical school<input name="institution" type="text" required id="institution" value="<?=$t->institution?>" maxlength="100"></label></div>

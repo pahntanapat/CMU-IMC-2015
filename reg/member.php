@@ -225,7 +225,7 @@ echo Member::gender($member->gender,$r);
 if($no>0):?>
            <div>
              <label class="require">Medical student year
-               <input name="std_y" type="text" id="std_y" value="<?=$member->std_y?>">
+               <input name="std_y" type="text" id="std_y" value="<?=$member->std_y?>"<?=Config::readonly($r)?>>
           </label></div><? endif;?>
            <div>
              <label class="require">Date of Birth <small>Click on the form to show calendar, and click on title bar of calendar to change month, or double click it to select year.</small>
@@ -255,9 +255,9 @@ if($no>0):?>
                        <input name="tw" type="text" id="tw" placeholder="@twitter" value="<?=$member->tw?>"<?=Config::readonly($r)?>>
           </label></div><? if($no>0):?>
          <div>
-           <label class="require">Emergency contact
-             <input name="emerg_contact" type="text" id="emerg_contact"  value="<?=$member->emerg_contact?>"<?=Config::readonly($r)?>>
-          </label></div><? endif;?>
+           <label class="require">Emergency contact <small>Phone, Email, Online Chat, Social Networking ...</small>
+             <textarea name="emerg_contact" rows="5" id="emerg_contact" <?=config::readonly($r)?>="<?=Config::readonly($r)?>"><?=$member->emerg_contact?></textarea>
+           </label></div><? endif;?>
       </fieldset>
       <fieldset>
         <legend>Lifestyle</legend>

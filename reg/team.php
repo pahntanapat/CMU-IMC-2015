@@ -185,7 +185,7 @@ $r=!State::is($s->teamState,State::ST_EDITABLE,$config->REG_START_REG,$config->R
   </label>
 </div>
 <div>
-  <label class="require">Team's name
+  <label class="require">Team's name <small>Avoid using ' (Single quote), " (Double quote), ` (Back quote) and \ (Backslash) because they cause database problems.</small>
     <input name="team_name" type="text" required id="team_name" value="<?=$t->team_name?>" maxlength="40"<?=Config::readonly($r)?>>
   </label>
 </div>

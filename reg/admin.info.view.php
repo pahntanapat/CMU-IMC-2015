@@ -43,35 +43,35 @@ function approveTeam(Message $msg, $message=''){
 <div class="content active" id="t"><div>
   <table width="100%" border="0">
     <tr>
-      <th scope="col">Form</th>
+      <th scope="col" class="require">Form</th>
       <th scope="col">Detail</th>
     </tr>
     <tr>
-      <th scope="row">Email</th>
+      <th scope="row" class="require">Email</th>
       <td><?=$t->email?></td>
     </tr>
     <tr>
-      <th scope="row">Team's name</th>
+      <th scope="row" class="require">Team's name</th>
       <td><?=$t->team_name?></td>
     </tr>
     <tr>
-      <th scope="row">Medical school</th>
+      <th scope="row" class="require">Medical school</th>
       <td><?=$t->institution?></td>
     </tr>
     <tr>
-      <th scope="row">University</th>
+      <th scope="row" class="require">University</th>
       <td><?=$t->university?></td>
     </tr>
     <tr>
-      <th scope="row">Address</th>
+      <th scope="row" class="require">Address</th>
       <td><?=$t->address?></td>
     </tr>
     <tr>
-      <th scope="row">Country</th>
+      <th scope="row" class="require">Country</th>
       <td><?=$t->country?></td>
     </tr>
     <tr>
-      <th scope="row">Med school's phone</th>
+      <th scope="row" class="require">Med school's phone</th>
       <td><?=$t->phone?></td>
     </tr>
   </table></div>
@@ -87,18 +87,18 @@ for($no=0;$no<=$config->REG_PARTICIPANT_NUM;$no++):
   <table width="100%" border="0">
     <tr>
       <th scope="col">Form</th>
-      <th scope="col">Detail</th>
+      <th scope="col" class="require">Detail</th>
     </tr><? if($no>0):?>
     <tr>
-      <th scope="col">Participant No.</th>
+      <th scope="col" class="require">Participant No.</th>
       <td><?=$no?></td>
       </tr><? endif;?>
     <tr>
-      <th scope="row">Title</th>
+      <th scope="row" class="require">Title</th>
       <td><?=$m[$no]->title?></td>
       </tr>
     <tr>
-      <th scope="row">Firstname</th>
+      <th scope="row" class="require">Firstname</th>
       <td><?=$m[$no]->firstname?></td>
       </tr>
     <tr>
@@ -106,23 +106,23 @@ for($no=0;$no<=$config->REG_PARTICIPANT_NUM;$no++):
       <td><?=$m[$no]->middlename?></td>
       </tr>
     <tr>
-      <th scope="row">Lastname</th>
+      <th scope="row" class="require">Lastname</th>
       <td><?=$m[$no]->lastname?></td>
       </tr>
     <tr>
-      <th scope="row">Gender</th>
-      <td><?=$m[$no]->gender?'fe':''?>male</td>
+      <th scope="row" class="require">Gender</th>
+      <td><?=$m[$no]->gender?'':'fe'?>male</td>
       </tr><? if($no>0):?>
     <tr>
-      <th scope="row">Med Student Year</th>
+      <th scope="row" class="require">Med Student Year</th>
       <td><?=$m[$no]->std_y?></td>
       </tr><? endif;?>
     <tr>
-      <th scope="row">Birth</th>
+      <th scope="row" class="require">Birth</th>
       <td><?=$m[$no]->birth?></td>
       </tr>
     <tr>
-      <th scope="row">Nationality</th>
+      <th scope="row" class="require">Nationality</th>
       <td><?=$m[$no]->nationality?></td>
       </tr>
     <tr>
@@ -142,11 +142,11 @@ for($no=0;$no<=$config->REG_PARTICIPANT_NUM;$no++):
       <td><?=$m[$no]->tw?></td>
       </tr><? if($no>0):?>
     <tr>
-      <th scope="row">Emergency contact</th>
+      <th scope="row" class="require">Emergency contact</th>
       <td><?=$m[$no]->emerg_contact?></td>
       </tr><? endif;?>
     <tr>
-      <th scope="row">Religion</th>
+      <th scope="row" class="require">Religion</th>
       <td><?=$m[$no]->religion?></td>
       </tr>
     <tr>
@@ -166,7 +166,7 @@ for($no=0;$no<=$config->REG_PARTICIPANT_NUM;$no++):
       <td><?=nl2br($m[$no]->other_req)?></td>
       </tr>
     <tr>
-      <th scope="row">Shirt size</th>
+      <th scope="row" class="require">Shirt size</th>
       <td><?=$m[$no]->shirt_size?></td>
     </tr>
   </table>
