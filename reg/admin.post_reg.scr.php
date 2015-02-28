@@ -29,7 +29,7 @@ if(Config::isPost()){ // Submit
 		$t->post_reg_state=$_POST['approve'];
 		$t->setState(Team::ROW_POST_REG_STATE);
 		
-		$ajax->message='Approve team\'s information success.';
+		$ajax->message='Successfully approve team\'s information';
 		$ajax->result=true;
 		$db->commit();
 	}catch(Exception $e){

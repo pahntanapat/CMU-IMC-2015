@@ -44,10 +44,10 @@ if(Config::isPost() && !State::is($s->getParticipantInfoState($_POST['part_no'])
 				$uploadAjax->updateMenuState($s);
 				$uploadAjax->addAction(SKAjaxReg::RESET_FORM);
 			}
-			$uploadAjax->message='Upload your image complete'."<br/><br/>".$upload->toImgPartStudentCard($_POST['part_no']);
+			$uploadAjax->message='Upload complete'."<br/><br/>".$upload->toImgPartStudentCard($_POST['part_no']);
 			$uploadAjax->result=true;
 		}else{
-			$uploadAjax->message='Fail to upload your image. Please try again.';
+			$uploadAjax->message='Fail to upload. Please try again.';
 		}
 	}catch(UploadImageException $e){
 		$uploadAjax->result=false;
@@ -65,7 +65,7 @@ if(Config::isPost() && !State::is($s->getParticipantInfoState($_POST['part_no'])
 	}elseif(!(Config::isBlank($_POST,'birth') || strtotime($_POST['birth'],time())<time())){
 		$ajax->message='Date of birth is greater than today. Please fill out the correct date.';
 	}elseif(!($_POST['part_no']==0 || Config::isBlank($_POST,'std_y') || is_numeric($_POST['std_y']))){
-		$ajax->message='Please fill out "Medical student year" in numeric format.';
+		$ajax->message='Please fill out "medical student year" in numeric format.';
 	}else{
 		try{
 			require_once 'class.Member.php';
@@ -83,14 +83,14 @@ if(Config::isPost() && !State::is($s->getParticipantInfoState($_POST['part_no'])
 			if($member->id==0){
 				$member->id=$member->add();
 				$ajax->result=true;
-				$ajax->message='Add new team\'s member success ';
+				$ajax->message='Successfully add new team\'s '.(isset($member->part_no)?'member':'advisor');
 			}else{
 				$ajax->result=$member->update()>0;
-				$ajax->message=$ajax->result?'Update the information success.':'No any information change.';
+				$ajax->message='Successfully update the information';
 			}
 			if($ajax->result){
 				$ajax->setFormDefault((array) $member, array(Observer::ROW_GENDER, Observer::ROW_SHIRT_SIZE));
-				$s->setParticipantInfoState($_POST['part_no'], $member->info_state);
+				$s->setParticipantInfoState($_POST['part_no'], State::ST_EDITABLE);
 				$s->setProgression();
 				$ajax->updateMenuState($s);
 			}

@@ -38,8 +38,7 @@ if(Config::isPost()){
 					$i->deleteFolder($_POST['del']);
 					
 					$ajax->result=true;
-					$ajax->msgID='divTeamList';
-					$ajax->message=fullList($db,'Delete Participants\' teams success');
+					$ajax->message='Successfully delete Participants\' teams';
 					break;
 				case 'team':
 					$t=Config::assocToObjProp(Config::trimArray($_POST),new Team($db));
@@ -54,7 +53,7 @@ if(Config::isPost()){
 					if(@$_POST['del_tk']) $i->deleteTicket();
 					
 					$ajax->result=true;
-					$ajax->message='Update team\'s info success';
+					$ajax->message='Successfully update team\'s information';
 					break;
 				case 'part':
 					if(!$sess->checkPMS(SesAdm::PMS_PARTC)){
@@ -71,7 +70,7 @@ if(Config::isPost()){
 					if(@$_POST['delete']) $i->deletePartStudentCard($m->part_no);
 					
 					$ajax->result=true;
-					$ajax->message='Update participant/observer\'s info success';
+					$ajax->message='Successfully update participant/observer\'s information';
 					break;
 			}
 			$db->commit();

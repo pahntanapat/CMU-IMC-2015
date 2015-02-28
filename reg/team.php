@@ -123,10 +123,10 @@ require_once 'class.Message.php';
     <li class="accordion-navigation">
         <a href="#sbTeamInfo" id="h-sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
         <div id="sbTeamInfo" class="content active">
-            <b>Team's name:</b> <?=$s->teamName?><br>
-            <b>Institution:</b> <?=$s->institution?><br>
-            <b>University:</b> <?=$s->university?><br>
-            <b>Country:</b> <?=$s->country?><br><br>
+            <b>Team's name:</b> <span id="teamNamePf"><?=$s->teamName?></span><br>
+            <b>Institution:</b> <span id="institutionPf"><?=$s->institution?></span><br>
+            <b>University:</b> <span id="universityPf"><?=$s->university?></span><br>
+            <b>Country:</b> <span id="countryPf"><?=$s->country?><br></span><br>
             <b>Progression</b>
             <div id="progression" class="progress round"><span class="meter" style="width:<?=$s->getProgression()?>%"></span></div>
         </div>
@@ -140,20 +140,22 @@ require_once 'class.Message.php';
         </div>
     </li>
     <li class="accordion-navigation">
-        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Steps of Registration</a>
+        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Edit information</a>
         <div id="sbStep" class="content">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
   <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
+  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's information</a></li>
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transaction">Upload &amp; Confirm Transaction</a></li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transfer Slip">Upload &amp; Confirm transfer slip</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="post_reg.php" title="Select route &amp; upload team's picture &amp; update arrival time">Update your journey</a></li>
-  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of the journey</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=1" title="Select route &amp; upload team's picture &amp; update arrival time">Trip selection</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=2">Upload team's photo</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=3">Transportation info</a></li>
+  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of Application Form</a></li>
 </ul>
         </div>
     </li>
@@ -183,12 +185,12 @@ $r=!State::is($s->teamState,State::ST_EDITABLE,$config->REG_START_REG,$config->R
   </label>
 </div>
 <div>
-  <label class="require">Team's name
+  <label class="require">Team's name <small>Avoid using ' (Single quote), " (Double quote), ` (Back quote) and \ (Backslash) because they cause database problems.</small>
     <input name="team_name" type="text" required id="team_name" value="<?=$t->team_name?>" maxlength="40"<?=Config::readonly($r)?>>
   </label>
 </div>
 <div>
-  <label class="require">Institution
+  <label class="require">Faculty/Name of medical school
     <input name="institution" type="text" id="institution" value="<?=$t->institution?>" required<?=Config::readonly($r)?>>
   </label>
 </div><div>
@@ -214,11 +216,10 @@ $r=!State::is($s->teamState,State::ST_EDITABLE,$config->REG_START_REG,$config->R
 </form><?=$ajax->toMsg()?>
 <button type="button" class="right" id="loadJR"><i class="fa fa-question-circle"></i> Help</button><ol class="joyride-list" data-joyride>
   <li data-text="Next" data-options="prev_button:false;tip_location:top"><h4>Application form</h4><p>Let's move to the application form.</p><input type="checkbox" id="hideJR" name="hideJR" value="1"><label for="hideJR">Don't show it again.</label></li>
-  <li data-id="h-sbStep" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4>Before that..</h4><p>If the steps of registration is hidden, please click it to expand them.</p></li>
-  <li data-id="save" data-text="Next" data-prev-text="Prev"><h4>Save &ne; Submit</h4><p>You don't have to fill out every form in one time before save. You can edit your information and save it anytime until...</p></li>
-  <li data-id="menuCfInfo" data-text="Next" data-prev-text="Prev"><h4>Confirmation</h4><p>... until you <b>confirm</b> your information in confirmation step.<br>After that, All information in this sections is sent to Admin to be approve.<small><br><br><i class="fa fa-exclamation-triangle fa-2x"></i> If the steps of registration is hidden, the instruction will show on wrong position. Please go back to the first step and do it again.</small></p></li>
-  <li data-id="email" data-text="Next" data-prev-text="Prev"><h4>Required form</h4><p>Before comfirmation, you must <b>fill out all required forms</b> that are beginnig with red asterisks. (But <i><b>you don't have to fill out them in first time</b></i> before save.)</p></li>
-  <li data-id="loadJR" data-text="Go!" data-prev-text="Prev" data-options="tip_location:right"><h4>Are you ready?</h4><p>The competition is beginning. <b>Let's go!</b></p></li>
+  <li data-id="h-sbStep" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4>Before that...</h4><p>If the steps of registration are hidden, please click <b>Edit Information</b> to expand the section.</p></li>
+  <li data-id="menuCfInfo" data-text="Next" data-prev-text="Prev"><h4>Confirmation</h4><p>You can edit and save your information any time before the confirmation.<small><br><br><i class="fa fa-exclamation-triangle fa-2x"></i> If the Edit Information section is hidden, the instruction callout will point you the wrong position. Please go back to the previous step and then continue the instruction guideline as normal.</small></p></li>
+  <li data-id="email" data-text="Next" data-prev-text="Prev"><h4 class="require">Required form</h4><p>Before confirmation, you must fill out all required fields that are marked with red asterisks. Though, until confirmed, it is unnecessary to fill them out all at once, since the information is editable.</p></li>
+  <li data-id="loadJR" data-text="Go!" data-prev-text="Prev" data-options="tip_location:right"><h4>Are you ready?</h4><p>The competition is a few months ahead. <b>Be prepared!</b></p></li>
 </ol>
 <!-- InstanceEndEditable --></div></div>
 </div>

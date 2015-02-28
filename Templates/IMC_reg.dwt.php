@@ -112,10 +112,10 @@ require_once 'class.State.php';
     <li class="accordion-navigation">
         <a href="#sbTeamInfo" id="h-sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
         <div id="sbTeamInfo" class="content active">
-            <b>Team's name:</b> <?=$s->teamName?><br>
-            <b>Institution:</b> <?=$s->institution?><br>
-            <b>University:</b> <?=$s->university?><br>
-            <b>Country:</b> <?=$s->country?><br><br>
+            <b>Team's name:</b> <span id="teamNamePf"><?=$s->teamName?></span><br>
+            <b>Institution:</b> <span id="institutionPf"><?=$s->institution?></span><br>
+            <b>University:</b> <span id="universityPf"><?=$s->university?></span><br>
+            <b>Country:</b> <span id="countryPf"><?=$s->country?><br></span><br>
             <b>Progression</b>
             <div id="progression" class="progress round"><span class="meter" style="width:<?=$s->getProgression()?>%"></span></div>
         </div>
@@ -129,20 +129,22 @@ require_once 'class.State.php';
         </div>
     </li>
     <li class="accordion-navigation">
-        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Steps of Registration</a>
+        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Edit information</a>
         <div id="sbStep" class="content">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="../reg/team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
   <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="../reg/member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="../reg/member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
+  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="../reg/member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's information</a></li>
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="../reg/confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="../reg/pay.php" title="Upload Transaction">Upload &amp; Confirm Transaction</a></li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="../reg/pay.php" title="Upload Transfer Slip">Upload &amp; Confirm transfer slip</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="../reg/post_reg.php" title="Select route &amp; upload team's picture &amp; update arrival time">Update your journey</a></li>
-  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="../reg/confirm.php?step=2" title="Confirmation of journey">Confirmation of the journey</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="../reg/post_reg.php?sec=1" title="Select route &amp; upload team's picture &amp; update arrival time">Trip selection</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="../reg/post_reg.php?sec=2">Upload team's photo</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="../reg/post_reg.php?sec=3">Transportation info</a></li>
+  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="../reg/confirm.php?step=2" title="Confirmation of journey">Confirmation of Application Form</a></li>
 </ul>
         </div>
     </li>

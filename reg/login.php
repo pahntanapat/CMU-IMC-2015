@@ -114,6 +114,7 @@ else{
     <button type="submit" name="submit" id="submit" value="log in">Log in</button>
     <button type="reset" name="cancel" id="cancel" value="cancel">Cancel</button></div><div> <ul class="inline-list">
     <li><a href="register.php" title="create new account">I don't have any account. Create new account.</a></li>
+    <li> <a href="../contact.html">Forget Password? Contact Adminstrator</a></li>
     <li><a href="admin.php">For Administrator</a></li>
   </ul></div></fieldset>
   </form>

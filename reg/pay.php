@@ -17,7 +17,7 @@ require_once 'class.State.php';
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Upload transaction :Chiang Mai University International Medical Challenge</title>
+<title>Upload transfer slip :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
@@ -116,10 +116,10 @@ require_once 'class.State.php';
     <li class="accordion-navigation">
         <a href="#sbTeamInfo" id="h-sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
         <div id="sbTeamInfo" class="content active">
-            <b>Team's name:</b> <?=$s->teamName?><br>
-            <b>Institution:</b> <?=$s->institution?><br>
-            <b>University:</b> <?=$s->university?><br>
-            <b>Country:</b> <?=$s->country?><br><br>
+            <b>Team's name:</b> <span id="teamNamePf"><?=$s->teamName?></span><br>
+            <b>Institution:</b> <span id="institutionPf"><?=$s->institution?></span><br>
+            <b>University:</b> <span id="universityPf"><?=$s->university?></span><br>
+            <b>Country:</b> <span id="countryPf"><?=$s->country?><br></span><br>
             <b>Progression</b>
             <div id="progression" class="progress round"><span class="meter" style="width:<?=$s->getProgression()?>%"></span></div>
         </div>
@@ -133,26 +133,28 @@ require_once 'class.State.php';
         </div>
     </li>
     <li class="accordion-navigation">
-        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Steps of Registration</a>
+        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Edit information</a>
         <div id="sbStep" class="content">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
   <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
+  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's information</a></li>
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transaction">Upload &amp; Confirm Transaction</a></li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transfer Slip">Upload &amp; Confirm transfer slip</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="post_reg.php" title="Select route &amp; upload team's picture &amp; update arrival time">Update your journey</a></li>
-  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of the journey</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=1" title="Select route &amp; upload team's picture &amp; update arrival time">Trip selection</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=2">Upload team's photo</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=3">Transportation info</a></li>
+  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of Application Form</a></li>
 </ul>
         </div>
     </li>
 </ul>
 </div><div id="regContent" class="small-12 large-8 columns"><!-- InstanceBeginEditable name="reg_content" -->
-  <h2><?=State::img(State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY))?> Upload your Transaction</h2>
+  <h2><?=State::img(State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY))?> Upload your Transfer slip</h2>
 <?php
 echo State::toHTML(
 	State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY),
@@ -186,20 +188,20 @@ if(!isset($ajax)){
 $r=!State::is($s->payState, State::ST_EDITABLE, $config->REG_START_PAY, $config->REG_END_PAY);
 
 if($num[1]>=$config->REG_MAX_TEAM):?>
-<div class="alert-box alert"><h5><i class="fa fa-exclamation-circle"></i> Sorry! The teams uploading their transaction are full (limit: <?=$num[0]?>/<?=$config->REG_MAX_TEAM?>).</h5></div>
+<div class="alert-box alert"><h5><i class="fa fa-exclamation-circle"></i> Sorry! The teams uploading their transfer slip are full (limit: <?=$num[0]?>/<?=$config->REG_MAX_TEAM?>).</h5></div>
 <? elseif(!$r):?>
   <div class="panel round">
   <h3>Application Fee</h3><p><b><?=$t->fee()?> per person</b> (<?=$t->fee(1+$config->REG_PARTICIPANT_NUM)?> per team including one advisor and <?=$config->REG_PARTICIPANT_NUM?> medical students or <?=$t->fee($config->REG_PARTICIPANT_NUM)?> per team with <?=$config->REG_PARTICIPANT_NUM?> medical students only)<br><small>* All transaction fees are NOT included.</small></p>
     <h3>Recommended image properties</h3>
     <ul>
       <li>Resolution: &ge;200 dpi (dot per inch)</li>
-      <li>Filetype (file extension): JPEG (*.jpg, *.jpeg), PNG (*.png), or GIF (*.gif)</li>
+      <li>File type (file extension): JPEG (*.jpg, *.jpeg), PNG (*.png), or GIF (*.gif)</li>
       <li>Size: &lt;50 KB (recommended size), &le; 8 MB (maximum limit for system)</li>
     </ul>
   </div>
-  <form action="pay.php" method="post" enctype="multipart/form-data" name="uploadForm" id="uploadForm"><fieldset class="require"><legend>Upload the transaction</legend><div><label class="require">Image file <?=$img->toForm($r)?></label>
-  </div><div><button type="submit" name="submitUpload" class="alert button">Upload &amp; Comfirm Transaction</button><button type="reset" name="resetUpload">Cancel</button></div></fieldset>
-<div class="alert-box info"><h5><i class="fa fa-info-circle"></i> <?=$num[0]?> of <?=$config->REG_MAX_TEAM?> teams that have already uploaded their transactions.</h5></div></form>
+  <form action="pay.php" method="post" enctype="multipart/form-data" name="uploadForm" id="uploadForm"><fieldset class="require"><legend>Upload the transfer slip</legend><div><label class="require">Image file <?=$img->toForm($r)?></label>
+  </div><div><button type="submit" name="submitUpload" class="alert button">Upload &amp; Comfirm Transfer slip</button><button type="reset" name="resetUpload">Cancel</button></div></fieldset>
+<div class="alert-box info"><h5><i class="fa fa-info-circle"></i> <?=$num[0]?> of <?=$config->REG_MAX_TEAM?> teams that have already uploaded their transfer slip.</h5></div></form>
 <?php
 endif;
 echo $ajax->toMsg();

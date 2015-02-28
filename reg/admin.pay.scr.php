@@ -51,7 +51,7 @@ if(Config::isPost()){ // Submit
 		$t->post_reg_state=$t->pay_state==State::ST_PASS?State::ST_EDITABLE:State::ST_LOCKED;
 		$t->setState(Team::ROW_POST_REG_STATE);
 		
-		$ajax->message='Approve the transaction complete.';
+		$ajax->message='Approve the transfer slip complete.';
 		$ajax->result=true;
 		
 		$db->commit();

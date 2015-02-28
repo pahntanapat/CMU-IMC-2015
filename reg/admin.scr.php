@@ -27,9 +27,9 @@ if(!Config::checkCAPTCHA()){
 			$sess->student_id=$adm->student_id;
 			$sess->nickname=$adm->nickname;
 			$sess->pms=(int) $adm->permission;
-			$ajax->message='Log in success. You are redirected to main page.';
+			$ajax->message='Log in successfully. You are redirected to main page.';
 		}else{
-			$ajax->message='Log in fail, your student ID or password are incorrect.';
+			$ajax->message='Fail to log in, your student ID or password are incorrect.';
 		}
 	}catch(Exception $e){
 		$ajax->message.="<br>\nLog in fail, ".Config::e($e);

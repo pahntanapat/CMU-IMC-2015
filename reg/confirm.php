@@ -168,10 +168,10 @@ if(Config::isPost()||Config::isAjax()){
     <li class="accordion-navigation">
         <a href="#sbTeamInfo" id="h-sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
         <div id="sbTeamInfo" class="content active">
-            <b>Team's name:</b> <?=$s->teamName?><br>
-            <b>Institution:</b> <?=$s->institution?><br>
-            <b>University:</b> <?=$s->university?><br>
-            <b>Country:</b> <?=$s->country?><br><br>
+            <b>Team's name:</b> <span id="teamNamePf"><?=$s->teamName?></span><br>
+            <b>Institution:</b> <span id="institutionPf"><?=$s->institution?></span><br>
+            <b>University:</b> <span id="universityPf"><?=$s->university?></span><br>
+            <b>Country:</b> <span id="countryPf"><?=$s->country?><br></span><br>
             <b>Progression</b>
             <div id="progression" class="progress round"><span class="meter" style="width:<?=$s->getProgression()?>%"></span></div>
         </div>
@@ -185,20 +185,22 @@ if(Config::isPost()||Config::isAjax()){
         </div>
     </li>
     <li class="accordion-navigation">
-        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Steps of Registration</a>
+        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Edit information</a>
         <div id="sbStep" class="content">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
   <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
+  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's information</a></li>
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transaction">Upload &amp; Confirm Transaction</a></li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transfer Slip">Upload &amp; Confirm transfer slip</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="post_reg.php" title="Select route &amp; upload team's picture &amp; update arrival time">Update your journey</a></li>
-  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of the journey</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=1" title="Select route &amp; upload team's picture &amp; update arrival time">Trip selection</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=2">Upload team's photo</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=3">Transportation info</a></li>
+  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of Application Form</a></li>
 </ul>
         </div>
     </li>
@@ -223,26 +225,26 @@ if(($step==1 && State::is($s->cfInfoState, State::ST_EDITABLE, $config->REG_STAR
 <? if($step==1):?>
 <input name="sum" type="hidden" id="sum" value="4">
 <input type="checkbox" name="cf[]" value="1" id="cf_0">
-      <label for="cf_0">I agree with <a href="http://cmu-imc.med.cmu.ac.th/competition.html" title="CMU-IMC Competition Rule" target="_blank">CMU-IMC Competition Rule</a>.</label><br>
+      <label for="cf_0">I agree to the terms and conditions of <a href="http://cmu-imc.med.cmu.ac.th/competition.html" title="CMU-IMC Competition Rule" target="_blank">CMU-IMC Competition Rules</a>.</label><br>
       <input type="checkbox" name="cf[]" value="1" id="cf_1">
-      <label for="cf_1">I understand <a href="http://cmu-imc.med.cmu.ac.th/registration.html" title="The Registration" target="_blank">The Registration</a>.</label><br>
+      <label for="cf_1">I have read <a href="http://cmu-imc.med.cmu.ac.th/registration.html" title="The Registration" target="_blank">The Registration Guide</a>.</label><br>
       <input type="checkbox" name="cf[]" value="1" id="cf_2">
-      <label for="cf_2">I have already completed <a href="./" title="all application forms in previous steps" target="_blank">all application forms in the previous steps</a>.</label><br>
+      <label for="cf_2">I have completed <a href="./" title="all application forms in previous steps" target="_blank">all application forms in the previous steps</a>.</label><br>
       <input type="checkbox" name="cf[]" value="1" id="cf_3">
-      <label for="cf_3">I confirm that all information is true.</label>
+      <label for="cf_3">I confirm that the information I have given is true.</label>
 <? elseif($step==2):?>
 <input name="sum" type="hidden" id="sum" value="2">
 <input type="checkbox" name="cf[]" value="1" id="cf_0">
-      <label for="cf_0">I have already completed <a href="post_reg.php">all application forms in the previous steps</a>.</label><br>
+      <label for="cf_0">I have completed <a href="post_reg.php">all application forms in the previous steps</a>.</label><br>
       <input type="checkbox" name="cf[]" value="1" id="cf_1">
-      <label for="cf_1">I am ready to go to <a href="http://cmu-imc.med.cmu.ac.thl" title="CMU-IMC" target="_blank">CMU-IMC</a>.</label>
+      <label for="cf_1">I am ready to go to <a href="http://cmu-imc.med.cmu.ac.th" title="CMU-IMC" target="_blank">CMU-IMC</a>.</label>
       <? endif;?>
 </div><div><button type="submit" class="button alert">Confirm</button><button type="reset">Cancel</button></div></fieldset>
 </form>
 <? endif; if(strlen($msg)>0):?><div class="alert-box radius warning"><b><?=$msg?></b></div><? endif;?>
 <div class="panel">
   <h4>
-<? if($step==1):?><i class="fa fa-lg fa-money"></i> After your information is approved, we recommend you to transfer <a href="../registration.html#fee" target="_blank">the application fee</a> and upload the transaction to <a href="pay.php" target="_blank">the registration system</a>
+<? if($step==1):?><i class="fa fa-lg fa-money"></i> After your information is approved, we recommend you to transfer <a href="../registration.html#fee" target="_blank">the application fee</a> and upload the transfer slip to <a href="pay.php" target="_blank">the registration system</a>
 <? else:?><i class="fa fa-lg fa-credit-card"></i> After your information is approved, we recommend you to send numbers, expire dates, and copies of participants' and advisor's passports<? endif;?> as soon as possible.</h4></div><!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->

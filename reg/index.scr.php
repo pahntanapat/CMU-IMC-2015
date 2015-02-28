@@ -13,9 +13,9 @@ if(Config::isPost()){ //Change Password
 	$ajax->msgID='msgCP';
 	
 	if(Config::isBlank($_POST,'pw','cfPW','oldPassword')){
-		$ajax->message='Password must not leave blank.';
+		$ajax->message='Please fill out password';
 	}else	if($_POST['pw']!=$_POST['cfPW']){
-		$ajax->message='Confirm password must same to new password!';
+		$ajax->message='Please fill out the same password in "new password" and "confirm password".';
 	}elseif(!Config::checkPW($_POST['cfPW'],$t)){
 		$ajax->message=$t;
 	}else{
@@ -24,7 +24,7 @@ if(Config::isPost()){ //Change Password
 			$t->id=$sess->id;
 			$t->pw=$_POST['pw'];
 			$ajax->result=$t->changePW($_POST['oldPassword']);
-			$ajax->message='Change password '.($elem->result?' success':'fail');
+			$ajax->message=($ajax->result?'Successfully':'Fail to').' change password ';
 			if($ajax->result && Config::isAjax()) $ajax->addHtmlTextVal(SKAjax::SET_VAL,':password','');
 		}catch(Exception $e){
 			$ajax->result=false;

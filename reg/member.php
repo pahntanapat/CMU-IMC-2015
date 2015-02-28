@@ -10,8 +10,8 @@ if(Config::isPost()||Config::isAjax()) require_once 'member.scr.php';
 $no=isset($_GET['no'])?(is_numeric($_GET['no'])?intval($_GET['no']):-1):-1;
 if($no<0||$no>$config->REG_PARTICIPANT_NUM) Config::redirect('member.php?no=0','Redirecting...');
 $who=array(
-	$no==0?'Professor':Config::ordinal($no,true).' paricipant',
-	$no==0?'Professor':Config::ordinal($no,false).' paricipant'
+	$no==0?'Advisor':Config::ordinal($no,true).' participant',
+	$no==0?'Advisor':Config::ordinal($no,false).' participant'
 );
 
 $db=$config->PDO();
@@ -134,10 +134,10 @@ require_once 'class.State.php';
     <li class="accordion-navigation">
         <a href="#sbTeamInfo" id="h-sbTeamInfo"><i class="fa fa-user-md"></i> Profile</a>
         <div id="sbTeamInfo" class="content active">
-            <b>Team's name:</b> <?=$s->teamName?><br>
-            <b>Institution:</b> <?=$s->institution?><br>
-            <b>University:</b> <?=$s->university?><br>
-            <b>Country:</b> <?=$s->country?><br><br>
+            <b>Team's name:</b> <span id="teamNamePf"><?=$s->teamName?></span><br>
+            <b>Institution:</b> <span id="institutionPf"><?=$s->institution?></span><br>
+            <b>University:</b> <span id="universityPf"><?=$s->university?></span><br>
+            <b>Country:</b> <span id="countryPf"><?=$s->country?><br></span><br>
             <b>Progression</b>
             <div id="progression" class="progress round"><span class="meter" style="width:<?=$s->getProgression()?>%"></span></div>
         </div>
@@ -151,20 +151,22 @@ require_once 'class.State.php';
         </div>
     </li>
     <li class="accordion-navigation">
-        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Steps of Registration</a>
+        <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Edit information</a>
         <div id="sbStep" class="content">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
   <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
   <? for($i=1;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
-  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's infomation</a></li>
+  <li class="<?=State::inTime($s->getParticipantInfoState($i), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuPartInfo<?=$i?>"><a href="member.php?no=<?=$i?>" title="<?=Config::ordinal($i, false)?>  participant's infomation"><?=Config::ordinal($i)?>  participant's information</a></li>
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transaction">Upload &amp; Confirm Transaction</a></li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transfer Slip">Upload &amp; Confirm transfer slip</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="menuPostReg"><a href="post_reg.php" title="Select route &amp; upload team's picture &amp; update arrival time">Update your journey</a></li>
-  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of the journey</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=1" title="Select route &amp; upload team's picture &amp; update arrival time">Trip selection</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=2">Upload team's photo</a></li>
+  <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=3">Transportation info</a></li>
+  <li class="<?=State::inTime($s->cfPostRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?>" id="cfPostReg"><a href="confirm.php?step=2" title="Confirmation of journey">Confirmation of Application Form</a></li>
 </ul>
         </div>
     </li>
@@ -195,7 +197,7 @@ if($no>0):?>
 <hr>
 <h3 data-magellan-destination="info" id="info">Application form</h3>
 <? else:?>
-<div class="alert-box warning radius" data-alert><i class="fa fa-2x  pull-left fa-exclamation-circle"></i> Complete this section if your team have an advisor. If your team don't have an advisor, please skip this section. <a href="#" class="close">&times;</a></div>
+<div class="alert-box warning radius" data-alert><i class="fa fa-2x  pull-left fa-exclamation-circle"></i> Complete this section if your team has an advisor. If not, please skip this section. <a href="#" class="close">&times;</a></div>
 <? endif;?>
    <form action="member.php?no=<?=$no?>" method="post" name="infoForm" id="infoForm">
       <fieldset>
@@ -223,11 +225,11 @@ echo Member::gender($member->gender,$r);
 if($no>0):?>
            <div>
              <label class="require">Medical student year
-               <input name="std_y" type="text" id="std_y" value="<?=$member->std_y?>">
+               <input name="std_y" type="text" id="std_y" value="<?=$member->std_y?>"<?=Config::readonly($r)?>>
           </label></div><? endif;?>
            <div>
              <label class="require">Date of Birth <small>Click on the form to show calendar, and click on title bar of calendar to change month, or double click it to select year.</small>
-               <input name="birth" type="date" id="birth" value="<?=$member->birth?>"<?=Config::readonly($r)?>>
+               <input name="birth" type="text" class="date" id="birth" value="<?=$member->birth?>"<?=Config::readonly($r)?>>
           </label></div>
            <div>
              <label class="require">Nationality
@@ -241,7 +243,7 @@ if($no>0):?>
             <input name="phone" type="tel" id="phone" placeholder="+xx xxx xxx xxx ..." value="<?=$member->phone?>"<?=Config::readonly($r)?>>
           </label></div>
                    <div>
-                     <label>Email address <small>You can fill out same email as log-in email.</small>
+                     <label>Email address <small>You can fill out the same email as log-in email.</small>
                        <input name="email" type="email" id="email" value="<?=$member->email?>"<?=Config::readonly($r)?>>
           </label></div>
                    <div>
@@ -253,9 +255,9 @@ if($no>0):?>
                        <input name="tw" type="text" id="tw" placeholder="@twitter" value="<?=$member->tw?>"<?=Config::readonly($r)?>>
           </label></div><? if($no>0):?>
          <div>
-           <label class="require">Emergency contact <small>with country code</small>
-             <input name="emerg_contact" type="tel" id="emerg_contact" placeholder="+xx xxx xxx xxx ..." value="<?=$member->emerg_contact?>"<?=Config::readonly($r)?>>
-          </label></div><? endif;?>
+           <label class="require">Emergency contact <small>Phone, Email, Online Chat, Social Networking ...</small>
+             <textarea name="emerg_contact" rows="5" id="emerg_contact" <?=config::readonly($r)?>="<?=Config::readonly($r)?>"><?=$member->emerg_contact?></textarea>
+           </label></div><? endif;?>
       </fieldset>
       <fieldset>
         <legend>Lifestyle</legend>
@@ -297,7 +299,8 @@ echo $ajax->toMsg();
 unset($ajax);
 ?>
     </form>
-    <? if($no>0):?><hr><h3 data-magellan-destination="upload" id="upload">Upload <?=$who[0]?>'s copy of student ID card or certificate of student</h3>
+    <? if($no>0):?><hr>
+    <h3 data-magellan-destination="upload" id="upload">Upload <?=$who[0]?>'s copy of student ID card or certificate of student status</h3>
    <form action="member.php?no=<?=$no?>" method="post" enctype="multipart/form-data" name="upload" id="uploadForm">
     <?php
 require_once 'class.UploadImage.php';
@@ -313,11 +316,11 @@ if(!isset($uploadAjax)){
 }
 if(!$r):?>
    <fieldset class="require">
-        <legend>Upload <?=$who[0]?>'s copy of student ID card or certificate of student</legend>
+        <legend>Upload <?=$who[0]?>'s copy of student ID card or certificate of student status</legend>
         <div class="panel"><h3>Recommended image properties</h3>
     <ul>
       <li>Resolution: &ge;200 dpi (dot per inch)</li>
-      <li>Filetype (file extension): JPEG (*.jpg, *.jpeg), PNG (*.png), or GIF (*.gif)</li>
+      <li>File type (file extension): JPEG (*.jpg, *.jpeg), PNG (*.png) or GIF (*.gif)</li>
       <li>Size: &lt;50 KB (recommended), &le; 8 MB (the maximum size)</li>
     </ul></div>
          <div><label class="require">Image file

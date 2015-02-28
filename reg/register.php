@@ -115,15 +115,16 @@ else{
   <div>
     <label>E-mail<input name="email" type="email" required id="email" value="<?=$t->email?>" maxlength="127"></label></div>
   <div>
-    <label>Password<input name="pw" type="password" id="pw" maxlength="32" required></label></div>
+    <label>Password <small>Password must be 6-32 characters with letters, digits, _ (underscore), : (colon), or ; (semicolon).</small><input name="pw" type="password" id="pw" maxlength="32" required></label></div>
     <div>
     <label>Comfirm password
       <input name="cpw" type="password" id="cpw" maxlength="32" required></label></div>
       <div>
-    <label>Team's name
+    <label>Team's name <small>Avoid using ' (Single quote), " (Double quote), ` (Back quote) and \ (Backslash) because they cause database problems.</small>
       <input name="team_name" type="text" required id="team_name" value="<?=$t->team_name?>" maxlength="100"></label></div>
   <div>
-    <label>Medical school<input name="institution" type="text" required id="institution" value="<?=$t->institution?>" maxlength="100"></label></div>
+    <label>Faculty/Name of medical school
+      <input name="institution" type="text" required id="institution" value="<?=$t->institution?>" maxlength="100"></label></div>
   <div>
     <label>University<input name="university" type="text" required id="university" value="<?=$t->university?>" maxlength="100"></label></div>
   <div>

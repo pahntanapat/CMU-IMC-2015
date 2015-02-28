@@ -13,7 +13,7 @@ require_once 'admin.pay.scr.php';
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Approve transactions :Chiang Mai University International Medical Challenge</title>
+<title>Approve transfer slip :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
@@ -130,7 +130,7 @@ require_once 'admin.pay.scr.php';
             <li><a href="admin.participant.php?view=part" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed participant (Medical student)</a></li>
       		<li><hr></li>
       		<li><a href="admin.info.php"><i class="fa fa-check-square-o fa-lg"></i> Approve teams' information: step 1</a></li>
-      		<li><a href="admin.pay.php"><i class="fa fa-check-square-o fa-lg"></i> Approve the transactions</a></li>
+      		<li><a href="admin.pay.php"><i class="fa fa-check-square-o fa-lg"></i> Approve the transfer slip</a></li>
       		<li><a href="admin.post_reg.php"><i class="fa fa-check-square-o fa-lg"></i> Approve teams' information: step 2</a></li>
       		<li><hr></li>
       		<li><a href="admin.edit.php" title="Edit administrator"><i class="fa fa-users fa-lg"></i> Edit administrator</a></li>
@@ -138,7 +138,7 @@ require_once 'admin.pay.scr.php';
 		</ul></div></li>
 </ul>
 </div>
-<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Approve Participants' transaction</h2>
+<div id="adminContent" class="small-12 large-9 columns"><!-- InstanceBeginEditable name="adminContent" --><h2>Approve Participants' transfer slip</h2>
 <? if(isset($_GET['id'])):?>
 <h5><a href="admin.team.php?id=<?=$_GET['id']?>" target="_blank">View team's information</a></h5>
 <?php

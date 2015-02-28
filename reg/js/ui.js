@@ -45,8 +45,8 @@
 		return me;
 	};*/
 	$.datetimepicker=function(){
-		$('input[type="datetime"]').mask('9999-99-99 99:99:99', {placeholder:'YYYY-MM-DD hh:mm:ss'});
-		$('input[type="date"]').mask('9999-99-99', {placeholder:'YYYY-MM-DD'})
+		$('input[type="datetime"], input.datetime').mask('9999-99-99 99:99:99', {placeholder:'YYYY-MM-DD hh:mm:ss'});
+		$('input[type="date"], input.date').mask('9999-99-99', {placeholder:'YYYY-MM-DD'})
 			.fdatepicker({format:'yyyy-mm-dd',viewMode:'years'});
 	};
 }(jQuery));

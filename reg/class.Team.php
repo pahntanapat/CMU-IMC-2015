@@ -57,21 +57,29 @@ class Team extends SKeasySQL{
 	protected function rowArray($withUniv=false,$withPostReg=false,$row=array()){
 		if($withUniv)
 			$row=array_merge($row,array(
+				self::ROW_TEAM_NAME,
 				self::ROW_INSTITUTION,
 				self::ROW_UNIVERSITY,
 				self::ROW_COUNTRY,
 				self::ROW_ADDRESS,
 				self::ROW_PHONE
 			));
-		if($withPostReg)
-			$row=array_merge($row,array(
-				self::ROW_ARRIVE_BY,
-				self::ROW_ARRIVE_TIME,
-				self::ROW_DEPART_BY,
-				self::ROW_DEPART_TIME,
-		
-				self::ROW_ROUTE
-			));
+		switch($withPostReg){
+			case 1:
+				$row=array_merge($row,array(
+					self::ROW_ARRIVE_BY,
+					self::ROW_ARRIVE_TIME,
+					self::ROW_DEPART_BY,
+					self::ROW_DEPART_TIME
+			
+			//		,self::ROW_ROUTE
+				));
+				break;
+			case 2:
+				$row[]=self::ROW_ROUTE;
+				break;
+			default:
+		}
 		$rows=array();
 		foreach($row as $k)
 			if(array_key_exists($k,$this->rows)) $rows[$k]=$this->rows[$k];
@@ -109,12 +117,32 @@ class Team extends SKeasySQL{
 			$this->TABLE.'.'.self::ROW_PAY_STATE=>self::ROW_PAY_STATE,
 			$this->TABLE.'.'.self::ROW_POST_REG_STATE=>self::ROW_POST_REG_STATE,
 			$tmp[0]->TABLE.'.'.Observer::ROW_INFO_STATE=>'obsv_info',
-		//	$tmp[0]->TABLE.'.'.Observer::ROW_POST_REG_STATE=>'obsv_prs',
 			$tmp[1]->TABLE.'.'.Participant::ROW_INFO_STATE=>'part_info',
-		//	$tmp[1]->TABLE.'.'.Participant::ROW_POST_REG_STATE=>'part_prs',
 		);
 		if($withID) $rows[$this->TABLE.'.'.self::ROW_ID]=self::ROW_ID;
 		return self::row($rows);
+	}
+	
+	public function auth($checkPW=false){
+		require_once 'class.Member.php';
+		$tmp=array(new Observer(NULL),new Participant(NULL));
+		
+		$stm=($this->db->prepare(
+			'SELECT '.$this->SQLforSession($checkPW)
+			.' FROM '.$this->TABLE
+			.' LEFT JOIN '.$tmp[0]->TABLE.' ON '.$tmp[0]->TABLE.'.'.Observer::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
+			.' LEFT JOIN '.$tmp[1]->TABLE.' ON '.$tmp[1]->TABLE.'.'.Participant::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
+			.' WHERE '.$this->TABLE.'.'.($checkPW?self::ROW_EMAIL.' = :e AND '.$this->TABLE.'.'.self::ROW_PW.' = :pw':self::ROW_ID.' = :i')
+		));
+		if($checkPW){
+			$stm->bindValue(':e',$this->email);
+			$stm->bindValue(':pw',$this->pw);
+		}else{
+			$stm->bindValue(':i',$this->id);
+		}
+		$stm->execute();
+		
+		return $this->prepareSession($stm);
 	}
 	
 	// convert PDOStatement to $this
@@ -140,35 +168,14 @@ class Team extends SKeasySQL{
 	public function getParticipantInfoState($i){
 		global $config;
 		if($i<0 || $i>$config->REG_PARTICIPANT_NUM) return false;
+		if($i>=count($this->memberInfoState)) return $this->getParticipantInfoState($i-1);
 		return $this->memberInfoState[$i];
 	}
 	// Get Observer's Info State after auth()
 	public function getObserverInfoState(){
 		return $this->memberInfoState[0];
 	}
-	
-	public function auth($checkPW=false){
-		require_once 'class.Member.php';
-		$tmp=array(new Observer(NULL),new Participant(NULL));
 		
-		$stm=($this->db->prepare(
-			'SELECT '.$this->SQLforSession($checkPW)
-			.' FROM '.$this->TABLE
-			.' LEFT JOIN '.$tmp[0]->TABLE.' ON '.$tmp[0]->TABLE.'.'.Observer::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
-			.' LEFT JOIN '.$tmp[1]->TABLE.' ON '.$tmp[1]->TABLE.'.'.Participant::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
-			.' WHERE '.$this->TABLE.'.'.($checkPW?self::ROW_EMAIL.' = :e AND '.$this->TABLE.'.'.self::ROW_PW.' = :pw':self::ROW_ID.' = :i')
-		));
-		if($checkPW){
-			$stm->bindValue(':e',$this->email);
-			$stm->bindValue(':pw',$this->pw);
-		}else{
-			$stm->bindValue(':i',$this->id);
-		}
-		$stm->execute();
-		
-		return $this->prepareSession($stm);
-	}
-	
 	// Routine method
 	public function del($list){
 		$stm=$this->db->prepare('DELETE FROM '.$this->TABLE
@@ -216,7 +223,7 @@ class Team extends SKeasySQL{
 		require_once 'class.State.php';
 		$this->team_state=State::ST_EDITABLE;
 		
-		$row=array_merge($this->rowArray(true,false,array(self::ROW_EMAIL)),array(self::ROW_TEAM_STATE=>':s'));
+		$row=array_merge($this->rowArray(true,false,array(self::ROW_EMAIL)), array(self::ROW_TEAM_STATE=>':s'));
 		$stm=$this->db->prepare('UPDATE '.$this->TABLE
 			.' SET '.	self::equal($row)
 			.' WHERE '.self::ROW_ID.'=:i');
@@ -229,10 +236,10 @@ class Team extends SKeasySQL{
 		return $stm->rowCount();
 	}
 	
-	public function updatePostReg(){ //for participant
+	public function updatePostReg($ticket){ //for participant
 		require_once 'class.State.php';
 		
-		$row=array_merge($this->rowArray(false,true),array(self::ROW_POST_REG_STATE=>':s'));
+		$row=array_merge($this->rowArray(false,$ticket?1:2),array(self::ROW_POST_REG_STATE=>':s'));
 		$stm=$this->db->prepare('UPDATE '.$this->TABLE
 			.' SET '.	self::equal($row)
 			.' WHERE '.self::ROW_ID.'=:i');
@@ -286,9 +293,9 @@ class Team extends SKeasySQL{
 					'COUNT(*)'=>'c'
 				))
 				.' FROM '.$this->TABLE
-				.' INNER JOIN '.$t[0]->TABLE
+				.' LEFT JOIN '.$t[0]->TABLE
 					.' ON '.$t[0]->TABLE.'.'.Observer::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
-				.' INNER JOIN '.$t[1]->TABLE
+				.' LEFT JOIN '.$t[1]->TABLE
 					.' ON '.$t[1]->TABLE.'.'.Participant::ROW_TEAM_ID.'='.$this->TABLE.'.'.self::ROW_ID
 				.' WHERE '.$this->TABLE.'.'.self::ROW_TEAM_STATE.'=:s OR '
 					.$t[0]->TABLE.'.'.Observer::ROW_INFO_STATE.'=:s OR '
@@ -406,7 +413,8 @@ class Team extends SKeasySQL{
 		$cr=$this->countRoute();
 		$mx=$this->maxRoute();
 		
-		ob_start();?><div><label class="require">Route of Chiang Mai Tour</label>
+		ob_start();?><div>
+<label class="require">Routes of Chiang Mai Tour</label>
 <?php
 		  foreach($this->getRoute() as $k=>$v):
 			$v=trim($v);?>

@@ -76,6 +76,7 @@ abstract class SKeasySQL{
 	}
 	
 	public static function IN($list){
+		if(count($list)==0) return ' IN(0) ';
 		return ' IN ('.implode(',',array_fill(0,count($list),'?')).')';
 	}
 }

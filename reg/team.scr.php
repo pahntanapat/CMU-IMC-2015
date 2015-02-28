@@ -27,16 +27,17 @@ if(!Config::isPost()){
 		$t->beginTransaction();
 		
 		if($t->updateInfo()){
-			$ajax->message='Update Team\'s information sucess.';
-			$ajax->result=true;
-
+			$s->teamName=$t->team_name;
+			$s->institution=$t->institution;
+			$s->university=$t->university;
+			$s->country=$t->country;
 			$s->teamState=$t->team_state;
 			$s->setProgression();
 			$ajax->updateMenuState($s);
 			$ajax->setFormDefault();
-		}else{
-			$ajax->message='No information changed.';
 		}
+		$ajax->message='Successfully update Team\'s information';
+		$ajax->result=true;
 		$t->commit();
 	}catch(Exception $e){
 		$ajax->result=false;

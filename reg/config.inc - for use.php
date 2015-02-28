@@ -34,7 +34,7 @@ class Config extends stdClass /* MyConfig*/{
 		return file_put_contents(self::$SAVE_CONFIG, '<?php return '.var_export($this,true).' ; ?>');
 	}
 	public function reset(){
-		return file_put_contents(self::$SAVE_CONFIG, '<?php return new '.get_called_class().'(); ?>');
+		return file_put_contents(self::$SAVE_CONFIG, '<?php return new '.__CLASS__.'();?>');
 	}
 	public static function __set_state($prop){
 		$obj=new self();
@@ -165,7 +165,7 @@ class Config extends stdClass /* MyConfig*/{
 	}
 	
 	public static function e(Exception $e){
-		return "<pre>Some problem occurs in the registration system. Please contact administrator.\n\n$e</pre>";
+		return "<pre>$e</pre>";
 	}
 	
 	

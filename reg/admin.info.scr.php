@@ -29,7 +29,7 @@ if(Config::isPost()){ // Submit
 				$t->team_state=$_POST['approve'];
 				$t->setState(Team::ROW_TEAM_STATE);
 				
-				$ajax->message='Approve Team\'s info success';
+				$ajax->message='Successfully approve Team\'s information';
 				break;
 			case Message::PAGE_INFO_OBSERVER:
 				require_once 'class.Member.php';
@@ -40,7 +40,7 @@ if(Config::isPost()){ // Submit
 				$m->info_state=$_POST['approve'];
 				$m->setState();
 				
-				$ajax->message='Approve Advisor\'s info success';
+				$ajax->message='Successfully approve Advisor\'s information';
 				break;
 			default:
 				$_POST['add_info']=json_decode($_POST['add_info']);
@@ -52,7 +52,7 @@ if(Config::isPost()){ // Submit
 				$m->info_state=$_POST['approve'];
 				$m->setState();
 				
-				$ajax->message='Approve '.Config::ordinal($_POST['add_info'][1]).' Participant\'s info success';
+				$ajax->message='Successfully  approve '.Config::ordinal($_POST['add_info'][1]).' Participant\'s information';
 		}
 		$t=new Team($db);
 		$t->id=$msg->team_id;
@@ -61,13 +61,14 @@ if(Config::isPost()){ // Submit
 		$m=true;
 		$m&=$t->team_state==State::ST_PASS;
 		for($i=0;$i<=$config->REG_PARTICIPANT_NUM;$i++)
-			$m&=$t->getParticipantInfoState($i)==State::ST_PASS;
+			$m&=($t->getParticipantInfoState($i)==State::ST_PASS || $t->getParticipantInfoState($i)==NULL);
 		
-		if($m){
+		if($m)
 			$t->pay_state=State::ST_EDITABLE;
-			$t->setState(Team::ROW_PAY_STATE);
-		}
+		else
+			$t->pay_state=State::ST_LOCKED;
 		
+		$t->setState(Team::ROW_PAY_STATE);
 		$ajax->result=true;
 		$db->commit();
 	}catch(Exception $e){
@@ -79,7 +80,7 @@ if(Config::isPost()){ // Submit
 		$ajax->msgID='apMsg';
 	}else{
 		$ajax->msgID='approveForm';
-		$ajax->message=approveTeam($msg,$ajax->message);
+		$ajax->message=approveTeam($msg, $ajax->message);
 	}
 }elseif(isset($_GET['id'])){ //Show info of team ID: $_GET['id']
 	require_once 'class.Message.php';
