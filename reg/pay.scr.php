@@ -26,7 +26,7 @@ if(Config::isFile()){
 	if(!State::is($t->pay_state, State::ST_EDITABLE, $config->REG_START_PAY, $config->REG_END_PAY)){
 		$ajax->message="<div class=\"alert-box alert radius\">You are not allowed to upload your transfer slip.</div>";
 	}elseif($pay[1]>=$config->REG_MAX_TEAM){
-		$ajax->message="<div class=\"alert-box alert radius\">Sorry! The team uploading their transfer slips are full (".$config->REG_MAX_TEAM." teams).</div>";
+		$ajax->message="<div class=\"alert-box alert radius\">Sorry! The amount of teams registrating for the event which transfer slip is sucessfully approved has reached the limited number of ".$config->REG_MAX_TEAM." teams.</div>";
 	}else{
 		try{
 			$img->minFileSize=10240;
