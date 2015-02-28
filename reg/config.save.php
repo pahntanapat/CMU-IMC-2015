@@ -11,4 +11,5 @@ XXL',
    'INFO_ROUTE' => 'Doi Suthep
 Mae Hia
 Mae Rim',
+   'DB_PW' => '053721872',
 )) ; ?>

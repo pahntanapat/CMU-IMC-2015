@@ -2,7 +2,7 @@
 // require_once 'class.MyConfig.php'; // comment this line to avoid late state binding problem debug for PHP version <5.3.0
 class Config extends stdClass /* MyConfig*/{
 	const // Config variables
-		DB_USER="root", DB_PW="053721872",
+		DB_USER="root", DB_PW="DB_PW",
 		DB_NAME="imc", DB_HOST='localhost',
 		UPLOAD_FOLDER='images',
 		
