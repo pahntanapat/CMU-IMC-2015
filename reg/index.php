@@ -124,7 +124,7 @@ require_once 'index.scr.php';
     </li>
     <li class="accordion-navigation">
         <a href="#sbMenu" id="h-sbMenu"><i class="fa fa-bars"></i> Main menu</a>
-        <div id="sbMenu" class="content active"><ul class="side-nav">
+        <div id="sbMenu" class="content"><ul class="side-nav">
   <li><a href="index.php" title="Main page"><i class="fa fa-home fa-lg"></i> Main page</a></li>
   <li><a href="index.php#changePW"><?=State::img(State::ST_EDITABLE)?>Change password</a></li>
   <li><a href="logout.php" title="Log out"><i class="fa fa-sign-out fa-lg"></i> Log out</a></li></ul>
@@ -132,7 +132,7 @@ require_once 'index.scr.php';
     </li>
     <li class="accordion-navigation">
         <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Edit information</a>
-        <div id="sbStep" class="content active">
+        <div id="sbStep" class="content">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
   <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
@@ -141,7 +141,7 @@ require_once 'index.scr.php';
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload transfer slip">Upload &amp; Confirm transfer slip</a></li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transfer Slip">Upload &amp; Confirm transfer slip</a></li>
   <li><hr></li>
   <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=1" title="Select route &amp; upload team's picture &amp; update arrival time">Trip selection</a></li>
   <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=2">Upload team's photo</a></li>
@@ -189,15 +189,15 @@ require_once 'index.scr.php';
 <button type="button" class="right" id="loadJR"><i class="fa fa-question-circle"></i> Help</button>
 <ol class="joyride-list" data-joyride>
   <li data-text="Next" data-options="prev_button:false"><h4>Hi!</h4><p>Welcome to CMU-IMC Registration System.</p><input type="checkbox" id="hideJR" name="hideJR" value="1"><label for="hideJR">Don't show it again.</label></li>
-  <li data-id="h-sbTeamInfo" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4><i class="fa fa-user-md"></i> Profile</h4><p>Your team's profile and progression of registration are here. You can click <b>the accordions</b> <i>(on grey bar NOT white area)</i> to hide or expand it.</p></li>
-  <li data-id="h-sbMenu" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4><i class="fa fa-bars"></i> Main menu</h4><p>Go to main page, change password, or log out are under this menu. Also, it can be hidden or expanded by clicking on <b>the accordions</b>.</p></li>
-  <li data-id="h-sbStep" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4><i class="fa fa-check-square"></i> Steps of Registration</h4><p>All steps of registration are here. If they is hidden, <b>please click the accordions to expand</b>.</p></li>
-  <li data-id="menuTeamInfo" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4>Step-by-Step</h4><p>The steps of registration is sorted from the first to last. You can follow them step-by-step.<small><br><br><i class="fa fa-exclamation-triangle fa-2x"></i> If the steps of registration is hidden, the instruction will show on wrong position. Please go back to the previous step and do it again.</small></p></li>
-  <li data-id="menuObsvInfo" data-text="Next" data-prev-text="Prev" data-options="tip_animation:fade"><h4><i class="fa fa-pencil"></i> The Status [1]</h4><p>Each step have its &quot;Status&quot;, displaying in front of the step. It show how the step is, e.g. Locked, Editable, Waiting for approval.<small><br><br><i class="fa fa-exclamation-triangle fa-2x"></i> If the steps of registration is hidden, the instruction will show on wrong position. Please go back to the previous step and do it again.</small></p></li>
-  <li data-id="stateList" data-text="Next" data-prev-text="Prev" data-options="tip_location:top"><h4><i class="fa fa-pencil"></i> The Status [2]</h4><p>All descriptions of statuses are here and on the top of each step.</p></li>
-  <li data-id="reloadMsg" data-text="Next" data-prev-text="Prev"><h4>Message from Admin</h4><p>Also, <b>Messages from Administrators (CMU-IMC Staffs)</b> are located on the top of every page. They will tell what is wrong or important in each page.</p></li>
-  <li data-id="loadJR" data-text="Next" data-prev-text="Prev" data-options="tip_location:left"><h4>To replay again</h4><p>Last, if you want to start the introduction guide again, click this button.</p></li>
-  <li data-text="End" data-prev-text="Prev"><h4>Let's go!</h4><p>Thank you for your attention to me. Let's start the <a href="team.php" target="_blank">first step</a> of registration.</p></li>
+  <li data-id="h-sbTeamInfo" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4><i class="fa fa-user-md"></i> Profile</h4><p>Your team's profile and progression of registration are here. You can click <b>the accordions</b> <i>(on the grey bar)</i> to hide or expand them.</p></li>
+  <li data-id="h-sbMenu" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4><i class="fa fa-bars"></i> Main menu</h4><p>To go to the main page, change password or log out, please follow the links provided in this menu.</p></li>
+  <li data-id="h-sbStep" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4><i class="fa fa-check-square"></i> Edit Information</h4><p>All steps of registration are provided here. If they are hidden, <b>please click the accordions to expand this section</b>.</p></li>
+  <li data-id="menuTeamInfo" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4>Step-by-Step</h4><p>The steps of registration are sorted in order so that you can follow them step by step.<small><br><br><i class="fa fa-exclamation-triangle fa-2x"></i> If the Edit Information section is hidden, the instruction callout will point you the wrong position. Please go back to the previous step and then continue the instruction guideline as normal.</small></p></li>
+  <li data-id="menuObsvInfo" data-text="Next" data-prev-text="Prev" data-options="tip_animation:fade"><h4><i class="fa fa-pencil"></i> Status [1]</h4><p>Each step has its status, displayed to tell whether it is locked, editable, waiting for approval, etc. <small><br><br><i class="fa fa-exclamation-triangle fa-2x"></i> If the Edit information section is hidden, the instruction callout will point you the wrong position. Please go back to the previous step and then continue the instruction guideline as normal.</small></p></li>
+  <li data-id="stateList" data-text="Next" data-prev-text="Prev" data-options="tip_location:top"><h4><i class="fa fa-pencil"></i> Status [2]</h4><p>All descriptions of statuses are here. They will also be mentioned on the top of the page of each registration step.</p></li>
+  <li data-id="reloadMsg" data-text="Next" data-prev-text="Prev"><h4>Message from Admin</h4><p>Also, <b>Messages from Administrators (CMU-IMC Staffs)</b> are located on the top of every page. They will notify you any occurring problems and important facts.</p></li>
+  <li data-id="loadJR" data-text="Next" data-prev-text="Prev" data-options="tip_location:left"><h4>To replay again</h4><p>Finally, if you want to start the introduction guide again, click this button.</p></li>
+  <li data-text="End" data-prev-text="Prev"><h4>Let's go!</h4><p>Thank you for your attention to me. Now let's start the <b><a href="team.php" target="_blank">first step</a></b> of registration.</p></li>
 </ol>
 <!-- InstanceEndEditable --></div></div>
 </div>

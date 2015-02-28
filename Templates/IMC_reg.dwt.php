@@ -122,7 +122,7 @@ require_once 'class.State.php';
     </li>
     <li class="accordion-navigation">
         <a href="#sbMenu" id="h-sbMenu"><i class="fa fa-bars"></i> Main menu</a>
-        <div id="sbMenu" class="content active"><ul class="side-nav">
+        <div id="sbMenu" class="content"><ul class="side-nav">
   <li><a href="../reg/index.php" title="Main page"><i class="fa fa-home fa-lg"></i> Main page</a></li>
   <li><a href="../reg/index.php#changePW"><?=State::img(State::ST_EDITABLE)?>Change password</a></li>
   <li><a href="../reg/logout.php" title="Log out"><i class="fa fa-sign-out fa-lg"></i> Log out</a></li></ul>
@@ -130,7 +130,7 @@ require_once 'class.State.php';
     </li>
     <li class="accordion-navigation">
         <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Edit information</a>
-        <div id="sbStep" class="content active">
+        <div id="sbStep" class="content">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="../reg/team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
   <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="../reg/member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
@@ -139,7 +139,7 @@ require_once 'class.State.php';
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="../reg/confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="../reg/pay.php" title="Upload transfer slip">Upload &amp; Confirm transfer slip</a></li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="../reg/pay.php" title="Upload Transfer Slip">Upload &amp; Confirm transfer slip</a></li>
   <li><hr></li>
   <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="../reg/post_reg.php?sec=1" title="Select route &amp; upload team's picture &amp; update arrival time">Trip selection</a></li>
   <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="../reg/post_reg.php?sec=2">Upload team's photo</a></li>

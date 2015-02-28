@@ -6,7 +6,7 @@
 	margin:0.5em;
 }
 
-label.require:before, th[scope="row"].require:before, td.require:before{
+label.require:before, th[scope="row"].require:before, td.require:before, h4.require:before{
 	content:"*";
 	color:#F00;
 }

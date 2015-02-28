@@ -24,9 +24,9 @@ if(Config::isFile()){
 	$img->team_id=$t->id;
 	
 	if(!State::is($t->pay_state, State::ST_EDITABLE, $config->REG_START_PAY, $config->REG_END_PAY)){
-		$ajax->message="<div class=\"alert-box alert radius\">You are not allowed to upload your transaction.</div>";
+		$ajax->message="<div class=\"alert-box alert radius\">You are not allowed to upload your transfer slip.</div>";
 	}elseif($pay[1]>=$config->REG_MAX_TEAM){
-		$ajax->message="<div class=\"alert-box alert radius\">Sorry! The team uploading their transactions are full (".$config->REG_MAX_TEAM." teams).</div>";
+		$ajax->message="<div class=\"alert-box alert radius\">Sorry! The team uploading their transfer slips are full (".$config->REG_MAX_TEAM." teams).</div>";
 	}else{
 		try{
 			$img->minFileSize=10240;
@@ -43,7 +43,7 @@ if(Config::isFile()){
 				$ajax->updateMenuState($s);
 				
 				$ajax->result=true;
-				$ajax->message="<div class=\"alert-box success radius\">Upload your transaction complete. Please wait for transaction approval.</div>";
+				$ajax->message="<div class=\"alert-box success radius\">Upload your transfer slip complete. Please wait for transfer slip approval.</div>";
 				$ajax->addHtmlTextVal(SKAjaxReg::SET_HTML,'#uploadForm','');
 			}
 		}catch(UploadImageException $e){

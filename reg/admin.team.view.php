@@ -103,7 +103,7 @@ function teamInfo($id,$pms, $msg=''){
 <h3>Team's name: <?=$t->team_name?></h3>
 <ul class="inline-list">
   <li><a href="admin.info.php?id=<?=$t->id?>" target="_blank">Approve Infomation in step 1</a></li>
-  <li><a href="admin.pay.php?id=<?=$t->id?>" target="_blank">Approce Transactions</a></li>
+  <li><a href="admin.pay.php?id=<?=$t->id?>" target="_blank">Approve Transfer slip</a></li>
   <li><a href="admin.post_reg.php?id=<?=$t->id?>" target="_blank">Approve Infomation in step 2</a></li>
 </ul>
 <ul class="tabs" data-tab>
@@ -121,7 +121,7 @@ function teamInfo($id,$pms, $msg=''){
   <? for($i=0;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
  <li><?php echo State::img($m[$i]->info_state).' '; if($i>0): echo Config::ordinal($i);?> participant<? else:?>Advisor<? endif;?>'s infomation</li>
   <? endfor;?>
-  <li><?=State::img($t->pay_state)?> Upload Transaction</li>
+  <li><?=State::img($t->pay_state)?> Upload Transfer slip</li>
   <li><?=State::img($t->post_reg_state)?> Select route &amp; upload team's picture &amp; update arrival time</li>
 </ol>
 </div>
@@ -146,7 +146,7 @@ function teamInfo($id,$pms, $msg=''){
   </label>
 </div>
 <div>
-  <label class="require">Institution
+  <label class="require">Faculty/Name of medical school
     <input name="institution" type="text" id="institution" value="<?=$t->institution?>" required<?=Config::readonly($r)?>>
   </label>
 </div><div>
@@ -192,15 +192,17 @@ function teamInfo($id,$pms, $msg=''){
   </label>
 </div>
 </fieldset>
-<fieldset><legend>Transaction, Photo &amp; Ticket</legend>
+<fieldset>
+<legend>Transfer slip, Photo &amp; Ticket</legend>
 <?php
 if(SesAdm::isPMS($pms, SesAdm::PMS_AUDIT)):
 	echo $img->toImgPay();
 ?>
-<div><label>Delete the transaction <small>If you remove file, the file is permanently romoved.</small></label>
+<div>
+    <label>Delete the transfer slip <small>If you remove file, the file is permanently romoved.</small></label>
     <input name="del_tsc" type="radio" id="del_tsc_0" value="0" checked="checked" /><label for="del_tsc_0">Keep it</label><input name="del_tsc" type="radio" id="del_tsc_1" value="1" /><label for="del_tsc_1">Delete it</label></div><hr />
 <?php
-else: echo "<h4>You don't have permission to view the transaction.</h4>";
+else: echo "<h4>You don't have permission to view the transfer slip.</h4>";
 endif;
 echo $img->toImgTeamPhoto().$img->toImgTicket();
 if(SesAdm::isPMS($pms, SesAdm::PMS_PARTC)):

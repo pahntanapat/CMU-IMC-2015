@@ -178,7 +178,7 @@ if(Config::isPost()||Config::isAjax()){
     </li>
     <li class="accordion-navigation">
         <a href="#sbMenu" id="h-sbMenu"><i class="fa fa-bars"></i> Main menu</a>
-        <div id="sbMenu" class="content active"><ul class="side-nav">
+        <div id="sbMenu" class="content"><ul class="side-nav">
   <li><a href="index.php" title="Main page"><i class="fa fa-home fa-lg"></i> Main page</a></li>
   <li><a href="index.php#changePW"><?=State::img(State::ST_EDITABLE)?>Change password</a></li>
   <li><a href="logout.php" title="Log out"><i class="fa fa-sign-out fa-lg"></i> Log out</a></li></ul>
@@ -186,7 +186,7 @@ if(Config::isPost()||Config::isAjax()){
     </li>
     <li class="accordion-navigation">
         <a href="#sbStep" id="h-sbStep"><i class="fa fa-check-square"></i> Edit information</a>
-        <div id="sbStep" class="content active">
+        <div id="sbStep" class="content">
         <ul class="side-nav">
   <li class="<?=State::inTime($s->teamState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuTeamInfo"><a href="team.php" title="Team &amp; Institution information">Team &amp; Institution information</a></li>
   <li class="<?=State::inTime($s->getObserverInfoState(), $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuObsvInfo"><a href="member.php?no=0" title="Advisor's infomation">Advisor's infomation</a></li>
@@ -195,7 +195,7 @@ if(Config::isPost()||Config::isAjax()){
   <? endfor;?>
   <li class="<?=State::inTime($s->cfInfoState, $config->REG_START_REG, $config->REG_END_REG, true)?>" id="menuCfInfo"><a href="confirm.php?step=1" title="Confirmation of Application Form">Confirmation of Application Form</a></li>
   <li><hr></li>
-  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload transfer slip">Upload &amp; Confirm transfer slip</a></li>
+  <li class="<?=State::inTime($s->payState, $config->REG_START_PAY, $config->REG_END_PAY, true)?>" id="menuPay"><a href="pay.php" title="Upload Transfer Slip">Upload &amp; Confirm transfer slip</a></li>
   <li><hr></li>
   <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=1" title="Select route &amp; upload team's picture &amp; update arrival time">Trip selection</a></li>
   <li class="<?=State::inTime($s->postRegState, $config->REG_START_PAY, $config->REG_END_INFO, true)?> menuPostReg"><a href="post_reg.php?sec=2">Upload team's photo</a></li>
@@ -244,7 +244,7 @@ if(($step==1 && State::is($s->cfInfoState, State::ST_EDITABLE, $config->REG_STAR
 <? endif; if(strlen($msg)>0):?><div class="alert-box radius warning"><b><?=$msg?></b></div><? endif;?>
 <div class="panel">
   <h4>
-<? if($step==1):?><i class="fa fa-lg fa-money"></i> After your information is approved, we recommend you to transfer <a href="../registration.html#fee" target="_blank">the application fee</a> and upload the transaction to <a href="pay.php" target="_blank">the registration system</a>
+<? if($step==1):?><i class="fa fa-lg fa-money"></i> After your information is approved, we recommend you to transfer <a href="../registration.html#fee" target="_blank">the application fee</a> and upload the transfer slip to <a href="pay.php" target="_blank">the registration system</a>
 <? else:?><i class="fa fa-lg fa-credit-card"></i> After your information is approved, we recommend you to send numbers, expire dates, and copies of participants' and advisor's passports<? endif;?> as soon as possible.</h4></div><!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
