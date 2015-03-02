@@ -99,7 +99,7 @@ require_once 'admin.team.scr.php';
 						<ul class="right">
 							<li><a href="https://www.facebook.com/CMU.IMC" target="_blank">FACEBOOK</a></li>
 							<li><a href="https://twitter.com/cmu_imc" target="_blank">TWITTER</a></li>
-							<li><a href="contact.html">CONTACT US</a></li>
+							<li><a href="../contact.html">CONTACT US</a></li>
 						</ul>
 					</section>
 				</nav>
