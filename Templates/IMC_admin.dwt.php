@@ -68,7 +68,7 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 					</ul>
 					<section class="top-bar-section">
 						<ul class="left">
-							<li><a href="../news.html">NEWS</a></li>
+							<li><a href="https://www.facebook.com/CMU.IMC" target="_blank" data-reveal-id="news">NEWS</a></li>
 							<li class="has-dropdown"><a>DETAILS</a>
 								<ul class="dropdown">
 									<li><a href="../about_IMC.html">CMU-IMC</a></li>
@@ -152,6 +152,12 @@ if(!$sess) Config::redirect('admin.php','you are not log in.');
 			</div>
 		</div>
 	</footer>
+    <div id="news" class="reveal-modal" data-reveal>
+			<h2>NEWS</h2>
+			<p class="lead">Any news will be posted on Facebook Page: CMU International Medical Challenge.</p>
+			<p>please check out the news <a href="http://www.facebook.com/cmu.imc">here</a> to go to Facebook Page.</p>
+			<a class="close-reveal-modal">&times;</a>
+		</div>
 	<script src="../js/jquery.countdown.min.js"></script>
     <script>
 		$(document).ready(function(){
