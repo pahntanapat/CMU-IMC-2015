@@ -126,7 +126,7 @@ class Admin extends SKeasySQL{
 	}
 	
 	public function getList(){
-		$stm=$this->db->prepare('SELECT '.self::row(self::ROW_ID,self::ROW_STD_ID,self::ROW_NICK).' FROM '.$this->TABLE);
+		$stm=$this->db->prepare('SELECT '.self::row(self::ROW_ID,self::ROW_STD_ID,self::ROW_NICK).' FROM '.$this->TABLE.' ORDER BY '.self::ROW_STD_ID);
 		$stm->execute();
 		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
 	}
