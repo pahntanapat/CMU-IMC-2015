@@ -265,8 +265,7 @@ if(($step==1 && State::is($s->cfInfoState, State::ST_EDITABLE, $config->REG_STAR
 	</footer>
     <div id="news" class="reveal-modal" data-reveal>
 			<h2>NEWS</h2>
-			<p class="lead">Any news will be posted on Facebook Page: <i>CMU International Medical Challenge</i>.</p>
-			<p>Please follow us on CMU-IMC facebook page for updated news. <a href="http://www.facebook.com/cmu.imc">Click here</a></p>
+			<p>Please follow us on CMU-IMC facebook page for updated news. Click <a href="http://www.facebook.com/cmu.imc">here</a></p>
 			<a class="close-reveal-modal">&times;</a>
 		</div>
 	<script src="../js/jquery.countdown.min.js"></script>
