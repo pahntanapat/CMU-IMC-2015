@@ -54,7 +54,7 @@ function summarize(PDO $db){
 <h4>Status of team's information (step 1)</h4>
 <?=toTable($tmp->countField(Team::ROW_TEAM_STATE, State::toSQL(Team::ROW_TEAM_STATE)))?>
 <h4>Status of team's transfer slip</h4>
-<?=toTable($tmp->countField(Team::ROW_POST_REG_STATE, State::toSQL(Team::ROW_POST_REG_STATE)))?>
+<?=toTable($tmp->countField(Team::ROW_PAY, State::toSQL(Team::ROW_PAY)))?>
 <h4>Status of team's information (step 2)</h4>
 <?=toTable($tmp->countField(Team::ROW_POST_REG_STATE, State::toSQL(Team::ROW_POST_REG_STATE)))?>
 <h4>Medical school</h4>
