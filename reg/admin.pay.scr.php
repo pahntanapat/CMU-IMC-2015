@@ -29,7 +29,7 @@ function showPay($teamID, $adminID, Team $t, Message $msg, UploadImage $img, $me
 	
 	return $img->toImgPay()
 		.($msg->load()->toForm('admin.pay.php?id='.$teamID,
-			array(State::ST_WAIT,State::ST_PASS,State::ST_NOT_PASS),
+			array(State::ST_WAIT, State::ST_PASS, State::ST_NOT_PASS),
 			$t->pay_state
 		))
 		."<div id=\"msg\">$message</div>";
