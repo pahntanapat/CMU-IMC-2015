@@ -4,7 +4,7 @@ require_once 'class.SesAdm.php';
 
 $sess=SesAdm::check();
 if(!$sess) Config::redirect('admin.php','you are not log in.');
-if(!$sess->checkPMS(SesAdm::PMS_PARTC)) Config::redirect('home.php','you don\'t have permission here.');
+if(!$sess->checkPMS(SesAdm::PMS_AUDIT)) Config::redirect('home.php','you don\'t have permission here.');
 
 require_once 'admin.pay.scr.php';
 ?>
