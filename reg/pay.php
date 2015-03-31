@@ -205,7 +205,7 @@ if($num[1]>=$config->REG_MAX_TEAM):?>
 <?php
 endif;
 echo $ajax->toMsg();
-?>
+?><a href="post_reg.php?sec=1" class="button right">Next <i class="fa-arrow-circle-right fa"></i></a>
 <!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->

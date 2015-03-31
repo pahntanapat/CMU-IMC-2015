@@ -335,6 +335,7 @@ if(!$r):?>
  endif;
  echo $uploadAjax->toMsg();
  ?></form><? endif;?>
+<a href="<?=$no>=$config->REG_PARTICIPANT_NUM?'confirm.php?step=1':'member.php?no='.($no+1)?>" class="button right">Next <i class="fa-arrow-circle-right fa"></i></a>
 <!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->

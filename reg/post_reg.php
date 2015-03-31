@@ -293,7 +293,7 @@ if($sec==3):
 	}
 	echo $ticketAjax->toMsg();
 endif;
-?>
+?><a href="<?=$sec>=3?'confirm.php?step=2':'post_reg.php?sec='.($sec+1)?>" class="button right">Next <i class="fa-arrow-circle-right fa"></i></a>
 <!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->

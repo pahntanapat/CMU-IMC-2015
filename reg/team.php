@@ -214,7 +214,8 @@ $r=!State::is($s->teamState,State::ST_EDITABLE,$config->REG_START_REG,$config->R
   <button type="reset" name="cancel" id="button" value="cancel">cancel</button><? endif;?>
 </div></fieldset>
 </form><?=$ajax->toMsg()?>
-<button type="button" class="right" id="loadJR"><i class="fa fa-question-circle"></i> Help</button><ol class="joyride-list" data-joyride>
+<div class="right"><button type="button" id="loadJR">Help <i class="fa fa-question-circle"></i></button><a href="member.php?no=0" class="button">Next <i class="fa-arrow-circle-right fa"></i></a></div>
+<ol class="joyride-list" data-joyride>
   <li data-text="Next" data-options="prev_button:false;tip_location:top"><h4>Application form</h4><p>Let's move to the application form.</p><input type="checkbox" id="hideJR" name="hideJR" value="1"><label for="hideJR">Don't show it again.</label></li>
   <li data-id="h-sbStep" data-text="Next" data-prev-text="Prev" data-options="tip_location:right"><h4>Before that...</h4><p>If the steps of registration are hidden, please click <b>Edit Information</b> to expand the section.</p></li>
   <li data-id="menuCfInfo" data-text="Next" data-prev-text="Prev"><h4>Confirmation</h4><p>You can edit and save your information any time before the confirmation.<small><br><br><i class="fa fa-exclamation-triangle fa-2x"></i> If the Edit Information section is hidden, the instruction callout will point you the wrong position. Please go back to the previous step and then continue the instruction guideline as normal.</small></p></li>

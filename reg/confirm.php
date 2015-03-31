@@ -245,7 +245,7 @@ if(($step==1 && State::is($s->cfInfoState, State::ST_EDITABLE, $config->REG_STAR
 <div class="panel">
   <h4>
 <? if($step==1):?><i class="fa fa-lg fa-money"></i> After your information is approved, we recommend you to transfer <a href="../registration.html#fee" target="_blank">the application fee</a> and upload the transfer slip to <a href="pay.php" target="_blank">the registration system</a>
-<? else:?><i class="fa fa-lg fa-credit-card"></i> After your information is approved, we recommend you to send numbers, expire dates, and copies of participants' and advisor's passports<? endif;?> as soon as possible.</h4></div><!-- InstanceEndEditable --></div></div>
+<? else:?><i class="fa fa-lg fa-credit-card"></i> After your information is approved, we recommend you to send numbers, expire dates, and copies of participants' and advisor's passports<? endif;?> as soon as possible.</h4></div><? if($step==1):?><a href="pay.php" class="button right">Next <i class="fa-arrow-circle-right fa"></i></a><? endif;?><!-- InstanceEndEditable --></div></div>
 </div>
 </div><!--End Body-->
 	<footer class="row">
