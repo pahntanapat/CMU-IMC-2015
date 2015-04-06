@@ -102,9 +102,9 @@ function teamInfo($id,$pms, $msg=''){
 	?>
 <h3>Team's name: <?=$t->team_name?></h3>
 <ul class="inline-list">
-  <li><a href="admin.info.php?id=<?=$t->id?>" target="_blank">Approve Infomation in step 1</a></li>
+  <li><a href="admin.info.php?id=<?=$t->id?>" target="_blank">Approve Information in step 1</a></li>
   <li><a href="admin.pay.php?id=<?=$t->id?>" target="_blank">Approve Transfer slip</a></li>
-  <li><a href="admin.post_reg.php?id=<?=$t->id?>" target="_blank">Approve Infomation in step 2</a></li>
+  <li><a href="admin.post_reg.php?id=<?=$t->id?>" target="_blank">Approve Information in step 2</a></li>
 </ul>
 <ul class="tabs" data-tab>
 <li class="tab-title active"><a href="#statusTab">Overall of Status</a></li>
@@ -119,7 +119,7 @@ function teamInfo($id,$pms, $msg=''){
 <ol>
   <li><?=State::img($t->team_state)?> Team &amp; Institution information</li>
   <? for($i=0;$i<=$config->REG_PARTICIPANT_NUM;$i++):?>
- <li><?php echo State::img($m[$i]->info_state).' '; if($i>0): echo Config::ordinal($i);?> participant<? else:?>Advisor<? endif;?>'s infomation</li>
+ <li><?php echo State::img($m[$i]->info_state).' '; if($i>0): echo Config::ordinal($i);?> participant<? else:?>Advisor<? endif;?>'s information</li>
   <? endfor;?>
   <li><?=State::img($t->pay_state)?> Upload Transfer slip</li>
   <li><?=State::img($t->post_reg_state)?> Select route &amp; upload team's picture &amp; update arrival time</li>

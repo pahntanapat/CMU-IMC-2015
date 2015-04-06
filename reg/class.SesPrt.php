@@ -9,7 +9,7 @@ class SesPrt extends Session{
 		$teamState, $payState, $postRegState,
 		$cfInfoState, $cfPostRegState;
 		
-	protected $memberInfoState=array(), $progress=0; // Status of Infomation of Members
+	protected $memberInfoState=array(), $progress=0; // Status of Information of Members
 
 	public function changeID($force=false){
 		global $config;
