@@ -130,7 +130,7 @@ CREATE TABLE `participant_info` (
   `other_req` text COLLATE utf8_unicode_ci COMMENT 'other requirement: religion, vegeterian',
   `shirt_size` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'M',
   `info_state` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT 'สถานะการกรอกข้อมูล'
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='ข้อมูลผู้สังเกตการณ์ประจำแต่ละทีม';
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='ข้อมูลผู้แข่งขันประจำแต่ละทีม';
 
 --
 -- Truncate table before insert `participant_info`

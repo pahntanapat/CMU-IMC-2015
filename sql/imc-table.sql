@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.3
+-- version 4.4.4
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 26, 2015 at 09:01 AM
+-- Generation Time: Apr 29, 2015 at 01:55 PM
 -- Server version: 5.6.19-log
--- PHP Version: 5.6.0
+-- PHP Version: 5.6.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -95,7 +95,7 @@ CREATE TABLE `participant_info` (
   `other_req` text COLLATE utf8_unicode_ci COMMENT 'other requirement: religion, vegeterian',
   `shirt_size` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'M',
   `info_state` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT 'สถานะการกรอกข้อมูล'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='ข้อมูลผู้สังเกตการณ์ประจำแต่ละทีม';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='ข้อมูลผู้แข่งขันประจำแต่ละทีม';
 
 -- --------------------------------------------------------
 
@@ -165,7 +165,8 @@ ALTER TABLE `participant_info`
 -- Indexes for table `team_info`
 --
 ALTER TABLE `team_info`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `email` (`email`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `team_message`

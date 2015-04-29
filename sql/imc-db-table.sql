@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.3
+-- version 4.4.4
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 26, 2015 at 12:37 AM
+-- Generation Time: Apr 29, 2015 at 01:53 PM
 -- Server version: 5.6.19-log
--- PHP Version: 5.6.0
+-- PHP Version: 5.6.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -30,7 +30,6 @@ USE `imc`;
 -- Table structure for table `admin`
 --
 
-DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
   `id` bigint(20) unsigned NOT NULL,
   `student_id` varchar(9) COLLATE utf8_unicode_ci NOT NULL COMMENT 'รหัสนักศึกษา',
@@ -45,7 +44,6 @@ CREATE TABLE `admin` (
 -- Table structure for table `observer_info`
 --
 
-DROP TABLE IF EXISTS `observer_info`;
 CREATE TABLE `observer_info` (
   `id` bigint(20) unsigned NOT NULL,
   `team_id` bigint(20) unsigned NOT NULL COMMENT 'รหัสทีม (id จาก team_info)',
@@ -75,7 +73,6 @@ CREATE TABLE `observer_info` (
 -- Table structure for table `participant_info`
 --
 
-DROP TABLE IF EXISTS `participant_info`;
 CREATE TABLE `participant_info` (
   `id` bigint(20) unsigned NOT NULL,
   `team_id` bigint(20) unsigned NOT NULL COMMENT 'รหัสทีม (id จาก team_info)',
@@ -100,7 +97,7 @@ CREATE TABLE `participant_info` (
   `other_req` text COLLATE utf8_unicode_ci COMMENT 'other requirement: religion, vegeterian',
   `shirt_size` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'M',
   `info_state` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT 'สถานะการกรอกข้อมูล'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='ข้อมูลผู้สังเกตการณ์ประจำแต่ละทีม';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='ข้อมูลผู้แข่งขันประจำแต่ละทีม';
 
 -- --------------------------------------------------------
 
@@ -108,7 +105,6 @@ CREATE TABLE `participant_info` (
 -- Table structure for table `team_info`
 --
 
-DROP TABLE IF EXISTS `team_info`;
 CREATE TABLE `team_info` (
   `id` bigint(20) unsigned NOT NULL,
   `email` varchar(127) CHARACTER SET utf8 NOT NULL,
@@ -135,7 +131,6 @@ CREATE TABLE `team_info` (
 -- Table structure for table `team_message`
 --
 
-DROP TABLE IF EXISTS `team_message`;
 CREATE TABLE `team_message` (
   `id` bigint(20) unsigned NOT NULL,
   `team_id` bigint(20) unsigned NOT NULL COMMENT 'ID ของทีมที่รับข้อความ',
@@ -172,7 +167,8 @@ ALTER TABLE `participant_info`
 -- Indexes for table `team_info`
 --
 ALTER TABLE `team_info`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `email` (`email`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `team_message`
