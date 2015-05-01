@@ -13,7 +13,7 @@
 	background:url(../img/bg-900x1600.jpg) fixed center top;
 	background-size: 100% auto;
 }
-
+.tab {text-indent: 40px}
 @media only screen and (min-width: 64.063em) {
    div.withbg{
 	background:url(../img/bg-1600x900.jpg) fixed no-repeat center top;
