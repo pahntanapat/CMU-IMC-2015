@@ -14,7 +14,6 @@
 <link href="../css/foundation.min.css" rel="stylesheet" type="text/css" />
 <link href="../css/prime.css" rel="stylesheet" type="text/css" />
 <script>$(document).ready(function(){$(document).foundation();});</script>
-<style>.tab {text-indent: 40px}</style>
 <!-- TemplateBeginEditable name="head" -->
 <!-- TemplateEndEditable -->
 </head>
