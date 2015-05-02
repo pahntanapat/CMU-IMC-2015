@@ -13,7 +13,7 @@
 <script src="analytics/analytics.js"></script>
 <link href="css/foundation.min.css" rel="stylesheet" type="text/css" />
 <link href="css/prime.css" rel="stylesheet" type="text/css" />
-<script>$(document).ready(function(){$(document).foundation();});</script>
+<script>$(document).ready(function(){$(document).foundation();$('ul.dropdown>li>a[href="'+window.location.pathname.toString().slice(1)+'"]').parent().addClass('active');});</script>
 <!-- InstanceBeginEditable name="head" -->
 		<!-- InstanceEndEditable -->
 </head>
@@ -41,7 +41,7 @@
 		<li><a href="registration.html">Registration Guide</a></li>
 		<li><a href="mini_gallery.html">Gallery</a></li>
 		<li class="divider"></li>
-		<li class="active"><a href="accommodation.html">Accommodation</a></li>
+		<li><a href="accommodation.html">Accommodation</a></li>
 		<li><a href="activities.html">Recreational activities</a></li>
 		<li><a href="cm_tour.html">Chiang Mai Tour</a></li>
 		<li class="divider"></li>
