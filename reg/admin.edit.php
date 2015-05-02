@@ -69,25 +69,19 @@ else{
 				</div>
 			</div>
 		  <div class="row show-for-medium-only">
-				<div class="clearfix columns">
-					<img class="left" src="../img/logo-head_trans.png"/>
+				<div class="clearfix columns"> <a href="/"><img class="left" src="../img/logo-head_trans.png"/></a>
 				</div>
 			</div>
-			<img class="show-for-small-only" src="../img/logo-head-mini_trans.png"/>
+          <a href="/"><img class="show-for-small-only" src="../img/logo-head-mini_trans.png"/></a>
 			<div class="contain-to-grid">
 				<nav class="top-bar" data-topbar data-options="is_hover: false">
 					<ul class="title-area">
-						<li class="name">
-							<h1>
-								<a href="/">HOME</a>
-						  </h1>
-						</li>
-						<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a>
-						</li>
+						<li class="name"><h1><a href="/">HOME</a></h1></li>
+						<li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
 					</ul>
 					<section class="top-bar-section">
 						<ul class="left">
-							<li><a href="https://www.facebook.com/CMU.IMC" target="_blank" data-reveal-id="news">NEWS</a></li>
+							<li><a href="https://facebook.com/CMU.IMC" target="_blank" data-reveal-id="news">NEWS</a></li>
 							<li class="has-dropdown"><a>DETAILS</a>
 								<ul class="dropdown">
 									<li><a href="../about_IMC.html">CMU-IMC</a></li>
@@ -100,16 +94,16 @@ else{
 									<li><a href="../cm_tour.html">Chiang Mai Tour</a></li>
 									<li class="divider"></li>
 									<li><a href="../local_information.html">Local Information</a></li>
+                                    <li><a href="../sponsor.html">Sponsorship</a></li>
 									<li><a href="../faq.html">FAQ</a></li>
 									<li class="divider"></li>
 									<li><a href="../invite_package.html">Invitation Package</a></li>
 								</ul>
 							</li>
-							<li><a href="../reg/">REGISTER</a></li>
-							
+							<li><a href="../reg">REGISTER</a></li>
 					  </ul>
 						<ul class="right">
-							<li><a href="https://www.facebook.com/CMU.IMC" target="_blank">FACEBOOK</a></li>
+							<li><a href="https://facebook.com/CMU.IMC" target="_blank">FACEBOOK</a></li>
 							<li><a href="https://twitter.com/cmu_imc" target="_blank">TWITTER</a></li>
 							<li><a href="../contact.html">CONTACT US</a></li>
 						</ul>
@@ -183,7 +177,7 @@ else{
 	</footer>
     <div id="news" class="reveal-modal" data-reveal>
 			<h2>NEWS</h2>
-			<p>Please follow us on CMU-IMC facebook page for updated news. Click <a href="http://www.facebook.com/cmu.imc">here</a></p>
+			<p>Please follow us on CMU-IMC facebook page for updated news. Click <a href="http://facebook.com/cmu.imc">here</a></p>
 			<a class="close-reveal-modal">&times;</a>
 		</div>
 	<script src="../js/jquery.countdown.min.js"></script>
