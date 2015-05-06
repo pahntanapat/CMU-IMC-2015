@@ -16,6 +16,8 @@ if(Config::isPost()){
 		$ajax->message='The CAPTCHA Answer is wrong. Please try again.';
 	}elseif(Config::isBlank($_POST,'email','pw','country','institution','university')){
 		$ajax->message='You must fill out all fields';
+	}elseif(strlen($_POST['team_name'])>30){
+		$ajax->message='Team\'s name must contain only 1 - 30 characters.';
 	}elseif(!Config::checkEmail($_POST['email'],$e)){
 		$ajax->message=$e;
 	}elseif(!Config::checkPW($_POST['pw'],$e)){

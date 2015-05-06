@@ -17,6 +17,8 @@ if(!Config::isPost()){
 	$ajax->message='Team\'s name, Institution, University, and Country must not be blank.';
 }elseif(strlen($_POST['team_name'])>30){
 	$ajax->message='Team\'s name must contain only 1 - 30 characters.';
+}elseif(!Config::checkEmail($_POST['email'],$e)){
+	$ajax->message=$e;
 }else{
 	try{
 		$t=Config::assocToObjProp(
