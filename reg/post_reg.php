@@ -235,7 +235,7 @@ if($sec==3):
 	$img=new UploadImage();
 	$img->team_id=$s->id;
 ?>
-<form action="post_reg.php?sec=2" method="post" id="infoForm">
+<form action="post_reg.php?sec=3" method="post" id="infoForm">
 <fieldset><legend>Type/Time of Arrival &amp; Departure</legend>
   <div>
     <label class="require">Arrival time (to Chiang Mai) <small><a href="../local_information.html#other" target="_blank">In Thailand timezone (UTC+07:00)</a></small>
@@ -270,7 +270,7 @@ if($sec==3):
 <hr>
 <h3 data-magellan-destination="ticket" id="ticket">Upload arrival ticket (Arrival to Chiang Mai)</h3>
 <? if(!$r):?>
-<form action="post_reg.php" method="post" enctype="multipart/form-data" id="ticketForm"><fieldset class="require">
+<form action="post_reg.php?sec=3" method="post" enctype="multipart/form-data" id="ticketForm"><fieldset class="require">
   <legend>Upload arrival ticket</legend>
   <div><label class="require">Image file <?=$img->toForm($r)?>
     <input name="upload" type="hidden" id="upload" value="ticket">
