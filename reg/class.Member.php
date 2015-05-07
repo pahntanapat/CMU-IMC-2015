@@ -227,7 +227,7 @@ abstract class Member extends SKeasySQL{
 	}
 	public static function gender(){
 		if(func_num_args()>0) $c=func_get_arg(0);
-		elseif(isset($_REQUEST['country'])) $c=$_REQUEST['gender'];
+		elseif(isset($_REQUEST['gender'])) $c=$_REQUEST['gender'];
 		else $c='';
 		$d=func_num_args()>1?func_get_arg(1):false;
 		ob_start();?>
