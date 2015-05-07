@@ -16,6 +16,6 @@ $(document).ready(function(e) {
 		e.preventDefault();
 		$.addDialog('divTeamInfo');
 		return $(this).loadSKOriginal($(this).act(),$.SK(), loadScript);
-		
 	});
+	$('#selectAll').checkAll('input.del');
 });
