@@ -199,7 +199,7 @@ if(SesAdm::isPMS($pms, SesAdm::PMS_AUDIT)):
 	echo $img->toImgPay();
 ?>
 <div>
-    <label>Delete the transfer slip <small>If you remove file, the file is permanently romoved.</small></label>
+    <label>Delete the transfer slip <small>If you delete file, the file is permanently removed.</small></label>
     <input name="del_tsc" type="radio" id="del_tsc_0" value="0" checked="checked" /><label for="del_tsc_0">Keep it</label><input name="del_tsc" type="radio" id="del_tsc_1" value="1" /><label for="del_tsc_1">Delete it</label></div><hr />
 <?php
 else: echo "<h4>You don't have permission to view the transfer slip.</h4>";
@@ -207,9 +207,11 @@ endif;
 echo $img->toImgTeamPhoto().$img->toImgTicket();
 if(SesAdm::isPMS($pms, SesAdm::PMS_PARTC)):
 ?>
-<div><label>Delete TEAM's PHOTO <small>If you remove file, the file is permanently romoved.</small></label>
+<div>
+    <label>Delete TEAM's PHOTO <small>If you delete file, the file is permanently removed.</small></label>
     <input name="del_p" type="radio" id="del_p_0" value="0" checked="CHECKED" /><label for="del_p_0">Keep it</label><input name="del_p" type="radio" id="del_p_1" value="1" /><label for="del_p_1">Delete it</label></div>
-<div><label>Delete TICKET <small>If you remove file, the file is permanently romoved.</small></label>
+<div>
+    <label>Delete TICKET <small>If you delete file, the file is permanently removed.</small></label>
     <input name="del_tk" type="radio" id="del_tk_0" value="0" checked="checked" /><label for="del_tk_0">Keep it</label><input name="del_tk" type="radio" id="del_tk_1" value="1" /><label for="del_tk_1">Delete it</label></div>
 <? endif;?>
 </fieldset>
