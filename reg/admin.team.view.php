@@ -316,7 +316,8 @@ if(SesAdm::isPMS($pms, SesAdm::PMS_PARTC)):
 		unset($ajax);
 		if($no>0 && !$r):
 ?>
-	<hr><fieldset><legend>A copy of student ID card or certificate of student</legend><div><label>Delete the document <small>If you remove file, the file is permanently romoved.</small></label>
+	<hr><fieldset><legend>A copy of student ID card or certificate of student</legend><div>
+    <label>Delete the document <small>If you delete file, the file is permanently removed.</small></label>
     <input name="delete" type="radio" id="delete_0<?=$no?>" value="0" checked="checked" /><label for="delete_0<?=$no?>">Keep it</label><input name="delete" type="radio" id="delete_1<?=$no?>" value="1" /><label for="delete_1<?=$no?>">Delete it</label></div></fieldset>
 <?php
 			echo $img->toImgPartStudentCard($no);
