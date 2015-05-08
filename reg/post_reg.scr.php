@@ -81,16 +81,16 @@ if(Config::isPost() && !State::is($s->postRegState,State::ST_EDITABLE,$config->R
 		
 		switch($_POST['form']){
 			case 'ticket':
-				$route=$t->countRoute();
-				if($route[$t->route][1]>=$t->maxRoute()){
-					$ajax->message="<b>Your chosen route is full. Please select the others.</b>";
-					break;
-				}
 				$t->updatePostReg(true);
 				if(Config::isAjax())
 					$ajax->setFormDefault((array) $t);
 				break;
 			case 'route':
+				$route=$t->countRoute();
+				if($route[$t->route][1]>=$t->maxRoute()){
+					$ajax->message="<b>Your chosen route is full. Please select the others.</b>";
+					break;
+				}
 				$t->updatePostReg(false);
 				if(Config::isAjax()){
 					if($ajax->result=true) $route=$t->countRoute();
