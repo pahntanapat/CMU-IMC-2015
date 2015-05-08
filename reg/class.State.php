@@ -19,7 +19,7 @@ class State{
 	public static function inTime($state,$startTime,$endTime,$toClass=false){
 		if(self::is($state, self::ST_EDITABLE)){
 			if(strtotime($startTime,time())>=time()) $state=self::ST_NOT_START;
-			elseif(strtotime($endTime,time())<time()) $state=$state==self::ST_OK?self::ST_PASS:self::ST_TIME_UP;
+			elseif(strtotime($endTime,time())<time()) $state=self::is($state, self::ST_PASS)?self::ST_PASS:self::ST_TIME_UP;
 		}
 		return $toClass?self::toClass($state):$state;
 	}
