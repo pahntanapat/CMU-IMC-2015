@@ -47,7 +47,7 @@ if(Config::isPost()){
 					$t->update();
 					
 					$i=new UploadImage();
-					$i->id=$t->id;
+					$i->team_id=$t->id;
 					if(@$_POST['del_tsc'] && $sess->checkPMS(SesAdm::PMS_AUDIT)) $i->deletePay();
 					if(@$_POST['del_p']) $i->deleteTeamPhoto();
 					if(@$_POST['del_tk']) $i->deleteTicket();
@@ -66,7 +66,7 @@ if(Config::isPost()){
 					$m->update(true);
 					
 					$i=new UploadImage();
-					$i->id=$m->team_id;
+					$i->team_id=$m->team_id;
 					if(@$_POST['delete']) $i->deletePartStudentCard($m->part_no);
 					
 					$ajax->result=true;
