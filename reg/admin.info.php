@@ -118,7 +118,7 @@ require_once 'admin.info.scr.php';
             <li><a href="admin.team.php" title="Edit team's, participants', and advisors' information"><i class="fa fa-pencil-square-o fa-lg"></i> Edit teams', participants', and advisors' information</a></li>
       		<li><a href="admin.participant.php" title="Summarize information"><i class="fa fa-bar-chart fa-lg"></i> Summarize information</a></li>
       		<li><a href="admin.participant.php?view=team&order=0" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed teams (Order by Team's name)</a></li>
-      		<li><a href="admin.participant.php?view=team&order=1" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed teams (Order by Arrival time)</a></li>
+      		<li><a href="admin.participant.php?view=team&order=1" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed teams (Order by Arrival/Departure info)</a></li>
             <li><a href="admin.participant.php?view=obs&distinct=0" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed advisors</a></li>
             <li><a href="admin.participant.php?view=obs&distinct=1" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed distinct advisors</a></li>
             <li><a href="admin.participant.php?view=part" title="Participating teams"><i class="fa fa-table fa-lg"></i> Confirmed participant (Medical student)</a></li>
