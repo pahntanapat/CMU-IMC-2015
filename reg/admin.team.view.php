@@ -58,9 +58,9 @@ function teamList(Team $t, $link, $type='', $msg=''){
     <td><?=$row->country?></td>
     <? if($type==Team::ROW_ARRIVE_TIME||$type==Team::ROW_ARRIVE_BY||$type==Team::ROW_DEPART_TIME||$type==Team::ROW_DEPART_BY):?>
     <td><?=$row->arrive_time?></td>
-    <td><?=$row->arrive_by?></td>
+    <td><?=nl2br($row->arrive_by)?></td>
     <td><?=$row->depart_time?></td>
-    <td><?=$row->depart_by?></td>
+    <td><?=nl2br($row->depart_by)?></td>
      <? endif;?>
   </tr><? endforeach;?>
 </table>
