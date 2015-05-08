@@ -2,7 +2,7 @@ $(document).ready(function(e) {
     $.datetimepicker();
 	$('#infoForm').submit(function(e) {
         e.preventDefault();
-		if(!$('input[type="datetime"]').checkDateTime()){
+		if(!$('input[type="datetime"], input.datetime').checkDateTime()){
 			$('#msg').html('<div class="alert-box alert">Arrival or Depart time is invalid. Please fill out the correct format (YYYY-MM-DD hh:mm:ss).</div>');
 			return false;
 		}
