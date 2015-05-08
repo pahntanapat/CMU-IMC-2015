@@ -46,7 +46,7 @@ require_once 'class.State.php';
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Update the journey :Chiang Mai University International Medical Challenge</title>
+<title><?=$page?> :Chiang Mai University International Medical Challenge</title>
 <!-- InstanceEndEditable -->
 <script src="../js/jquery-1.11.2.min.js"></script>
 <script src="../js/jquery-migrate-1.2.1.min.js"></script>
