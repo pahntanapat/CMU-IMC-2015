@@ -94,9 +94,19 @@ function summarize(PDO $db){
 // table team --> admin.team.view.php
 function teamTable(PDO $db, $order=0){
 	ob_start();?>
-<h2>List of participating teams (Order by <?=$order?'Arrival time':'Team\'s name'?>) <small class="hide-for-print"><a href="admin.participant.php?print&view=team&order=<?=$order?>" target="_blank" class="button">Print</a> <a href="admin.participant.php?view=team&order=<?=$order?>" class="button reload">Reload</a></small></h2>
+<h2>List of participating teams (Order by <?=$order?'Arrival time/Departure time':'Team\'s name'?>) <small class="hide-for-print"><a href="admin.participant.php?print&view=team&order=<?=$order?>" target="_blank" class="button">Print</a> <a href="admin.participant.php?view=team&order=<?=$order?>" class="button reload">Reload</a></small></h2><? if($order):?>
+<h3>Arrival time</h3>
+<?=teamList(new Team($db), 'admin.team.php', Team::ROW_ARRIVE_TIME, false)?>
+<h3>Arrival method</h3>
+<?=teamList(new Team($db), 'admin.team.php', Team::ROW_ARRIVE_BY, false)?>
+<h3>Departure time</h3>
+<?=teamList(new Team($db), 'admin.team.php', Team::ROW_DEPART_TIME, false)?>
+<h3>Departure method</h3>
 <?php //Team::ROW_ARRIVE_TIME
-	echo teamList(new Team($db), 'admin.team.php', ($order?Team::ROW_ARRIVE_TIME:Team::ROW_ARRIVE_BY), false);
+		echo teamList(new Team($db), 'admin.team.php', Team::ROW_DEPART_BY, false);
+	else:
+		echo teamList(new Team($db), 'admin.team.php', ($order?Team::ROW_ARRIVE_TIME:Team::ROW_ARRIVE_BY), false);
+	endif;
 	return ob_get_clean();
 }
 

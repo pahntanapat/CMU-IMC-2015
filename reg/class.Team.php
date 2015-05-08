@@ -309,10 +309,28 @@ class Team extends SKeasySQL{
 			unset($t);
 		}else{
 			$sql=$type;
+			$order=self::ROW_TEAM_NAME.', '.self::ROW_INSTITUTION.', '.self::ROW_UNIVERSITY;
+			switch($type){
+				case self::ROW_ARRIVE_TIME:
+					$order=self::ROW_ARRIVE_TIME.', '.self::ROW_ARRIVE_BY;
+					break;
+				case self::ROW_ARRIVE_BY:
+					$order=self::ROW_ARRIVE_BY.', '.self::ROW_ARRIVE_TIME;
+					break;
+				case self::ROW_DEPART_TIME:
+					$order=self::ROW_DEPART_TIME.', '.self::ROW_DEPART_BY;
+					break;
+				case self::ROW_DEPART_BY:
+					$order=self::ROW_DEPART_BY.', '.self::ROW_DEPART_TIME;
+					break;
+			}
 			switch($type){
 				case self::ROW_ARRIVE_BY:
-				case self::ROW_ARRIVE_TIME: // All data approved
+				case self::ROW_DEPART_BY:
+				case self::ROW_ARRIVE_TIME:
+				case self::ROW_DEPART_TIME: // All data approved
 					$sql=self::ROW_POST_REG_STATE;
+					$type=self::ROW_ARRIVE_TIME;
 				case self::ROW_PAY_STATE:
 				case self::ROW_POST_REG_STATE:break;
 				default: $type=''; $sql='';
@@ -325,15 +343,12 @@ class Team extends SKeasySQL{
 				)
 				.' FROM '.$this->TABLE
 				.($type!=''?' WHERE '.$sql.'=:s':'')
-				.' ORDER BY '.($type==self::ROW_ARRIVE_TIME?
-					self::ROW_DEPART_TIME.', '.self::ROW_ARRIVE_BY.', '.self::ROW_COUNTRY:
-					self::ROW_TEAM_NAME.', '.self::ROW_INSTITUTION.', '.self::ROW_UNIVERSITY.', '.self::ROW_COUNTRY)
+				.' ORDER BY '.$order.', '.self::ROW_COUNTRY
 			;
 		}
 		$stm=$this->db->prepare($sql);
 		if($type!='') $stm->bindValue(':s',
-			($type==self::ROW_ARRIVE_TIME||$type==self::ROW_ARRIVE_BY)
-				?State::ST_OK:State::ST_WAIT,
+			($type==self::ROW_ARRIVE_TIME)?State::ST_OK:State::ST_WAIT,
 			PDO::PARAM_INT);
 		$stm->execute();
 		return $stm->fetchAll(PDO::FETCH_CLASS,__CLASS__,array($this->db));
